@@ -2,6 +2,16 @@ from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
+import MySQLdb
+
+#konfiguracja do polaczenia z baza danych
+config ={
+    'host': 'localhost',
+    'user': 'root',
+    'passwd': 'raspberry',
+    'db': 'Nadzor'
+    }
+
 
 Base = declarative_base()
 
@@ -62,3 +72,8 @@ class Kamery(Base):
     __tablename__ = 'kamery'
 
     id_kamery = Column(Integer, primary_key=True)
+
+
+db = create_engine("mysql+mysqldb://" + config['user'] + ":" + config['passwd'] + "@" + config['host'] + "/" + config['db'], echo=True)
+
+Base.metadata.create_all(db)  # 5
