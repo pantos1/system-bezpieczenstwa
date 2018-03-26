@@ -1,0 +1,61 @@
+body {
+  font-family: Verdana;
+  margin: 0;
+  padding: 0;
+  background: #f6f6f6;
+}
+
+a,
+a:visited {
+  text-decoration: none;
+}
+
+.link {
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.1s;
+}
+
+.link:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+header {
+  background: #303030;
+  height: 40px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.pasek-nawigacyjny{
+  width: 450px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+section {
+  width: 768px;
+  margin-left: calc(50% - 384px);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.data {
+  height: 60px;
+  width: 640px;
+  background: #ffffff;
+  padding: 20px;
+}
+
+.zdjecia{
+  width: 680px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
