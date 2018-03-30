@@ -26,7 +26,7 @@ class Zdjecia(Base):
     id_zdjecia = Column(Integer, primary_key=True)
     id_kamery = Column(Integer, ForeignKey('kamery.id_kamery', ondelete='CASCADE'), nullable=False)
 
-    nazwa = Column(String)
+    nazwa = Column(String(100))
 
     kamery = relationship(Kamery)
 
