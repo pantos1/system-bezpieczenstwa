@@ -21,12 +21,12 @@ si7021_1_kwargs = {
     "id_czujnika_temp": 1,
     "nazwa": "Si7021"
 }
-si7021_1 = get_or_create(session, Kamery, **si7021_1_kwargs)
+si7021_1 = get_or_create(session, Czujniki_temperatury, **si7021_1_kwargs)
 
 kontakron_kwargs = {
     "opis": "Kontaktron 1"
 }
-kontaktron_1 = get_or_create(session, Kamery, **kontakron_kwargs)
+kontaktron_1 = get_or_create(session, Czujniki, **kontakron_kwargs)
 
 
 
