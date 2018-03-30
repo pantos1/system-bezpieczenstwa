@@ -2,7 +2,6 @@ from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
-import MySQLdb
 
 #konfiguracja do polaczenia z baza danych
 config ={
@@ -15,10 +14,21 @@ config ={
 
 Base = declarative_base()
 
+def get_or_create(session, model, **kwargs):
+    instance = session.query(model).filter_by(**kwargs).first()
+    if instance:
+        return instance
+    else:
+        instance = model(**kwargs)
+        session.add(instance)
+        session.commit()
+        return instance
+
 class Kamery(Base):
     __tablename__ = 'kamery'
 
     id_kamery = Column(Integer, primary_key=True)
+    nazwa = Column(String(100))
 
 class Zdjecia(Base):
     __tablename__ = 'zdjecia'
@@ -26,7 +36,7 @@ class Zdjecia(Base):
     id_zdjecia = Column(Integer, primary_key=True)
     id_kamery = Column(Integer, ForeignKey('kamery.id_kamery', ondelete='CASCADE'), nullable=False)
 
-    nazwa = Column(String(100))
+    nazwa = Column(String(250))
 
     kamery = relationship(Kamery)
 
@@ -34,6 +44,8 @@ class Czujniki_temperatury(Base):
     __tablename__ = 'czujniki_temperatury'
 
     id_czujnika_temp = Column(Integer, primary_key=True)
+
+    nazwa = Column(String(100))
 
 class Odczyty(Base):
     __tablename__ = 'odczyty'
@@ -50,6 +62,8 @@ class Czujniki(Base):
     __tablename__ = 'czujniki'
 
     id_czujnika = Column(Integer, primary_key=True)
+
+    opis = Column(String(100))
 
 class Stany(Base):
     __tablename__ = 'stany'
