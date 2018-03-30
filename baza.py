@@ -15,32 +15,25 @@ config ={
 
 Base = declarative_base()
 
-class Pomiary(Base):
-    __tablename__ = 'pomiary'
+class Kamery(Base):
+    __tablename__ = 'kamery'
 
-    id_pomiaru = Column(Integer, primary_key=True)
-    id_stanu = Column(Integer, ForeignKey('stany.id_stanu', ondelete='CASCADE'), nullable=False)
-    id_odczytu = Column(Integer, ForeignKey('odczyty.id_odczytu', ondelete='CASCADE'), nullable=False)
-    id_zdjecia = Column(Integer, ForeignKey('zdjecia.id_zdjecia', ondelete='CASCADE'), nullable=False)
+    id_kamery = Column(Integer, primary_key=True)
 
-    stany = relationship(Stany)
-    odczyt = relationship(Odczyty)
-    zdjecia = relationship(Zdjecia)
+class Zdjecia(Base):
+    __tablename__ = 'zdjecia'
 
-class Stany(Base):
-    __tablename__ = 'stany'
+    id_zdjecia = Column(Integer, primary_key=True)
+    id_kamery = Column(Integer, ForeignKey('kamery.id_kamery', ondelete='CASCADE'), nullable=False)
 
-    id_stanu = Column(Integer, primary_key=True)
-    id_czujnika = Column(Integer, ForeignKey('czujniki.id_czujnika', ondelete='CASCADE'), nullable=False)
+    nazwa = Column(String)
 
-    stan = Column(SmallInteger)
+    kamery = relationship(Kamery)
 
-    czujniki = relationship(Czujniki)
+class Czujniki_temperatury(Base):
+    __tablename__ = 'czujniki_temperatury'
 
-class Czujniki(Base):
-    __tablename__ = 'czujniki'
-
-    id_czujnika = Column(Integer, primary_key=True)
+    id_czujnika_temp = Column(Integer, primary_key=True)
 
 class Odczyty(Base):
     __tablename__ = 'odczyty'
@@ -53,27 +46,33 @@ class Odczyty(Base):
 
     czujniki_temperatury = relationship(Czujniki_temperatury)
 
-class Czujniki_temperatury(Base):
-    __tablename__ = 'czujniki_temperatury'
+class Czujniki(Base):
+    __tablename__ = 'czujniki'
 
-    id_czujnika_temp = Column(Integer, primary_key=True)
+    id_czujnika = Column(Integer, primary_key=True)
 
-class Zdjecia(Base):
-    __tablename__ = 'zdjecia'
+class Stany(Base):
+    __tablename__ = 'stany'
 
-    id_zdjecia = Column(Integer, primary_key=True)
-    id_kamery = Column(Integer, ForeignKey('kamery.id_kamery', ondelete='CASCADE'), nullable=False)
+    id_stanu = Column(Integer, primary_key=True)
+    id_czujnika = Column(Integer, ForeignKey('czujniki.id_czujnika', ondelete='CASCADE'), nullable=False)
 
-    nazwa = Column(String)
+    stan = Column(SmallInteger)
 
-    kamery = relationship(Kamery)
+    czujniki = relationship(Czujniki)
 
-class Kamery(Base):
-    __tablename__ = 'kamery'
+class Pomiary(Base):
+    __tablename__ = 'pomiary'
 
-    id_kamery = Column(Integer, primary_key=True)
+    id_pomiaru = Column(Integer, primary_key=True)
+    id_stanu = Column(Integer, ForeignKey('stany.id_stanu', ondelete='CASCADE'), nullable=False)
+    id_odczytu = Column(Integer, ForeignKey('odczyty.id_odczytu', ondelete='CASCADE'), nullable=False)
+    id_zdjecia = Column(Integer, ForeignKey('zdjecia.id_zdjecia', ondelete='CASCADE'), nullable=False)
 
+    stany = relationship(Stany)
+    odczyt = relationship(Odczyty)
+    zdjecia = relationship(Zdjecia)
 
 db = create_engine("mysql+mysqldb://" + config['user'] + ":" + config['passwd'] + "@" + config['host'] + "/" + config['db'], echo=True)
 
-Base.metadata.create_all(db)  # 5
+Base.metadata.create_all(db)
