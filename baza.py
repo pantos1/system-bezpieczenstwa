@@ -24,6 +24,11 @@ def get_or_create(session, model, **kwargs):
         session.commit()
         return instance
 
+def fetch_all(session, model):
+    instances = session.query(model)
+    if instances:
+        return instances
+
 class Kamery(Base):
     __tablename__ = 'kamery'
 
@@ -64,6 +69,7 @@ class Czujniki(Base):
     id_czujnika = Column(Integer, primary_key=True)
 
     opis = Column(String(100))
+    gpio = Column(Integer)
 
 class Stany(Base):
     __tablename__ = 'stany'
