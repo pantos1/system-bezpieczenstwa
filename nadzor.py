@@ -24,7 +24,7 @@ class Grupa():
         self.session = session
         self.stan_czujnika = 0
         self.stan_poprzedni = 0
-        GPIO.setup(self.czujnik["gpio"], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     def zrob_zdjecie(self):
         # global data, sciezka, cursor, conn, id_zdjecia
@@ -32,7 +32,7 @@ class Grupa():
         nazwa = Grupa.sciezka + data +".jpg"
         subprocess.call(["fswebcam", "-r 640x480", nazwa])
         zdjecie = {
-            "id_kamery": self.kamera["id_kamery"],
+            "id_kamery": self.kamera.id_kamery,
             "nazwa": nazwa
         }
         self.zdjecie_instance = get_or_create(self.session, Zdjecia, **zdjecie)
