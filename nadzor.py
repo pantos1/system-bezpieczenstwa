@@ -106,7 +106,7 @@ def main():
     czujniki_temperatury = fetch_all(session, Czujniki_temperatury)
     grupy = []
     for kamera, czujnik_temp, czujnik in zip(kamery.all(), czujniki_temperatury.all(), czujniki.all()):
-        grupa = Grupa(kamera, czujnik_temp, czujnik, session)
+        grupa = Grupa(kamera=kamera, czujnik_temp=czujnik_temp, czujnik=czujnik, session=session)
         grupy.append(grupa)
         schedule.every(10).seconds.do(grupa.zrob_zdjecie())
         schedule.every(10).seconds.do(grupa.pomiar_temperatury_rh())
