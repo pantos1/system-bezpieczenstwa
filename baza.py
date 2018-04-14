@@ -25,7 +25,7 @@ def get_or_create(session, model, **kwargs):
         return instance
 
 def fetch_all(session, model):
-    instances = session.query(model, session)
+    instances = session.query(model)
     if instances:
         return instances
 
