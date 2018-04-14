@@ -47,7 +47,7 @@ def kamery(session, kamera, sciezka):
     }
     zdjecie_instance = get_or_create(session, Zdjecia, **zdjecie)
 
-def czujnik_i2c():
+def czujnik_i2c(session, czujnik_temp):
     global temp, rh, bus, adres, rhKod, tempKod
     bus.write_byte(adres, rhKod)
     time.sleep(0.05)
@@ -75,7 +75,6 @@ def czujniki(session, czujnik):
                    (data, 1))
                 id_zdjecia = cursor.lastrowid
                 conn.commit()
-                print("1 wywolanie fswebcam: %s sekund" %(time.time() - start_time))
     else:
         stan_czujnika = 1
     global stan_poprzedni

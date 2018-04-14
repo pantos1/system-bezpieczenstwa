@@ -24,7 +24,8 @@ si7021_1_kwargs = {
 si7021_1 = get_or_create(session, Czujniki_temperatury, **si7021_1_kwargs)
 
 kontakron_kwargs = {
-    "opis": "Kontaktron 1"
+    "opis": "Kontaktron 1",
+    "gpio": 23
 }
 kontaktron_1 = get_or_create(session, Czujniki, **kontakron_kwargs)
 
