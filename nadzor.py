@@ -64,7 +64,7 @@ class Grupa():
             self.stan_czujnika = 0
             if self.stan_poprzedni == 1:
                 for i in range(0, 2):
-                    self.kamery()
+                    self.zrob_zdjecie()
         else:
             self.stan_czujnika = 1
         stan = {
