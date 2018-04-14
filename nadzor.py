@@ -23,7 +23,8 @@ class Grupa():
         self.session = session
         self.stan_czujnika = 0
         self.stan_poprzedni = 0
-        GPIO.setup(int(self.czujnik.gpio), GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        self.czujnik.gpio = int(self.czujnik.gpio)
+        GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     def zrob_zdjecie(self):
         data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
@@ -50,7 +51,7 @@ class Grupa():
         temp = ((data0 * 256 + data1) * 175.72 / 65536.0) - 46.85
 
         odczyt = {
-            "id_czujnika_temp": self.czujnik_temp["id_czujnika_temp"],
+            "id_czujnika_temp": self.czujnik_temp.id_czujnika_temp,
             "temperatura": temp,
             "rh": rh
         }
@@ -58,7 +59,7 @@ class Grupa():
         self.odczyt_instance = get_or_create(self.session, Odczyty, **odczyt)
 
     def sprawdz_kontaktron(self):
-        if GPIO.input(self.czujnik["gpio"]):
+        if GPIO.input(self.czujnik.gpio.):
             self.stan_czujnika = 0
             if self.stan_poprzedni == 1:
                 for i in range(0, 2):
@@ -66,14 +67,14 @@ class Grupa():
         else:
             self.stan_czujnika = 1
         stan = {
-            "id_czujnika": self.czujnik["id_czujnika"],
+            "id_czujnika": self.czujnik.id_czujnika,
             "stan": self.stan_czujnika
         }
         self.stan_instance = get_or_create(self.session, Stany, **stan)
         pomiar = {
-            "id_stanu": self.stan_instance["id_stanu"],
-            "id_odczytu": self.odczyt_instance["id_odczytu"],
-            "id_zdjecia ": self.zdjecie_instance["id_zdjecia"]
+            "id_stanu": self.stan_instance.id_stanu,
+            "id_odczytu": self.odczyt_instance.id_odczytu,
+            "id_zdjecia ": self.zdjecie_instance.id_zdjecia
         }
         self.pomiar_instance = get_or_create(self.session, Pomiary, **pomiar)
         self.stan_poprzedni = self.stan_czujnika
