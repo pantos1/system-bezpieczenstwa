@@ -29,8 +29,8 @@
                 $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $stmt  = $conn->query("SELECT nazwa, stan, temperatura, rh
-                  FROM Pomiary NATURAL JOIN Zdjecia NATURAL JOIN Stany
-                  WHERE Pomiary.id_pomiaru =
+                  FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
+                  WHERE pomiary.id_pomiaru =
                   (SELECT MAX(id_pomiaru) FROM Pomiary)");
                  while($result = $stmt -> fetch()){
                   echo 'Temperatura: '.round($result['temperatura'],1).'&deg;C'.'<br>';
