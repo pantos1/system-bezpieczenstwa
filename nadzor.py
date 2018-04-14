@@ -4,7 +4,6 @@ from datetime import datetime
 import subprocess
 import time
 import schedule
-import MySQLdb
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from baza import Base, Kamery, Zdjecia, Czujniki_temperatury, Odczyty, Czujniki, Stany, Pomiary, get_or_create, fetch_all
@@ -27,7 +26,6 @@ class Grupa():
         GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     def zrob_zdjecie(self):
-        # global data, sciezka, cursor, conn, id_zdjecia
         data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         nazwa = Grupa.sciezka + data +".jpg"
         subprocess.call(["fswebcam", "-r 640x480", nazwa])
@@ -107,7 +105,7 @@ def main():
     czujniki = fetch_all(session, Czujniki)
     czujniki_temperatury = fetch_all(session, Czujniki_temperatury)
     grupy = []
-    for kamera, czujnik_temp, czujnik in zip(kamery, czujniki_temperatury, czujniki):
+    for kamera, czujnik_temp, czujnik in zip(kamery.all(), czujniki_temperatury.all(), czujniki.all()):
         grupa = Grupa(kamera, czujnik_temp, czujnik, session)
         grupy.append(grupa)
         schedule.every(10).seconds.do(grupa.zrob_zdjecie())
