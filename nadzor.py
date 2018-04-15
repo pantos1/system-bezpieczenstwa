@@ -28,8 +28,9 @@ class Grupa():
 
     def zrob_zdjecie(self):
         data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-        nazwa = Grupa.sciezka + data +".jpg"
-        subprocess.call(["fswebcam", "-r 640x480", nazwa])
+        nazwa = data + ".jpg"
+        sciezka = Grupa.sciezka + nazwa
+        subprocess.call(["fswebcam", "-r 640x480", sciezka])
         zdjecie = {
             "id_kamery": self.kamera.id_kamery,
             "nazwa": nazwa
