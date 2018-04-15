@@ -60,7 +60,7 @@ class Grupa():
         self.odczyt_instance = get_or_create(self.session, Odczyty, **odczyt)
 
     def sprawdz_kontaktron(self):
-        if GPIO.input(self.czujnik.gpio.):
+        if GPIO.input(self.czujnik.gpio):
             self.stan_czujnika = 0
             if self.stan_poprzedni == 1:
                 for i in range(0, 2):
