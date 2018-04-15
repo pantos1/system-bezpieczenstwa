@@ -5,7 +5,7 @@ config ={
     'host': 'localhost',
     'user': 'root',
     'passwd': 'raspberry',
-    'db': 'Nadzor'
+    'db': 'nadzor'
     }
 db = create_engine("mysql+mysqldb://" + config['user'] + ":" + config['passwd'] + "@" + config['host'] + "/" + config['db'], echo=True)
 

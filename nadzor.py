@@ -99,7 +99,7 @@ def main():
         'host': 'localhost',
         'user': 'root',
         'passwd': 'raspberry',
-        'db': 'Nadzor'
+        'db': 'nadzor'
     }
     init_gpio()
     session = init_session(config)

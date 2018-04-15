@@ -8,7 +8,7 @@ config ={
     'host': 'localhost',
     'user': 'root',
     'passwd': 'raspberry',
-    'db': 'Nadzor'
+    'db': 'nadzor'
     }
 
 
