@@ -31,7 +31,7 @@
                 $stmt  = $conn->query("SELECT nazwa, stan, temperatura, rh
                   FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
                   WHERE pomiary.id_pomiaru =
-                  (SELECT MAX(id_pomiaru) FROM Pomiary)");
+                  (SELECT MAX(id_pomiaru) FROM pomiary)");
                  while($result = $stmt -> fetch()){
                   echo 'Temperatura: '.round($result['temperatura'],1).'&deg;C'.'<br>';
                   echo 'Wilgotność względna: '.round($result['rh']).'%';
