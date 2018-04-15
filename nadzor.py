@@ -75,7 +75,7 @@ class Grupa():
         pomiar = {
             "id_stanu": self.stan_instance.id_stanu,
             "id_odczytu": self.odczyt_instance.id_odczytu,
-            "id_zdjecia ": self.zdjecie_instance.id_zdjecia
+            "id_zdjecia": self.zdjecie_instance.id_zdjecia
         }
         self.pomiar_instance = get_or_create(self.session, Pomiary, **pomiar)
         self.stan_poprzedni = self.stan_czujnika
