@@ -22,7 +22,7 @@
             $servername = "localhost";
             $username = "root";
             $password = "raspberry";
-            $db = "Nadzor";
+            $db = "nadzor";
             echo date("d.m.Y H:i:s");
 	    echo '<br>';
             try {
@@ -37,7 +37,7 @@
                   echo 'Wilgotność względna: '.round($result['rh']).'%';
                   echo '</div>';
                   echo '<div class = "zdjecia">';
-                  echo '<img src = "img/'.$result['nazwa'].'.jpg" alt = "Zdjecie z kamery" />';
+                  echo '<img src = "img/'.$result['nazwa'].'" alt = "Zdjecie z kamery" />';
                   echo '<div class = "pasek-czujnikow">';
                   echo '<p>Czujnik 1: ';
                   if ($result['stan'] == 1){
