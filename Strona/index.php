@@ -10,7 +10,7 @@
       <header>
         <nav class = "pasek-nawigacyjny">
           <a href = "#" class ="link">Zapisz</a>
-          <a href = "#" class ="link">Archiwum</a>
+          <a href = "archiwum" class ="link">Archiwum</a>
           <a href = "#" class ="link">Ustawienia</a>
           <a href = "#" class ="link">Wyloguj</a>
         </nav>

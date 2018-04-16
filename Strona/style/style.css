@@ -11,20 +11,16 @@ a:visited {
 }
 
 .link {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.8) !important;
   transition: color 0.1s;
 }
 
 .link:hover {
-  color: rgba(255, 255, 255, 1);
+  color: rgba(255, 255, 255, 1) !important;
 }
 
-header {
-  background: #303030;
-  height: 40px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+.naglowek {
+  background: #303030!important;
 }
 
 .pasek-nawigacyjny{
