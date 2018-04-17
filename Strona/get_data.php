@@ -8,7 +8,7 @@
 		$rows = array();
         $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$kamery_zapytanie = $conn->query("SELECT * FROM kamery");
+		$kamery_zapytanie = $conn->query("SELECT * FROM kamery NATURAL JOIN czujniki NATURAL JOIN czujniki_temperatury");
 		while($kamera = $kamery_zapytanie->fetch()){
 			$id_kamery = $kamera["id_kamery"];
 			$stmt  = $conn->query("SELECT *
@@ -18,7 +18,8 @@
 				AND zdjecia.id_kamery = $id_kamery");
 			while($result = $stmt -> fetch()){
 				$rows[$id_kamery] = $result;
-				$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa"];
+				$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
+				$rows[$id_kamery]["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
 			}
 		}
         echo json_encode($rows);
