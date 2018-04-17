@@ -1,8 +1,11 @@
 $.ajax({
     url: "get_data.php?q=",
     type: "GET",
+    contentType: "text/plain",
     success: function(result) {
+		result = Object.values(JSON.parse(result));
         console.log(result);
+        console.log(result.length);
         for (i=0; i<result.length; i++) {
             var card = $(document.createElement("div"))
                 .attr({
@@ -13,18 +16,18 @@ $.ajax({
                 .attr({
                     class: "uk-card-title"
                 })
-                .text(result[i].nazwa)
+                .text(result[i].nazwa_kamery)
                 .appendTo(card);
             $(document.createElement("img"))
                 .attr({
-                    src: result[i].nazwa
+                    src: "img/" + result[i].nazwa
                 })
                 .appendTo(card);
             var temp = parseFloat(result[i].temperatura).toFixed(1);
             var rh = parseInt(result[i].rh);
             var stan = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
             $(document.createElement("p"))
-                .html("Temperatura: " + temp  + "</br>Wilgotność względna: " + rh + "</br>" + result[i].opis + ": " + stan)
+                .html("Temperatura: " + temp + "C" + "</br>Wilgotność względna: " + rh + "%" +"</br>" + result[i].opis + ": " + stan)
                 .appendTo(card);
 
         }

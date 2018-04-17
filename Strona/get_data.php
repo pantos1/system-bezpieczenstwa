@@ -10,13 +10,15 @@
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$kamery_zapytanie = $conn->query("SELECT * FROM kamery");
 		while($kamera = $kamery_zapytanie->fetch()){
+			$id_kamery = $kamera["id_kamery"];
 			$stmt  = $conn->query("SELECT *
 				FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
 				WHERE pomiary.id_pomiaru =
 				(SELECT MAX(id_pomiaru) FROM pomiary)
-				AND zdjecia.id_kamery = $kamera.id_kamery");
+				AND zdjecia.id_kamery = $id_kamery");
 			while($result = $stmt -> fetch()){
-				$rows[$kamera.id_kamery] = $result;
+				$rows[$id_kamery] = $result;
+				$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa"];
 			}
 		}
         echo json_encode($rows);
