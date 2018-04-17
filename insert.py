@@ -14,18 +14,18 @@ session = DBSession()
 
 si7021_1_kwargs = {
     "id_czujnika_temp": 1,
-    "nazwa": "Si7021"
+    "nazwa_czujnika_temp": "Si7021"
 }
 si7021_1 = get_or_create(session, Czujniki_temperatury, **si7021_1_kwargs)
 
 kontakron_kwargs = {
-    "opis": "Kontaktron 1",
+    "nazwa_czujnika": "Kontaktron 1",
     "gpio": 23
 }
 kontaktron_1 = get_or_create(session, Czujniki, **kontakron_kwargs)
 
 titanum_kwargs = {
-    "nazwa": "Kamera 1 - Titanum",
+    "nazwa_kamery": "Kamera 1 - Titanum",
     "id_czujnika": 1,
     "id_czujnika_temp": 1
 }
