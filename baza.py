@@ -34,7 +34,7 @@ class Czujniki_temperatury(Base):
 
     id_czujnika_temp = Column(Integer, primary_key=True)
 
-    nazwa = Column(String(100))
+    nazwa_czujnika_temp = Column(String(100))
 
 class Odczyty(Base):
     __tablename__ = 'odczyty'
@@ -52,7 +52,7 @@ class Czujniki(Base):
 
     id_czujnika = Column(Integer, primary_key=True)
 
-    opis = Column(String(100))
+    nazwa_czujnika = Column(String(100))
     gpio = Column(Integer)
 
 class Stany(Base):
@@ -75,7 +75,7 @@ class Kamery(Base):
     czujniki = relationship(Czujniki)
     czujniki_temperatury = relationship(Czujniki_temperatury)
 
-    nazwa = Column(String(100))
+    nazwa_kamery = Column(String(100))
 
 class Zdjecia(Base):
     __tablename__ = 'zdjecia'
