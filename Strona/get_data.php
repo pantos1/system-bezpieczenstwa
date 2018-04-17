@@ -8,13 +8,13 @@
 		$rows = array();
         $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt  = $conn->query("SELECT nazwa, stan, temperatura, rh
+        $stmt  = $conn->query("SELECT *
 			FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
             WHERE pomiary.id_pomiaru =
             (SELECT MAX(id_pomiaru) FROM pomiary)");
 		while($result = $stmt -> fetch()){
-			$id_kamery = $r["id_kamery"];
-            $rows[$id] = $r;
+			$id_pomiaru = $result["id_pomiaru"];
+            $rows[$id_pomiaru] = $result;
         }
         echo json_encode($rows);
         $stmt -> closeCursor();
