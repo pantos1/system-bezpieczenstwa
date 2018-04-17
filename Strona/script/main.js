@@ -3,7 +3,7 @@ $.ajax({
     type: "GET",
     success: function(result) {
         console.log(result);
-        for (i=0; i<result.length(); i++) {
+        for (i=0; i<result.length; i++) {
             var card = $(document.createElement("div"))
                 .attr({
                     class: "uk-card uk-card-default uk-card-body"
@@ -24,7 +24,7 @@ $.ajax({
             var rh = parseInt(result[i].rh);
             var stan = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
             $(document.createElement("p"))
-                .text("Temperatura: " + temp  + "</br>Wilgotność względna: " + rh + "</br>" + result[i].opis + ": " + stan)
+                .html("Temperatura: " + temp  + "</br>Wilgotność względna: " + rh + "</br>" + result[i].opis + ": " + stan)
                 .appendTo(card);
 
         }

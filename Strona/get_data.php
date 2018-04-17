@@ -13,8 +13,7 @@
             WHERE pomiary.id_pomiaru =
             (SELECT MAX(id_pomiaru) FROM pomiary)");
 		while($result = $stmt -> fetch()){
-			$id_pomiaru = $result["id_pomiaru"];
-            $rows[$id_pomiaru] = $result;
+            $rows["dane"] = $result;
         }
         echo json_encode($rows);
         $stmt -> closeCursor();
