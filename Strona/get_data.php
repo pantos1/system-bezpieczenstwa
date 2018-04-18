@@ -13,7 +13,7 @@
 		while($kamera = $kamery_zapytanie->fetch()){
 			$id_kamery = $kamera["id_kamery"];
 			if(empty($q)){
-				$stmt  = $conn->query("SELECT id_czujnika, id_czujnika_temp, id_kamery, id_odczytu, id_pomiaru, id_stanu, id_zdjecia, nazwa, nazwa_czujnika, nazwa_kamery, rh, stan, temperatura
+				$stmt  = $conn->query("SELECT *
 					FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
 					WHERE pomiary.id_pomiaru =
 					(SELECT MAX(id_pomiaru) FROM pomiary)
@@ -28,7 +28,7 @@
 					FROM zdjecia NATURAL JOIN pomiary NATURAL JOIN stany NATURAL JOIN odczyty
 					WHERE zdjecia.id_kamery = $id_kamery");
 				while($result = $stmt -> fetch()){
-					$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"]
+					$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
 					$rows[$id_kamery][$result["id_zdjecia"]] = $result;
 					$rows[$id_kamery][$result["id_zdjecia"]] ["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
 				}
