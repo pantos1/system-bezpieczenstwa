@@ -1,4 +1,5 @@
 <?php
+	header("Content-Type: application/json");
 	$servername = "localhost";
     $username = "root";
     $password = "raspberry";
@@ -11,22 +12,27 @@
 		$kamery_zapytanie = $conn->query("SELECT * FROM kamery NATURAL JOIN czujniki NATURAL JOIN czujniki_temperatury");
 		while($kamera = $kamery_zapytanie->fetch()){
 			$id_kamery = $kamera["id_kamery"];
-			if(empty($q){
+			if(empty($q)){
 				$stmt  = $conn->query("SELECT *
 					FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
 					WHERE pomiary.id_pomiaru =
 					(SELECT MAX(id_pomiaru) FROM pomiary)
 					AND zdjecia.id_kamery = $id_kamery");
+				while($result = $stmt -> fetch()){
+					$rows[$id_kamery] = $result;
+					$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
+					$rows[$id_kamery]["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
+				}
 			} elseif($q == 'archiwum'){
 				$stmt  = $conn->query("SELECT *
 					FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
-					WHERE pomiary.id_pomiaru = zdjecia.id_kamery = $id_kamery");
-			}
-			while($result = $stmt -> fetch()){
-				$rows[$id_kamery] = $result;
-				$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
-				$rows[$id_kamery]["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
-			}
+					WHERE zdjecia.id_kamery = $id_kamery");
+				while($result = $stmt -> fetch()){
+					$rows[$id_kamery][$result["id_zdjecia"]] = $result;
+					$rows[$id_kamery][$result["id_zdjecia"]] ["nazwa_kamery"] = $kamera["nazwa_kamery"];
+					$rows[$id_kamery][$result["id_zdjecia"]] ["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
+				}
+			}	
 		}
         echo json_encode($rows);
         $stmt -> closeCursor();

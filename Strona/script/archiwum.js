@@ -3,9 +3,10 @@ $.ajax({
     type: "GET",
     contentType: "text/plain",
     success: function(result) {
-		result = Object.values(JSON.parse(result));
-        console.log(result);
-        console.log(result.length);
+		console.log(result);
+		result = Object.values(result);
+        // console.log(result);
+        // console.log(result.length);
         // for (i=0; i<result.length; i++) {
         //     var card = $(document.createElement("div"))
         //         .attr({
