@@ -29,7 +29,7 @@ function getData(){
 				var rh = parseInt(result[i].rh);
 				var stan = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
 				$(document.createElement("p"))
-					.html("Temperatura: " + temp + "C" + "</br>Wilgotność względna: " + rh + "%" +"</br>" + result[i].nazwa_czujnika + ": " + stan)
+					.html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" +"</br>" + result[i].nazwa_czujnika + ": " + stan)
 					.appendTo(card);
 
 			}
@@ -52,7 +52,7 @@ function refreshData(){
 				var temp = parseFloat(result[i].temperatura).toFixed(1);
 				var rh = parseInt(result[i].rh);
 				var stan = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
-				text.html("Temperatura: " + temp + "C" + "</br>Wilgotność względna: " + rh + "%" +"</br>" + result[i].nazwa_czujnika + ": " + stan);
+				text.html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" +"</br>" + result[i].nazwa_czujnika + ": " + stan);
 			}
 		}
 	})

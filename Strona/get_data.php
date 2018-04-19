@@ -29,8 +29,8 @@
 					WHERE zdjecia.id_kamery = $id_kamery");
 				while($result = $stmt -> fetch()){
 					$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
-					$rows[$id_kamery][$result["id_zdjecia"]] = $result;
-					$rows[$id_kamery][$result["id_zdjecia"]] ["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
+					$rows[$id_kamery]["zdjecia"][$result["id_zdjecia"]] = $result;
+					$rows[$id_kamery]["zdjecia"][$result["id_zdjecia"]] ["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
 				}
 			}	
 		}
