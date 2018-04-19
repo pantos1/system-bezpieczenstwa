@@ -11,6 +11,7 @@ $.ajax({
                     class: "uk-h3"
                 })
                 .text(result[i]);
+			result[i] = Object.values(result[i]);
             for (j = 0; j < result[i].length; j++) {
                 var card = $(document.createElement("div"))
                     .attr({
@@ -26,7 +27,7 @@ $.ajax({
                 var rh = parseInt(result[i][j].rh);
                 var stan = result[i][j].stan === '1' ? "Zamknięty" : "Otwarty";
                 $(document.createElement("p"))
-                    .html("Temperatura: " + temp + "C" + "</br>Wilgotność względna: " + rh + "%" + "</br>" + result[i][j].opis + ": " + stan)
+                    .html("Temperatura: " + temp + "C" + "</br>Wilgotność względna: " + rh + "%" + "</br>" + result[i][j].nazwa_czujnika + ": " + stan)
                     .appendTo(card);
 
             }
