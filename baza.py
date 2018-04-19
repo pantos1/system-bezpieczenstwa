@@ -95,6 +95,8 @@ class Pomiary(Base):
     id_odczytu = Column(Integer, ForeignKey('odczyty.id_odczytu', ondelete='CASCADE'), nullable=False)
     id_zdjecia = Column(Integer, ForeignKey('zdjecia.id_zdjecia', ondelete='CASCADE'), nullable=False)
 
+    data = Column(DATETIME)
+
     stany = relationship(Stany)
     odczyt = relationship(Odczyty)
     zdjecia = relationship(Zdjecia)
