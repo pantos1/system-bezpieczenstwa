@@ -110,11 +110,11 @@ def main():
     for kamera, czujnik_temp, czujnik in zip(kamery.all(), czujniki_temperatury.all(), czujniki.all()):
         grupa = Grupa(kamera=kamera, czujnik_temp=czujnik_temp, czujnik=czujnik, session=session)
         grupy.append(grupa)
+        grupa.zrob_zdjecie()
+        grupa.pomiar_temperatury_rh()
         schedule.every(10).seconds.do(grupa.zrob_zdjecie)
         schedule.every(10).seconds.do(grupa.pomiar_temperatury_rh)
         schedule.every(0.1).seconds.do(grupa.sprawdz_kontaktron)
-        grupa.zrob_zdjecie()
-        grupa.pomiar_temperatury_rh()
     while True:
         schedule.run_pending()
 
