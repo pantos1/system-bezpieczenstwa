@@ -22,7 +22,7 @@ $.ajax({
                 .appendTo(grid);
 			console.log(result[i]);
 			result[i].zdjecia = Object.values(result[i].zdjecia);
-            for (j = 0; j < result[i].zdjecia.length; j++) {
+            for (j = result[i].zdjecia.length-1; j >= 0 ; j--) {
                 var albumElement = $(document.createElement("div"))
                     .appendTo($("#grid-photo"+i));
                 var photoLink = $(document.createElement("a"))

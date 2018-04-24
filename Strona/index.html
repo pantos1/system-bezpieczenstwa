@@ -4,10 +4,12 @@
     <meta charset="utf-8">
     <title>System bezpieczeństwa</title>
     <link rel="stylesheet" type="text/css" href="style/uikit.min.css">
+    <link rel="stylesheet" type="text/css" href="style/pikaday.css">
     <link rel="stylesheet" type="text/css" href="style/style.css">
     <script src="script/jquery-3.1.1.min.js"></script>
     <script src="script/uikit.min.js"></script>
     <script src="script/uikit-icons.min.js"></script>
+    <script src="script/pikaday.js"></script>
     <script src="script/main.js"></script>
 </head>
 <body>
@@ -15,7 +17,7 @@
     <div class="uk-navbar-left">
         <ul class="uk-navbar-nav">
             <li><a href="index.html" uk-icon="icon: home" class="link"></a></li>
-            <li><a href="#" class="link">Zapisz</a></li>
+            <li><a href="#okno-zapisz" class="link" uk-toggle>Zapisz</a></li>
             <li><a href="archiwum.html" class="link">Archiwum</a></li>
             <li><a href="#" class="link">Ustawienia</a></li>
             <li><a href="#" class="link">Wyloguj</a></li>
@@ -24,6 +26,28 @@
 </nav>
 <div id="content" class="uk-flex uk-flex-center">
 	<div id="grid-photo" uk-grid></div>
+</div>
+<div id="okno-zapisz" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h3 class="uk-modal-title">Zapisz listę zdarzeń</h3>
+        <form class="uk-form-horizontal">
+            <div>
+                <label class="uk-form-label" for="data-start">Data początku</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" id="data-start" type="text">
+                </div>
+                <label class="uk-form-label" for="data-koniec">Data końca</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" id="data-koniec" type="text">
+                </div>
+                <div class="uk-flex uk-flex-between">
+                    <button class="uk-button uk-button-default uk-modal-close" type="button">Anuluj</button>
+                    <button class="uk-button uk-button-primary" type="button">Zapisz</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>
