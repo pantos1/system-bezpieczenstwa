@@ -1,6 +1,6 @@
 $(document).ready(function () {
     getData();
-    initDatePickers();
+    initDateModal();
     var getTimer = setInterval(refreshData, 8000);
 });
 
@@ -91,6 +91,7 @@ function initDatePickers() {
             weekdaysShort : ['Niedz.','Pon.','Wt.','Śr.','Czw.','Pt.','Sob.']
         }
     });
+    return startPicker, endPicker
 }
 
 function updateStartDate(startDate, startPicker, endPicker) {
@@ -102,4 +103,23 @@ function updateEndDate (endDate, startPicker, endPicker) {
     startPicker.setEndRange(endDate);
     startPicker.setMaxDate(endDate);
     endPicker.setEndRange(endDate);
+}
+
+function initDateModal() {
+    var startPicker, endPicker = initDatePickers();
+    $("#zapisz-daty").on("click", function (event) {
+        var startDate = startPicker.getDate();
+        var endDate = endPicker.getDate();
+        var url = "export_events.php?start=";
+        if (startDate != null) url = url + startDate.toJSON();
+        url = url + "&end=";
+        if (endDate != null) url = url + endDate.toJSON();
+        $.ajax({
+            url: url,
+            type: "GET",
+            contentType: "text/plain",
+            success: function (result) {
+                console.log(result);
+            }
+    })
 }
