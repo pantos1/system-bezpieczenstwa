@@ -1,7 +1,7 @@
 $(document).ready(function () {
     getData();
     initDateModal();
-    var getTimer = setInterval(refreshData, 8000);
+    const getTimer = setInterval(refreshData, 8000);
 });
 
 function getData(){
@@ -11,8 +11,8 @@ function getData(){
 		contentType: "text/plain",
 		success: function(result) {
 			result = Object.values(result);
-			for (i=0; i<result.length; i++) {
-				var card = $(document.createElement("div"))
+			for (let i=0; i<result.length; i++) {
+				const card = $(document.createElement("div"))
 					.attr({
 						id: result[i].id_kamery,
 						class: "uk-card uk-card-default uk-card-body"
@@ -29,9 +29,9 @@ function getData(){
 						src: "img/" + result[i].nazwa
 					})
 					.appendTo(card);
-                var temp = parseFloat(result[i].temperatura).toFixed(1);
-                var rh = parseInt(result[i].rh);
-				var stan = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
+                const temp = parseFloat(result[i].temperatura).toFixed(1);
+                const rh = parseInt(result[i].rh);
+				const stan = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
 				$(document.createElement("p"))
 					.html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" +"</br>" + result[i].nazwa_czujnika + ": " + stan)
 					.appendTo(card);
@@ -48,36 +48,22 @@ function refreshData(){
 		contentType: "text/plain",
 		success: function(result) {
 			result = Object.values(result);
-			for (i=0; i<result.length; i++) {
-				var card = $(`#${result[i].id_kamery}`);
-				var img = card.find("img");
-				img.attr('src', 'img/' + result[i].nazwa);
-				var text = card.find("p");
-				var temp = parseFloat(result[i].temperatura).toFixed(1);
-				var rh = parseInt(result[i].rh);
-				var stan = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
-				text.html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" +"</br>" + result[i].nazwa_czujnika + ": " + stan);
+			for (let i=0; i<result.length; i++) {
+                const card = $(`#${result[i].id_kamery}`);
+                const img = card.find("img");
+                img.attr('src', 'img/' + result[i].nazwa);
+                const text = card.find("p");
+                const temp = parseFloat(result[i].temperatura).toFixed(1);
+                const rh = parseInt(result[i].rh);
+                const stan = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
+                text.html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" +"</br>" + result[i].nazwa_czujnika + ": " + stan);
 			}
 		}
 	})
 }
 
 function initDatePickers() {
-    var startPicker = new Pikaday({
-        field: $('#data-start')[0],
-        firstDay: 1,
-        onSelect: function() {
-            updateStartDate(this.getDate(), this, endPicker)
-        },
-        i18n: {
-            previousMonth : 'Poprzedni miesiąc',
-            nextMonth     : 'Następny miesiąc',
-            months        : ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
-            weekdays      : ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'],
-            weekdaysShort : ['Niedz.','Pon.','Wt.','Śr.','Czw.','Pt.','Sob.']
-        }
-    });
-    var endPicker = new Pikaday({
+    const endPicker = new Pikaday({
         field: $('#data-koniec')[0],
         firstDay: 1,
         onSelect: function() {
@@ -89,6 +75,20 @@ function initDatePickers() {
             months        : ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
             weekdays      : ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'],
             weekdaysShort : ['Niedz.','Pon.','Wt.','Śr.','Czw.','Pt.','Sob.']
+        }
+    });
+    const startPicker = new Pikaday({
+        field: $('#data-start')[0],
+        firstDay: 1,
+        onSelect: function () {
+            updateStartDate(this.getDate(), this, endPicker)
+        },
+        i18n: {
+            previousMonth: 'Poprzedni miesiąc',
+            nextMonth: 'Następny miesiąc',
+            months: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
+            weekdays: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
+            weekdaysShort: ['Niedz.', 'Pon.', 'Wt.', 'Śr.', 'Czw.', 'Pt.', 'Sob.']
         }
     });
     return startPicker, endPicker
@@ -106,11 +106,11 @@ function updateEndDate (endDate, startPicker, endPicker) {
 }
 
 function initDateModal() {
-    var startPicker, endPicker = initDatePickers();
+    let startPicker, endPicker = initDatePickers();
     $("#zapisz-daty").on("click", function (event) {
-        var startDate = startPicker.getDate();
-        var endDate = endPicker.getDate();
-        var url = "export_events.php?start=";
+        let startDate = startPicker.getDate();
+        let endDate = endPicker.getDate();
+        let url = "export_events.php?start=";
         if (startDate != null) url = url + startDate.toJSON();
         url = url + "&end=";
         if (endDate != null) url = url + endDate.toJSON();
@@ -121,5 +121,6 @@ function initDateModal() {
             success: function (result) {
                 console.log(result);
             }
+        })
     })
 }
