@@ -26,7 +26,8 @@
             } elseif ($start_argument != "" && $end_argument == "") {
                 $first_date = $start_argument;
             }
-            $filename = "/logs/".$first_date."-".$last_date.".csv";
+            $filename = $first_date."-".$last_date.".csv";
+            $path = "/logs/".$filename;
             $sql = "
               SELECT *
 			  FROM pomiary 
@@ -40,9 +41,13 @@
               ";
             $stmt = $conn->prepare($sql);
             $status = $stmt->execute();
-
-        echo json_encode($log);
-        $stmt -> closeCursor();
+            if($status) {
+                header("Content-Disposition: attachment; filename=\"$filename\"");
+                readfile($path);
+                $stmt->closeCursor();
+            } else {
+                header("HTTP/1.0 500 Internal Server Error");
+            }
     }
     catch(PDOException $e)
     {
