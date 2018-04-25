@@ -4,38 +4,44 @@
     $username = "root";
     $password = "raspberry";
     $db = "nadzor";
-    $startDate = $_GET['start'];
-	$endDate = $_GET['end'];
+    $start_argument = $_GET['start'];
+	$end_argument = $_GET['end'];
     try {
-		$rows = array();
+		$log = array();
         $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$kamery_zapytanie = $conn->query("SELECT * FROM kamery NATURAL JOIN czujniki NATURAL JOIN czujniki_temperatury");
-		while($kamera = $kamery_zapytanie->fetch()){
-			$id_kamery = $kamera["id_kamery"];
-			if(empty($q)){
-				$stmt  = $conn->query("SELECT *
-					FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
-					WHERE pomiary.id_pomiaru =
-					(SELECT MAX(id_pomiaru) FROM pomiary)
-					AND zdjecia.id_kamery = $id_kamery");
-				while($result = $stmt -> fetch()){
-					$rows[$id_kamery] = $result;
-					$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
-					$rows[$id_kamery]["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
-				}
-			} elseif($q == 'archiwum'){
-				$stmt  = $conn->query("SELECT *
-					FROM zdjecia NATURAL JOIN pomiary NATURAL JOIN stany NATURAL JOIN odczyty
-					WHERE zdjecia.id_kamery = $id_kamery");
-				while($result = $stmt -> fetch()){
-					$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
-					$rows[$id_kamery]["zdjecia"][$result["id_zdjecia"]] = $result;
-					$rows[$id_kamery]["zdjecia"][$result["id_zdjecia"]] ["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
-				}
-			}	
-		}
-        echo json_encode($rows);
+            $stmt = conn->query("SELECT data FROM pomiary ORDER BY data ASC LIMIT 1");
+            while($result = $stmt -> fetch()){
+                $first_date = $result;
+            }
+            $stmt = conn->query("SELECT data FROM pomiary ORDER BY data DESC LIMIT 1");
+            while($result = $stmt -> fetch()){
+                $last_date = $result;
+            }
+			if  ($start_argument != "" && $end_argument != "") {
+                $first_date = $start_argument;
+                $last_date = $end_argument;
+            } elseif ($start_argument == "" && $end_argument != "") {
+                $last_date = $end_argument;
+            } elseif ($start_argument != "" && $end_argument == "") {
+                $first_date = $start_argument;
+            }
+            $filename = "/logs/".$first_date."-".$last_date.".csv";
+            $sql = "
+              SELECT *
+			  FROM pomiary 
+			  NATURAL JOIN zdjecia NATURAL JOIN kamery
+              NATURAL JOIN stany NATURAL JOIN czujniki
+              NATURAL JOIN odczyty NATURAL JOIN czujniki_temperatury
+              WHERE data BETWEEN $first_date AND $last_date
+              INTO OUTFILE $filename CHARACTER SET 'utf8'
+              FIELDS TERMINATED BY ';'
+              LINES TERMINATED BY '\n'
+              ";
+            $stmt = $conn->prepare($sql);
+            $status = $stmt->execute();
+
+        echo json_encode($log);
         $stmt -> closeCursor();
     }
     catch(PDOException $e)
