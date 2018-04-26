@@ -27,10 +27,10 @@
                 $first_date = $start_argument;
             }
             $filename = $first_date."-".$last_date.".csv";
-            $path = "/var/www/html/logs/".$filename;
+            $path = "/var/lib/mysql/nadzor/".$filename;
             $sql = "
               SELECT *
-              INTO OUTFILE '$path'
+              INTO OUTFILE '$filename'
 			  FROM pomiary 
 			  NATURAL JOIN zdjecia NATURAL JOIN kamery
               NATURAL JOIN stany NATURAL JOIN czujniki
@@ -39,7 +39,6 @@
               ";
             $stmt = $conn->prepare($sql);
             $status = $stmt->execute();
-            $filename = "/logs/".$filename;
             if($status) {
                 header("Content-Disposition: attachment; filename=\"$filename\"");
                 readfile($path);
