@@ -1,4 +1,5 @@
 <?php
+header("Content-Description: File Transfer");
 header("Content-Type: application/octet-stream");
 $servername = "localhost";
 $username = "root";
@@ -27,7 +28,7 @@ try {
         $first_date = $start_argument;
     }
     $filename = $first_date . "-" . $last_date . ".csv";
-    $path = "/logs/" . $filename;
+    $path = "logs/" . $filename;
     if (!file_exists($path)) {
         $filestream = fopen($path, 'w');
         $sql = "
@@ -42,7 +43,8 @@ try {
         fputcsv($filestream, $stmt->fetchAll(), ';');
         $stmt->closeCursor();
     }
-    header("Content-Disposition: attachment; filename=\"$filename\"");
+    header('Content-Disposition: attachment; filename="'.basename($filename).'"');
+    header('Content-Length: ' . filesize($path));
     readfile($path);
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
