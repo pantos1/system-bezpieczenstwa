@@ -12,11 +12,11 @@
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $stmt = $conn->query("SELECT data FROM pomiary ORDER BY data ASC LIMIT 1");
             while($result = $stmt -> fetch()){
-                $first_date = $result;
+                $first_date = $result["data"];
             }
             $stmt = $conn->query("SELECT data FROM pomiary ORDER BY data DESC LIMIT 1");
             while($result = $stmt -> fetch()){
-                $last_date = $result;
+                $last_date = $result["data"];
             }
 			if  ($start_argument != "" && $end_argument != "") {
                 $first_date = $start_argument;
@@ -30,14 +30,12 @@
             $path = "/logs/".$filename;
             $sql = "
               SELECT *
+              INTO OUTFILE '$filename'
 			  FROM pomiary 
 			  NATURAL JOIN zdjecia NATURAL JOIN kamery
               NATURAL JOIN stany NATURAL JOIN czujniki
               NATURAL JOIN odczyty NATURAL JOIN czujniki_temperatury
-              WHERE data BETWEEN $first_date AND $last_date
-              INTO OUTFILE $filename CHARACTER SET 'utf8'
-              FIELDS TERMINATED BY ';'
-              LINES TERMINATED BY '\n'
+              WHERE data BETWEEN '$first_date' AND '$last_date'
               ";
             $stmt = $conn->prepare($sql);
             $status = $stmt->execute();

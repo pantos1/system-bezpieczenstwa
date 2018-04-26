@@ -63,7 +63,7 @@ function refreshData(){
 }
 
 function initDatePickers() {
-    const endPicker = new Pikaday({
+    var endPicker = new Pikaday({
         field: $('#data-koniec')[0],
         firstDay: 1,
         onSelect: function() {
@@ -77,7 +77,7 @@ function initDatePickers() {
             weekdaysShort : ['Niedz.','Pon.','Wt.','Śr.','Czw.','Pt.','Sob.']
         }
     });
-    const startPicker = new Pikaday({
+    var startPicker = new Pikaday({
         field: $('#data-start')[0],
         firstDay: 1,
         onSelect: function () {
@@ -91,7 +91,10 @@ function initDatePickers() {
             weekdaysShort: ['Niedz.', 'Pon.', 'Wt.', 'Śr.', 'Czw.', 'Pt.', 'Sob.']
         }
     });
-    return startPicker, endPicker
+    return {
+		'startPicker': startPicker,
+		'endPicker': endPicker
+	}
 }
 
 function updateStartDate(startDate, startPicker, endPicker) {
@@ -106,13 +109,13 @@ function updateEndDate (endDate, startPicker, endPicker) {
 }
 
 function initDateModal() {
-    let startPicker, endPicker = initDatePickers();
+    let {startPicker, endPicker} = initDatePickers();
     $("#zapisz-daty").on("click", function (event) {
         let startDate = startPicker.getDate();
         let endDate = endPicker.getDate();
-        let url = "export_events.php?start=";
+        let url = 'export_events.php?start=';
         if (startDate != null) url = url + startDate.toJSON();
-        url = url + "&end=";
+        url = url + '&end=';
         if (endDate != null) url = url + endDate.toJSON();
         $.ajax({
             url: url,
