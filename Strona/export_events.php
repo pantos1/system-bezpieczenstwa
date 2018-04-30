@@ -1,4 +1,5 @@
 <?php
+header("Content-Description: File Transfer");
 header("Content-Type: application/octet-stream");
 $servername = "localhost";
 $username = "root";
@@ -27,7 +28,7 @@ try {
         $first_date = $start_argument;
     }
     $filename = $first_date . "-" . $last_date . ".csv";
-    $path = "/logs/" . $filename;
+    $path = "logs/" . $filename;
     if (!file_exists($path)) {
         $filestream = fopen($path, 'w');
         $sql = "
@@ -39,10 +40,22 @@ try {
               WHERE data BETWEEN '$first_date' AND '$last_date'
               ";
         $stmt = $conn->prepare($sql);
-        fputcsv($filestream, $stmt->fetchAll(), ';');
-        $stmt->closeCursor();
+        $rows = array();
+        $headers_present = false;
+        if($stmt->execute()){
+			while($result = $stmt -> fetch(PDO::FETCH_ASSOC)) {
+				if(!$headers_present) {
+					fputcsv($filestream, array_keys($result));
+					$headers_present = true;
+				}	
+				fputcsv($filestream, array_values($result));
+			}
+			$stmt->closeCursor();
+			fclose($file);
+		}
     }
-    header("Content-Disposition: attachment; filename=\"$filename\"");
+    header('Content-Disposition: attachment; filename="'.basename($filename).'"');
+    header('Content-Length: ' . filesize($path));
     readfile($path);
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();

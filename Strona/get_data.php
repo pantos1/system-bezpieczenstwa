@@ -10,7 +10,7 @@
         $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$kamery_zapytanie = $conn->query("SELECT * FROM kamery NATURAL JOIN czujniki NATURAL JOIN czujniki_temperatury");
-		while($kamera = $kamery_zapytanie->fetch()){
+		while($kamera = $kamery_zapytanie->fetch(PDO::FETCH_ASSOC)){
 			$id_kamery = $kamera["id_kamery"];
 			if(empty($q)){
 				$stmt  = $conn->query("SELECT *
@@ -18,7 +18,7 @@
 					WHERE pomiary.id_pomiaru =
 					(SELECT MAX(id_pomiaru) FROM pomiary)
 					AND zdjecia.id_kamery = $id_kamery");
-				while($result = $stmt -> fetch()){
+				while($result = $stmt -> fetch(PDO::FETCH_ASSOC)){
 					$rows[$id_kamery] = $result;
 					$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
 					$rows[$id_kamery]["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
@@ -27,7 +27,7 @@
 				$stmt  = $conn->query("SELECT *
 					FROM zdjecia NATURAL JOIN pomiary NATURAL JOIN stany NATURAL JOIN odczyty
 					WHERE zdjecia.id_kamery = $id_kamery");
-				while($result = $stmt -> fetch()){
+				while($result = $stmt -> fetch(PDO::FETCH_ASSOC)){
 					$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
 					$rows[$id_kamery]["zdjecia"][$result["id_zdjecia"]] = $result;
 					$rows[$id_kamery]["zdjecia"][$result["id_zdjecia"]] ["nazwa_czujnika"] = $kamera["nazwa_czujnika"];

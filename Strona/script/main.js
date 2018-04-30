@@ -117,13 +117,6 @@ function initDateModal() {
         if (startDate != null) url = url + startDate.toJSON();
         url = url + '&end=';
         if (endDate != null) url = url + endDate.toJSON();
-        $.ajax({
-            url: url,
-            type: "GET",
-            contentType: "text/plain",
-            success: function (result) {
-                console.log(result);
-            }
-        })
+		window.open(url, '_blank');
     })
 }
