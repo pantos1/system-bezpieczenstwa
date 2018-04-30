@@ -51,7 +51,7 @@ try {
 				fputcsv($filestream, array_values($result));
 			}
 			$stmt->closeCursor();
-			fclose($file);
+			fclose($filestream);
 		}
     }
     header('Content-Disposition: attachment; filename="'.basename($filename).'"');

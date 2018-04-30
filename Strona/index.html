@@ -18,9 +18,9 @@
         <ul class="uk-navbar-nav">
             <li><a href="index.html" uk-icon="icon: home" class="link"></a></li>
             <li><a href="#okno-zapisz" class="link" uk-toggle>Zapisz</a></li>
-            <li><a href="archiwum.html" class="link">Archiwum</a></li>
-            <li><a href="#" class="link">Ustawienia</a></li>
-            <li><a href="#" class="link">Wyloguj</a></li>
+            <li><a href="#" id="archiwum" class="link">Archiwum</a></li>
+            <li><a href="#okno-ustawienia" class="link" uk-toggle>Ustawienia</a></li>
+            <!--<li><a href="#" class="link">Wyloguj</a></li>-->
         </ul>
     </div>
 </nav>
@@ -31,22 +31,33 @@
     <div class="uk-modal-dialog uk-modal-body">
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h3 class="uk-modal-title">Zapisz listę zdarzeń</h3>
+        <p>Pozostaw puste pola z datami, jeśli chcesz zapisać całą historię. Lista zostanie zapisana w formacie .csv.</p>
         <form class="uk-form-horizontal">
             <div>
-                <label class="uk-form-label" for="data-start">Data początku</label>
-                <div class="uk-form-controls">
-                    <input class="uk-input" id="data-start" type="text">
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="data-start">Data początku</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="data-start" type="text">
+                    </div>
                 </div>
-                <label class="uk-form-label" for="data-koniec">Data końca</label>
-                <div class="uk-form-controls">
-                    <input class="uk-input" id="data-koniec" type="text">
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="data-koniec">Data końca</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="data-koniec" type="text">
+                    </div>
                 </div>
-                <div class="uk-flex uk-flex-between">
+                <div class="uk-flex uk-flex-between uk-margin">
                     <button class="uk-button uk-button-default uk-modal-close" type="button">Anuluj</button>
                     <button class="uk-button uk-button-primary uk-modal-close" id="zapisz-daty" type="button">Zapisz</button>
                 </div>
             </div>
         </form>
+    </div>
+</div>
+<div id="okno-ustawienia" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h3 class="uk-modal-title">Ustawienia</h3>
     </div>
 </div>
 </body>
