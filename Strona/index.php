@@ -10,7 +10,7 @@
       <header>
         <nav class = "pasek-nawigacyjny">
           <a href = "#" class ="link">Zapisz</a>
-          <a href = "#" class ="link">Archiwum</a>
+          <a href = "archiwum" class ="link">Archiwum</a>
           <a href = "#" class ="link">Ustawienia</a>
           <a href = "#" class ="link">Wyloguj</a>
         </nav>
@@ -22,22 +22,22 @@
             $servername = "localhost";
             $username = "root";
             $password = "raspberry";
-            $db = "Nadzor";
+            $db = "nadzor";
             echo date("d.m.Y H:i:s");
 	    echo '<br>';
             try {
                 $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $stmt  = $conn->query("SELECT nazwa, stan, temperatura, rh
-                  FROM Pomiary NATURAL JOIN Zdjecia NATURAL JOIN Stany
-                  WHERE Pomiary.id_pomiaru =
-                  (SELECT MAX(id_pomiaru) FROM Pomiary)");
+                  FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
+                  WHERE pomiary.id_pomiaru =
+                  (SELECT MAX(id_pomiaru) FROM pomiary)");
                  while($result = $stmt -> fetch()){
                   echo 'Temperatura: '.round($result['temperatura'],1).'&deg;C'.'<br>';
                   echo 'Wilgotność względna: '.round($result['rh']).'%';
                   echo '</div>';
                   echo '<div class = "zdjecia">';
-                  echo '<img src = "img/'.$result['nazwa'].'.jpg" alt = "Zdjecie z kamery" />';
+                  echo '<img src = "img/'.$result['nazwa'].'" alt = "Zdjecie z kamery" />';
                   echo '<div class = "pasek-czujnikow">';
                   echo '<p>Czujnik 1: ';
                   if ($result['stan'] == 1){

@@ -8,7 +8,7 @@ config ={
     'host': 'localhost',
     'user': 'root',
     'passwd': 'raspberry',
-    'db': 'Nadzor'
+    'db': 'nadzor'
     }
 
 
@@ -24,28 +24,17 @@ def get_or_create(session, model, **kwargs):
         session.commit()
         return instance
 
-class Kamery(Base):
-    __tablename__ = 'kamery'
-
-    id_kamery = Column(Integer, primary_key=True)
-    nazwa = Column(String(100))
-
-class Zdjecia(Base):
-    __tablename__ = 'zdjecia'
-
-    id_zdjecia = Column(Integer, primary_key=True)
-    id_kamery = Column(Integer, ForeignKey('kamery.id_kamery', ondelete='CASCADE'), nullable=False)
-
-    nazwa = Column(String(250))
-
-    kamery = relationship(Kamery)
+def fetch_all(session, model):
+    instances = session.query(model)
+    if instances:
+        return instances
 
 class Czujniki_temperatury(Base):
     __tablename__ = 'czujniki_temperatury'
 
     id_czujnika_temp = Column(Integer, primary_key=True)
 
-    nazwa = Column(String(100))
+    nazwa_czujnika_temp = Column(String(100))
 
 class Odczyty(Base):
     __tablename__ = 'odczyty'
@@ -63,7 +52,8 @@ class Czujniki(Base):
 
     id_czujnika = Column(Integer, primary_key=True)
 
-    opis = Column(String(100))
+    nazwa_czujnika = Column(String(100))
+    gpio = Column(Integer)
 
 class Stany(Base):
     __tablename__ = 'stany'
@@ -75,6 +65,28 @@ class Stany(Base):
 
     czujniki = relationship(Czujniki)
 
+class Kamery(Base):
+    __tablename__ = 'kamery'
+
+    id_kamery = Column(Integer, primary_key=True)
+    id_czujnika = Column(Integer, ForeignKey('czujniki.id_czujnika'), nullable=True)
+    id_czujnika_temp = Column(Integer, ForeignKey('czujniki_temperatury.id_czujnika_temp'), nullable=True)
+
+    czujniki = relationship(Czujniki)
+    czujniki_temperatury = relationship(Czujniki_temperatury)
+
+    nazwa_kamery = Column(String(100))
+
+class Zdjecia(Base):
+    __tablename__ = 'zdjecia'
+
+    id_zdjecia = Column(Integer, primary_key=True)
+    id_kamery = Column(Integer, ForeignKey('kamery.id_kamery', ondelete='CASCADE'), nullable=False)
+
+    nazwa = Column(String(250))
+
+    kamery = relationship(Kamery)
+
 class Pomiary(Base):
     __tablename__ = 'pomiary'
 
@@ -82,6 +94,8 @@ class Pomiary(Base):
     id_stanu = Column(Integer, ForeignKey('stany.id_stanu', ondelete='CASCADE'), nullable=False)
     id_odczytu = Column(Integer, ForeignKey('odczyty.id_odczytu', ondelete='CASCADE'), nullable=False)
     id_zdjecia = Column(Integer, ForeignKey('zdjecia.id_zdjecia', ondelete='CASCADE'), nullable=False)
+
+    data = Column(DATETIME)
 
     stany = relationship(Stany)
     odczyt = relationship(Odczyty)
