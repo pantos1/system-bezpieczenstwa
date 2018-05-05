@@ -1,18 +1,25 @@
-$(document).ready(function () {
-    var promise = getData();
-    promise.done(displayHomeContent(result), initSettingsModal(result));
-    initDateModal();
-    const getTimer = setInterval(refreshData, 8000);
+$(document).ready(() => {
+    main();
 });
+
+async function main() {
+	const result = await getData();
+    displayHomeContent(result);
+    initSettingsModal(result);
+    initDateModal();
+    $('#archiwum').on('click', (event) => {
+		console.log(event);
+		getAllData();
+	});
+    const getTimer = setInterval(refreshData, 8000);
+}
 
 function getData() {
     return $.ajax({
         url: "get_data.php?q=",
         type: "GET",
-        contentType: "text/plain",
-        success: function (result) {
-
-    })
+        contentType: "text/plain"
+	})
 }
 
 function displayHomeContent(result) {
@@ -49,13 +56,9 @@ function initSettingsModal(result) {
 
 }
 
-function refreshData() {
-    $.ajax({
-        url: "get_data.php?q=",
-        type: "GET",
-        contentType: "text/plain",
-        success: function (result) {
-            result = Object.values(result);
+async function refreshData() {
+			const data = await getData();
+            const result = Object.values(data);
             for (let i = 0; i < result.length; i++) {
                 const card = $(`#${result[i].id_kamery}`);
                 const img = card.find("img");
@@ -66,8 +69,6 @@ function refreshData() {
                 const stan = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
                 text.html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" + "</br>" + result[i].nazwa_czujnika + ": " + stan);
             }
-        }
-    })
 }
 
 function getAllData() {
@@ -94,7 +95,6 @@ function getAllData() {
                     })
                     .text(result[i].nazwa_kamery)
                     .appendTo(grid);
-                console.log(result[i]);
                 result[i].zdjecia = Object.values(result[i].zdjecia);
                 for (j = result[i].zdjecia.length - 1; j >= 0; j--) {
                     var albumElement = $(document.createElement("div"))
@@ -180,15 +180,16 @@ function updateEndDate(endDate, startPicker, endPicker) {
 }
 
 function initDateModal() {
-    $('#archiwum').on('click', getAllData());
     let {startPicker, endPicker} = initDatePickers();
     $("#zapisz-daty").on("click", function (event) {
         let startDate = startPicker.getDate();
         let endDate = endPicker.getDate();
+        let startDateString = startDate.getFullYear() + "-" + ("0"+(startDate.getMonth()+1)).slice(-2) + "-" + ("0"+startDate.getDate()).slice(-2) + "T00:00:00";
+        let endDateString = endDate.getFullYear() + "-" + ("0"+(endDate.getMonth()+1)).slice(-2) + "-" + ("0"+endDate.getDate()).slice(-2) + "T23:59:00";
         let url = 'export_events.php?start=';
-        if (startDate != null) url = url + startDate.toJSON();
+        if (startDate != null) url = url + startDateString;
         url = url + '&end=';
-        if (endDate != null) url = url + endDate.toJSON();
+        if (endDate != null) url = url + endDateString;
         window.open(url, '_blank');
     })
 }
