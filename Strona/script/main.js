@@ -60,7 +60,7 @@ function displayHomeContent(result) {
 
 function initSettingsModal(result) {
  const $modalBody = $('#settings-modal-body');
- 
+
 
 }
 

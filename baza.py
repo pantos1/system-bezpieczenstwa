@@ -29,12 +29,21 @@ def fetch_all(session, model):
     if instances:
         return instances
 
+class Ustawienia(Base):
+    __tablename__ = 'ustawienia'
+
+    id_ustawienia = Column(Integer, primary_key=True)
+
+    klucz = Column(String(100))
+    wartosc = Column(String(100))
+
 class Czujniki_temperatury(Base):
     __tablename__ = 'czujniki_temperatury'
 
     id_czujnika_temp = Column(Integer, primary_key=True)
 
     nazwa_czujnika_temp = Column(String(100))
+    czestotliwosc_pomiaru_temp = Column(Float)
 
 class Odczyty(Base):
     __tablename__ = 'odczyty'
@@ -54,6 +63,7 @@ class Czujniki(Base):
 
     nazwa_czujnika = Column(String(100))
     gpio = Column(Integer)
+    czestotliwosc_odczytu_stanu = Column(Float)
 
 class Stany(Base):
     __tablename__ = 'stany'
@@ -71,6 +81,7 @@ class Kamery(Base):
     id_kamery = Column(Integer, primary_key=True)
     id_czujnika = Column(Integer, ForeignKey('czujniki.id_czujnika'), nullable=True)
     id_czujnika_temp = Column(Integer, ForeignKey('czujniki_temperatury.id_czujnika_temp'), nullable=True)
+    czestotliwosc_zdjecia = Column(Float)
 
     czujniki = relationship(Czujniki)
     czujniki_temperatury = relationship(Czujniki_temperatury)
