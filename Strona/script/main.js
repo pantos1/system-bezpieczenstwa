@@ -13,8 +13,7 @@ async function main() {
     $('#loading-overlay').hide();
   }
   initDateModal();
-  $('#archive').on('click', (event) => {
-    console.log(event);
+  $('#archive').on('click', () => {
     displayArchive();
   });
   const getTimer = setInterval(refreshData, 8000);
@@ -204,7 +203,7 @@ function updateEndDate(endDate, startPicker, endPicker) {
 
 function initDateModal() {
   let {startPicker, endPicker} = initDatePickers();
-  $("#save-dates").on("click", function (event) {
+  $("#save-dates").on("click", () => {
     let startDate = startPicker.getDate();
     let endDate = endPicker.getDate();
     let startDateString = startDate.getFullYear() + "-" + ("0" + (startDate.getMonth() + 1)).slice(-2) + "-" + ("0" + startDate.getDate()).slice(-2) + "T00:00:00";

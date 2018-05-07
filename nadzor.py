@@ -42,7 +42,7 @@ class Grupa():
         time.sleep(0.05)
         data0 = Grupa.bus.read_byte(Grupa.adres)
         data1 = Grupa.bus.read_byte(Grupa.adres)
-        rh = ((data0 * 256 + data1)* 125 / 65536.0) -6
+        rh = ((data0 * 256 + data1)* 125 / 65536.0) - 6
 
         time.sleep(0.05)
         Grupa.bus.write_byte(Grupa.adres, Grupa.tempKod)
@@ -114,9 +114,9 @@ def main():
         grupy.append(grupa)
         grupa.zrob_zdjecie()
         grupa.pomiar_temperatury_rh()
-        schedule.every(10).seconds.do(grupa.zrob_zdjecie)
-        schedule.every(10).seconds.do(grupa.pomiar_temperatury_rh)
-        schedule.every(0.1).seconds.do(grupa.sprawdz_kontaktron)
+        schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(grupa.zrob_zdjecie)
+        schedule.every(czujnik_temp.czestotliwosc_pomiaru_temp).seconds.do(grupa.pomiar_temperatury_rh)
+        schedule.every(czujnik.czestotliwosc_odczytu_stanu).seconds.do(grupa.sprawdz_kontaktron)
     while True:
         schedule.run_pending()
 

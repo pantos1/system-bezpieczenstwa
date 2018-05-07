@@ -33,6 +33,3 @@ titanum_kwargs = {
     "czestotliwosc_zdjecia": 10.0
 }
 titanum = get_or_create(session, Kamery, **titanum_kwargs)
-
-
-
