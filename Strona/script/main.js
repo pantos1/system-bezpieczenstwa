@@ -3,7 +3,6 @@ $(document).ready(() => {
 });
 
 async function main() {
-    initSettingsModal();
     try {
         const result = await getData();
         displayHomeContent(result);
