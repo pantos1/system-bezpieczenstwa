@@ -66,31 +66,36 @@ function displayHomeContent(result) {
 }
 
 async function initSettingsModal(result) {
+    const $generalSection = $('#general-section');
+    const $emailCheckbox = $('#email-checkbox');
+    const $emailInput = $('#email-input');
+    const $nameSection = $('#name-section');
+    const $prefsSection = $('#prefs-section');
+    const deviceList = Object.values(result);
     try {
+        for (let i = 0; i < deviceList.length; i++) {
+            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_kamery));
+            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp));
+            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika));
+            $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_kamery, deviceList[i].czestotliwosc_zdjecia));
+            $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp, deviceList[i].czestotliwosc_pomiaru_temp));
+            $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika, deviceList[i].czestotliwosc_odczytu_stanu));
+        }
         const settings = await getSettings();
+        if (settings.ogolne.powiadomienia_email) {
+            $emailCheckbox.checked = true;
+        }
+
+        $emailInput.hide();
+
+        $emailCheckbox.on('click', () => {
+            settings.ogolne.powiadomienia_email = this.checked;
+
+            $emailInput.toggle();
+        });
     } catch (e) {
         console.log(e.responseText);
     }
-    const deviceList = Object.values(result);
-    const $emailInput = $('#email-input');
-    $emailInput.hide();
-    const $generalSection = $('#general-section');
-    const $emailCheckbox = $('#email-checkbox');
-    $emailCheckbox.on('click', () => {
-        $emailInput.toggle();
-    });
-
-    const $nameSection = $('#name-section');
-    const $prefsSection = $('#prefs-section');
-    for (let i = 0; i < deviceList.length; i++) {
-        $nameSection.append(createLabelAndInput(deviceList[i].nazwa_kamery));
-        $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp));
-        $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika));
-        $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_kamery, ));
-        $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp));
-        $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika));
-    }
-
 }
 
 function createLabelAndInput(labelText, inputValue) {
