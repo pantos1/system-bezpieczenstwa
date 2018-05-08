@@ -28,6 +28,14 @@ function getData() {
     })
 }
 
+function getSettings() {
+    return $.ajax({
+        url: "get_settings.php",
+        type: "GET",
+        contentType: "text/plain"
+    })
+}
+
 function displayHomeContent(result) {
     const data = Object.values(result);
     for (let i = 0; i < data.length; i++) {
@@ -58,16 +66,59 @@ function displayHomeContent(result) {
     }
 }
 
-function initSettingsModal(result) {
+async function initSettingsModal(result) {
+    try {
+        const settings = await getSettings();
+    } catch (e) {
+        console.log(e.responseText);
+    }
+    const deviceList = Object.values(result);
     const $emailInput = $('#email-input');
     $emailInput.hide();
     const $generalSection = $('#general-section');
-
     const $emailCheckbox = $('#email-checkbox');
     $emailCheckbox.on('click', () => {
         $emailInput.toggle();
     });
 
+    const $nameSection = $('#name-section');
+    const $prefsSection = $('#prefs-section');
+    for (let i = 0; i < deviceList.length; i++) {
+        $nameSection.append(createLabelAndInput(deviceList[i].nazwa_kamery));
+        $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp));
+        $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika));
+        $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_kamery, ));
+        $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp));
+        $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika));
+    }
+
+}
+
+function createLabelAndInput(labelText, inputValue) {
+    const divElement = $(document.createElement("div"))
+        .attr({
+            class: "uk-margin"
+        });
+    $(document.createElement("label"))
+        .attr({
+            class: "uk-form-label"
+        })
+        .text(labelText)
+        .appendTo(divElement);
+    $(document.createElement("div"))
+        .attr({
+            class: "uk-form-controls"
+        })
+        .append(
+            $(document.createElement("input"))
+            .attr({
+                class: "uk-input",
+                type: "text",
+                value: inputValue
+            })
+        )
+        .appendTo(divElement);
+    return divElement;
 }
 
 async function refreshData() {
@@ -160,7 +211,8 @@ function getAllData() {
 }
 
 function initDatePickers() {
-    var endPicker = new Pikaday({
+    let endPicker, startPicker;
+    endPicker = new Pikaday({
         field: $('#date-end')[0],
         firstDay: 1,
         onSelect: function () {
@@ -175,7 +227,7 @@ function initDatePickers() {
             weekdaysShort: ['Niedz.', 'Pon.', 'Wt.', 'Śr.', 'Czw.', 'Pt.', 'Sob.']
         }
     });
-    var startPicker = new Pikaday({
+    startPicker = new Pikaday({
         field: $('#date-start')[0],
         firstDay: 1,
         onSelect: function () {

@@ -9,8 +9,8 @@
 		$rows = array();
         $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$kamery_zapytanie = $conn->query("SELECT * FROM kamery NATURAL JOIN czujniki NATURAL JOIN czujniki_temperatury");
-		while($kamera = $kamery_zapytanie->fetch(PDO::FETCH_ASSOC)){
+		$kamery_query = $conn->query("SELECT * FROM kamery NATURAL JOIN czujniki NATURAL JOIN czujniki_temperatury");
+		while($kamera = $kamery_query->fetch(PDO::FETCH_ASSOC)){
 			$id_kamery = $kamera["id_kamery"];
 			if(empty($q)){
 				$stmt  = $conn->query("SELECT *
@@ -22,7 +22,9 @@
 					$rows[$id_kamery] = $result;
 					$rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
 					$rows[$id_kamery]["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
+                    $rows[$id_kamery]["nazwa_czujnika_temp"] = $kamera["nazwa_czujnika_temp"];
 				}
+				$stmt -> closeCursor();
 			} elseif($q == 'archiwum'){
 				$stmt  = $conn->query("SELECT *
 					FROM zdjecia NATURAL JOIN pomiary NATURAL JOIN stany NATURAL JOIN odczyty
@@ -32,10 +34,11 @@
 					$rows[$id_kamery]["zdjecia"][$result["id_zdjecia"]] = $result;
 					$rows[$id_kamery]["zdjecia"][$result["id_zdjecia"]] ["nazwa_czujnika"] = $kamera["nazwa_czujnika"];
 				}
+				$stmt -> closeCursor();
 			}	
 		}
         echo json_encode($rows);
-        $stmt -> closeCursor();
+        $kamery_query -> closeCursor();
     }
     catch(PDOException $e)
     {
