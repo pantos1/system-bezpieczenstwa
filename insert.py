@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from baza import Base, Kamery, Zdjecia, Czujniki_temperatury, Odczyty, Czujniki, Stany, Pomiary, get_or_create
+from baza import *
 config ={
     'host': 'localhost',
     'user': 'root',
@@ -33,3 +33,15 @@ titanum_kwargs = {
     "czestotliwosc_zdjecia": 10.0
 }
 titanum = get_or_create(session, Kamery, **titanum_kwargs)
+
+powiadomienia_kwargs = {
+    "klucz": "powiadomienia_email",
+    "wartosc": False
+}
+powiadomienia = get_or_create(session, Ustawienia, **powiadomienia_kwargs)
+
+adres_email_kwargs = {
+    "klucz": "adres_email",
+    "wartosc": ""
+}
+adres_email = get_or_create(session, Ustawienia, **adres_email_kwargs)
