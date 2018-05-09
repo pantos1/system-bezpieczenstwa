@@ -32,13 +32,13 @@
     </div>
 </div>
 <div id="save-modal" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body">
+    <div class="uk-modal-dialog">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h3 class="uk-modal-title">Zapisz listę zdarzeń</h3>
-        <p>Pozostaw puste pola z datami, jeśli chcesz zapisać całą historię. Lista zostanie zapisana w formacie
-            .csv.</p>
-        <form class="uk-form-horizontal">
-            <div>
+        <h3 class="uk-modal-header uk-modal-title">Zapisz listę zdarzeń</h3>
+        <div class="uk-modal-body">
+            <p>Pozostaw puste pola z datami, jeśli chcesz zapisać całą historię. Lista zostanie zapisana w formacie
+                .csv.</p>
+            <form class="uk-form-horizontal">
                 <div class="uk-margin">
                     <label class="uk-form-label" for="date-start">Data początku</label>
                     <div class="uk-form-controls">
@@ -51,38 +51,49 @@
                         <input class="uk-input" id="date-end" type="text">
                     </div>
                 </div>
-                <div class="uk-flex uk-flex-between uk-margin">
-                    <button class="uk-button uk-button-default uk-modal-close" type="button">Anuluj</button>
-                    <button class="uk-button uk-button-primary uk-modal-close" id="save-dates" type="button">Zapisz
-                    </button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="uk-modal-footer uk-flex uk-flex-between">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">Anuluj</button>
+            <button class="uk-button uk-button-primary uk-modal-close" id="save-dates" type="button">Zapisz
+            </button>
+        </div>
     </div>
 </div>
 <div id="settings-modal" uk-modal>
-    <div id="settings-modal-body" class="uk-modal-dialog uk-modal-body">
+    <div id="settings-modal-body" class="uk-modal-dialog">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h3 class="uk-modal-title">Ustawienia</h3>
-        <div id="general-section">
-            <h4>Ogólne</h4>
-            <div class="uk-margin">
-                <label class="uk-form-label">
-                    Powiadomienie mailowe po otwarcia czujnika
-                    <input id="email-checkbox" class="uk-checkbox" type="checkbox">
-                </label>
-                <div class="uk-form-controls">
-					<input id="email-input" class="uk-input" type="text" placeholder="Adres e-mail">
-				</div>
-            </div>
+        <h3 class="uk-modal-title uk-modal-header">Ustawienia</h3>
+        <div class="uk-modal-body">
+            <form id="general-form">
+                <div id="general-section">
+                    <h4>Ogólne</h4>
+                    <div class="uk-margin">
+                        <label class="uk-form-label">
+                            Powiadomienie mailowe po otwarcia czujnika
+                            <input id="email-checkbox" class="uk-checkbox" type="checkbox">
+                        </label>
+                        <div class="uk-form-controls">
+                            <input id="email-input" class="uk-input" type="text" placeholder="Adres e-mail">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <form id="device-form">
+                <div id="name-section">
+                    <h4>Zmień nazwę</h4>
+                </div>
+                <hr>
+                <div id="prefs-section">
+                    <h4>Preferencje</h4>
+                </div>
+            </form>
         </div>
-        <hr>
-        <div id="name-section">
-            <h4>Zmień nazwę</h4>
-        </div>
-        <hr>
-        <div id="prefs-section">
-            <h4>Preferencje</h4>
+        <div class="uk-modal-footer uk-flex uk-flex-between">
+            <button class="uk-button uk-button-default uk-modal-close" type="button">Anuluj</button>
+            <button class="uk-button uk-button-primary uk-modal-close" id="save-form" type="button">Zapisz
+            </button>
         </div>
     </div>
 </div>

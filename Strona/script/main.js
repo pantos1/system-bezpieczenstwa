@@ -71,27 +71,33 @@ async function initSettingsModal(result) {
     const $emailInput = $('#email-input');
     const $nameSection = $('#name-section');
     const $prefsSection = $('#prefs-section');
+    const $saveForm = $('#save-form');
     const deviceList = Object.values(result);
     try {
         for (let i = 0; i < deviceList.length; i++) {
             $nameSection.append(createLabelAndInput(deviceList[i].nazwa_kamery));
             $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp));
             $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika));
-            $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_kamery, deviceList[i].czestotliwosc_zdjecia));
-            $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp, deviceList[i].czestotliwosc_pomiaru_temp));
-            $prefsSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika, deviceList[i].czestotliwosc_odczytu_stanu));
+            let label = deviceList[i].nazwa_kamery + " - częstotliwość zdjęcia w sekundach";
+            $prefsSection.append(createLabelAndInput(label, deviceList[i].czestotliwosc_zdjecia));
+            label = deviceList[i].nazwa_czujnika_temp + " - częstotliwość pomiaru temperatury w sekundach";
+            $prefsSection.append(createLabelAndInput(label, deviceList[i].czestotliwosc_pomiaru_temp));
+            label = deviceList[i].nazwa_czujnika + " - częstotliwość odczytu czujnika stykowego";
+            $prefsSection.append(createLabelAndInput(label, deviceList[i].czestotliwosc_odczytu_stanu));
         }
+        $emailInput.hide();
+        $emailCheckbox.on('click', () => {
+            $emailInput.toggle();
+        });
         const settings = await getSettings();
         if (settings.ogolne.powiadomienia_email) {
             $emailCheckbox.checked = true;
         }
-
-        $emailInput.hide();
-
-        $emailCheckbox.on('click', () => {
-            settings.ogolne.powiadomienia_email = this.checked;
-
-            $emailInput.toggle();
+        $saveForm.on('click', () => {
+           const generalFormData = new FormData($('#general-form'));
+           console.log(generalFormData);
+           const deviceFormData = new FormData($('#device-form'));
+           console.log(deviceFormData);
         });
     } catch (e) {
         console.log(e.responseText);
