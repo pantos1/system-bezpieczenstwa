@@ -69,21 +69,22 @@ async function initSettingsModal(result) {
     const $generalSection = $('#general-section');
     const $emailCheckbox = $('#email-checkbox');
     const $emailInput = $('#email-input');
-    const $nameSection = $('#name-section');
-    const $prefsSection = $('#prefs-section');
+    const $generalForm = $('#general-form');
+    const $nameForm = $('#name-form');
+    const $prefsForm = $('#prefs-form');
     const $saveForm = $('#save-form');
     const deviceList = Object.values(result);
     try {
         for (let i = 0; i < deviceList.length; i++) {
-            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_kamery, 'nazwa_kamery'));
-            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp, 'nazwa_czujnika_temp'));
-            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika, 'nazwa_czujnika'));
+            $nameForm.append(createLabelAndInput(deviceList[i].nazwa_kamery, 'nazwa_kamery'));
+            $nameForm.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp, 'nazwa_czujnika_temp'));
+            $nameForm.append(createLabelAndInput(deviceList[i].nazwa_czujnika, 'nazwa_czujnika'));
             let label = deviceList[i].nazwa_kamery + " - częstotliwość zdjęcia w sekundach";
-            $prefsSection.append(createLabelAndInput(label, 'czestotliwosc_zdjecia', deviceList[i].czestotliwosc_zdjecia));
+            $prefsForm.append(createLabelAndInput(label, 'czestotliwosc_zdjecia', deviceList[i].czestotliwosc_zdjecia));
             label = deviceList[i].nazwa_czujnika_temp + " - częstotliwość pomiaru temperatury w sekundach";
-            $prefsSection.append(createLabelAndInput(label, 'czestotliwosc_pomiaru_temp', deviceList[i].czestotliwosc_pomiaru_temp));
+            $prefsForm.append(createLabelAndInput(label, 'czestotliwosc_pomiaru_temp', deviceList[i].czestotliwosc_pomiaru_temp));
             label = deviceList[i].nazwa_czujnika + " - częstotliwość odczytu czujnika stykowego";
-            $prefsSection.append(createLabelAndInput(label, 'czestotliwosc_odczytu_stanu', deviceList[i].czestotliwosc_odczytu_stanu));
+            $prefsForm.append(createLabelAndInput(label, 'czestotliwosc_odczytu_stanu', deviceList[i].czestotliwosc_odczytu_stanu));
         }
         $emailInput.hide();
         $emailCheckbox.on('click', () => {
@@ -94,12 +95,15 @@ async function initSettingsModal(result) {
             $emailCheckbox.checked = true;
         }
         $saveForm.on('click', () => {
-		   console.log($('#general-form')[0]);
-           const generalFormData = new FormData($('#general-form')[0]);
+		   console.log($generalForm);
+           const generalFormData = new FormData($generalForm);
            console.log(generalFormData);
-           console.log($('#device-form')[0]);
-           const deviceFormData = new FormData($('#device-form')[0]);
-           console.log(deviceFormData);
+           console.log($nameForm);
+           const nameFormData = new FormData($nameForm);
+           console.log(nameFormData);
+           console.log($prefsForm);
+           const prefsFormData = new FormData($prefsForm);
+           console.log(prefsFormData);
         });
     } catch (e) {
         console.log(e.responseText);
