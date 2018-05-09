@@ -75,15 +75,15 @@ async function initSettingsModal(result) {
     const deviceList = Object.values(result);
     try {
         for (let i = 0; i < deviceList.length; i++) {
-            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_kamery));
-            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp));
-            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika));
+            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_kamery, 'nazwa_kamery'));
+            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp, 'nazwa_czujnika_temp'));
+            $nameSection.append(createLabelAndInput(deviceList[i].nazwa_czujnika, 'nazwa_czujnika'));
             let label = deviceList[i].nazwa_kamery + " - częstotliwość zdjęcia w sekundach";
-            $prefsSection.append(createLabelAndInput(label, deviceList[i].czestotliwosc_zdjecia));
+            $prefsSection.append(createLabelAndInput(label, 'czestotliwosc_zdjecia', deviceList[i].czestotliwosc_zdjecia));
             label = deviceList[i].nazwa_czujnika_temp + " - częstotliwość pomiaru temperatury w sekundach";
-            $prefsSection.append(createLabelAndInput(label, deviceList[i].czestotliwosc_pomiaru_temp));
+            $prefsSection.append(createLabelAndInput(label, 'czestotliwosc_pomiaru_temp', deviceList[i].czestotliwosc_pomiaru_temp));
             label = deviceList[i].nazwa_czujnika + " - częstotliwość odczytu czujnika stykowego";
-            $prefsSection.append(createLabelAndInput(label, deviceList[i].czestotliwosc_odczytu_stanu));
+            $prefsSection.append(createLabelAndInput(label, 'czestotliwosc_odczytu_stanu', deviceList[i].czestotliwosc_odczytu_stanu));
         }
         $emailInput.hide();
         $emailCheckbox.on('click', () => {
@@ -94,9 +94,11 @@ async function initSettingsModal(result) {
             $emailCheckbox.checked = true;
         }
         $saveForm.on('click', () => {
-           const generalFormData = new FormData($('#general-form'));
+		   console.log($('#general-form')[0]);
+           const generalFormData = new FormData($('#general-form')[0]);
            console.log(generalFormData);
-           const deviceFormData = new FormData($('#device-form'));
+           console.log($('#device-form')[0]);
+           const deviceFormData = new FormData($('#device-form')[0]);
            console.log(deviceFormData);
         });
     } catch (e) {
@@ -104,14 +106,15 @@ async function initSettingsModal(result) {
     }
 }
 
-function createLabelAndInput(labelText, inputValue) {
+function createLabelAndInput(labelText, inputName, inputValue) {
     const divElement = $(document.createElement("div"))
         .attr({
             class: "uk-margin"
         });
     $(document.createElement("label"))
         .attr({
-            class: "uk-form-label"
+            class: "uk-form-label",
+            for: labelText
         })
         .text(labelText)
         .appendTo(divElement);
@@ -122,6 +125,8 @@ function createLabelAndInput(labelText, inputValue) {
         .append(
             $(document.createElement("input"))
             .attr({
+				id: labelText,
+				name: inputName,
                 class: "uk-input",
                 type: "text",
                 value: inputValue
