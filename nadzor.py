@@ -15,8 +15,6 @@ class Grupa():
     multiplexer_adres = 0b1110000
     rhKod = 0xF5
     tempKod = 0xF3
-    komenda_zapisz = multiplexer_adres + 0b0
-    komenda_czytaj = multiplexer_adres + 0b1
 
     def __init__(self, kamera, czujnik_temp, czujnik, session):
         self.kamera = kamera
@@ -41,22 +39,22 @@ class Grupa():
         self.zdjecie_instance = get_or_create(self.session, Zdjecia, **zdjecie)
 
     def pomiar_temperatury_rh(self):
-        Grupa.bus.write_byte(Grupa.komenda_zapisz, self.czujnik_temp_adres)
+        Grupa.bus.write_byte(Grupa.multiplexer_adres, self.czujnik_temp_adres)
         time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.komenda_zapisz, Grupa.rhKod)
+        Grupa.bus.write_byte(Grupa.multiplexer_adres, Grupa.rhKod)
         time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.komenda_czytaj, self.czujnik_temp_adres)
+        Grupa.bus.write_byte(Grupa.multiplexer_adres, self.czujnik_temp_adres)
         time.sleep(0.05)
         data0 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
         data1 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
         rh = ((data0 * 256 + data1) * 125 / 65536.0) - 6
 
         time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.komenda_zapisz, self.czujnik_temp_adres)
+        Grupa.bus.write_byte(Grupa.multiplexer_adres, self.czujnik_temp_adres)
         time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.komenda_zapisz, Grupa.tempKod)
+        Grupa.bus.write_byte(Grupa.multiplexer_adres, Grupa.tempKod)
         time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.komenda_czytaj, self.czujnik_temp_adres)
+        Grupa.bus.write_byte(Grupa.multiplexer_adres, self.czujnik_temp_adres)
         time.sleep(0.05)
         data0 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
         data1 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
