@@ -39,26 +39,20 @@ class Grupa():
         self.zdjecie_instance = get_or_create(self.session, Zdjecia, **zdjecie)
 
     def pomiar_temperatury_rh(self):
-        Grupa.bus.write_byte(Grupa.multiplexer_adres, self.czujnik_temp_adres)
-        time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.multiplexer_adres, Grupa.rhKod)
-        time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.multiplexer_adres, self.czujnik_temp_adres)
-        time.sleep(0.05)
+        Grupa.bus.write_byte_data(Grupa.multiplexer_adres, self.czujnik_temp_adres, Grupa.rhKod)
+        time.sleep(0.1)
         data0 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
         data1 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
         rh = ((data0 * 256 + data1) * 125 / 65536.0) - 6
+        print(rh)
 
         time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.multiplexer_adres, self.czujnik_temp_adres)
-        time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.multiplexer_adres, Grupa.tempKod)
-        time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.multiplexer_adres, self.czujnik_temp_adres)
-        time.sleep(0.05)
+        Grupa.bus.write_byte_data(Grupa.multiplexer_adres, self.czujnik_temp_adres, Grupa.tempKod)
+        time.sleep(0.1)
         data0 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
         data1 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
         temp = ((data0 * 256 + data1) * 175.72 / 65536.0) - 46.85
+	print(temp)
 
         odczyt = {
             "id_czujnika_temp": self.czujnik_temp.id_czujnika_temp,
