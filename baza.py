@@ -44,6 +44,7 @@ class Czujniki_temperatury(Base):
 
     nazwa_czujnika_temp = Column(String(100))
     czestotliwosc_pomiaru_temp = Column(Float)
+    kanal_mux = Column(Integer)
 
 class Odczyty(Base):
     __tablename__ = 'odczyty'

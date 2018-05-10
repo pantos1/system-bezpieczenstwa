@@ -12,9 +12,11 @@ class Grupa():
     # sciezka do zapisu zdjec
     sciezka = "/var/www/html/img/"
     bus = smbus.SMBus(1)
-    adres = 0x40
+    multiplexer_adres = 0b1110000
     rhKod = 0xF5
     tempKod = 0xF3
+    komenda_zapisz = multiplexer_adres + 0b0
+    komenda_czytaj = multiplexer_adres + 0b1
 
     def __init__(self, kamera, czujnik_temp, czujnik, session):
         self.kamera = kamera
@@ -24,6 +26,7 @@ class Grupa():
         self.stan_czujnika = 0
         self.stan_poprzedni = 0
         self.czujnik.gpio = int(self.czujnik.gpio)
+        self.czujnik_temp_adres = 1 << int(self.czujnik_temp.kanal_mux)
         GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     def zrob_zdjecie(self):
@@ -38,17 +41,25 @@ class Grupa():
         self.zdjecie_instance = get_or_create(self.session, Zdjecia, **zdjecie)
 
     def pomiar_temperatury_rh(self):
-        Grupa.bus.write_byte(Grupa.adres, Grupa.rhKod)
+        Grupa.bus.write_byte(Grupa.komenda_zapisz, self.czujnik_temp_adres)
         time.sleep(0.05)
-        data0 = Grupa.bus.read_byte(Grupa.adres)
-        data1 = Grupa.bus.read_byte(Grupa.adres)
-        rh = ((data0 * 256 + data1)* 125 / 65536.0) - 6
+        Grupa.bus.write_byte(Grupa.komenda_zapisz, Grupa.rhKod)
+        time.sleep(0.05)
+        Grupa.bus.write_byte(Grupa.komenda_czytaj, self.czujnik_temp_adres)
+        time.sleep(0.05)
+        data0 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
+        data1 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
+        rh = ((data0 * 256 + data1) * 125 / 65536.0) - 6
 
         time.sleep(0.05)
-        Grupa.bus.write_byte(Grupa.adres, Grupa.tempKod)
+        Grupa.bus.write_byte(Grupa.komenda_zapisz, self.czujnik_temp_adres)
         time.sleep(0.05)
-        data0 = Grupa.bus.read_byte(Grupa.adres)
-        data1 = Grupa.bus.read_byte(Grupa.adres)
+        Grupa.bus.write_byte(Grupa.komenda_zapisz, Grupa.tempKod)
+        time.sleep(0.05)
+        Grupa.bus.write_byte(Grupa.komenda_czytaj, self.czujnik_temp_adres)
+        time.sleep(0.05)
+        data0 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
+        data1 = Grupa.bus.read_byte(Grupa.multiplexer_adres)
         temp = ((data0 * 256 + data1) * 175.72 / 65536.0) - 46.85
 
         odczyt = {
