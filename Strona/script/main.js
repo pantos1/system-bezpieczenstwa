@@ -96,13 +96,13 @@ async function initSettingsModal(result) {
         }
         $saveForm.on('click', () => {
 		   console.log($generalForm);
-           const generalFormData = new FormData($generalForm);
+           const generalFormData = $generalForm.serializeArray();
            console.log(generalFormData);
            console.log($nameForm);
-           const nameFormData = new FormData($nameForm);
+           const nameFormData = $nameForm.serializeArray();
            console.log(nameFormData);
            console.log($prefsForm);
-           const prefsFormData = new FormData($prefsForm);
+           const prefsFormData = $prefsForm.serializeArray();
            console.log(prefsFormData);
         });
     } catch (e) {
