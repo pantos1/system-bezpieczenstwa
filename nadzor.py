@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import smbus
+import pigpio
 from datetime import datetime
 import subprocess
 import time
@@ -11,11 +11,11 @@ from baza import Base, Kamery, Zdjecia, Czujniki_temperatury, Odczyty, Czujniki,
 class Grupa():
     # sciezka do zapisu zdjec
     sciezka = "/var/www/html/img/"
-    bus = smbus.SMBus(1)
+    i2c = pigpio.pi()
     multiplexer_adres = 0x70
     czujnik_temp_adres = 0x40
     rhKod = 0xF5
-    tempKod = 0xF3
+    tempKod = 0xE0
 
     def __init__(self, kamera, czujnik_temp, czujnik, session):
         self.kamera = kamera
@@ -50,20 +50,28 @@ class Grupa():
         self.zdjecie_instance = get_or_create(self.session, Zdjecia, **zdjecie)
 
     def pomiar_temperatury_rh(self):
-        Grupa.bus.write_byte(Grupa.multiplexer_adres, self.czujnik_kanal_komenda)
-        Grupa.bus.write_byte(Grupa.czujnik_temp_adres, self.rhKod)
+        mux = Grupa.i2c.i2c_open(1, Grupa.multiplexer_adres)
+    
+        Grupa.i2c.i2c_write_byte(mux, self.czujnik_kanal_komenda)
+     
+        czujnik = Grupa.i2c.i2c_open(1, Grupa.czujnik_temp_adres)
+        Grupa.i2c.i2c_write_byte(czujnik, self.rhKod)
         time.sleep(0.05)
-        data0 = Grupa.bus.read_byte(Grupa.czujnik_temp_adres)
-        data1 = Grupa.bus.read_byte(Grupa.czujnik_temp_adres)
-        #data = Grupa.bus.read_i2c_block_data(Grupa.czujnik_temp_adres, self.rhKod, 2)
-        #time.sleep(0.05)
-        rh = ((data0 * 256 + data1) * 125 / 65536.0) - 6
+        (liczba_bitow, data) = Grupa.i2c.i2c_read_device(czujnik, 2)
+        print(liczba_bitow)
+        print(data[0])
+        print(data[1])
+        rh = ((data[0] * 256 + data[1]) * 125 / 65536.0) - 6
+        print(rh)
         
-        Grupa.bus.write_byte(Grupa.czujnik_temp_adres, self.tempKod)
-        time.sleep(0.05)
-        data0 = Grupa.bus.read_byte(Grupa.czujnik_temp_adres)
-        data1 = Grupa.bus.read_byte(Grupa.czujnik_temp_adres)
-        temp = ((data0 * 256 + data1) * 175.72 / 65536.0) - 46.85
+        (liczba_bitow, data) = Grupa.i2c.i2c_read_i2c_block_data(czujnik, self.tempKod, 2)
+        print(liczba_bitow)
+        print(data[0])
+        print(data[1])
+        #data0 = Grupa.bus.read_byte(Grupa.czujnik_temp_adres)
+        #data1 = Grupa.bus.read_byte(Grupa.czujnik_temp_adres)
+        temp = ((data[0] * 256 + data[1]) * 175.72 / 65536.0) - 46.85
+        print(temp)
 
         odczyt = {
             "id_czujnika_temp": self.czujnik_temp.id_czujnika_temp,
