@@ -71,21 +71,14 @@ async function initSettingsModal(result) {
     const $emailCheckbox = $('#email-checkbox');
     const $emailInput = $('#email-input');
     const $generalForm = $('#general-form');
-    const $nameForm = $('#name-form');
-    const $prefsForm = $('#prefs-form');
-    const $saveForm = $('#save-form');
+    const $nameSection = $('#name-section');
+    const $prefsSection = $('#prefs-section');
+    const $saveFormButton = $('#button-save-form');
     const deviceList = Object.values(result);
     try {
         for (let i = 0; i < deviceList.length; i++) {
-            $nameForm.append(createLabelAndInput(deviceList[i].nazwa_kamery, 'nazwa_kamery'));
-            $nameForm.append(createLabelAndInput(deviceList[i].nazwa_czujnika_temp, 'nazwa_czujnika_temp'));
-            $nameForm.append(createLabelAndInput(deviceList[i].nazwa_czujnika, 'nazwa_czujnika'));
-            let label = deviceList[i].nazwa_kamery + " - częstotliwość zdjęcia w sekundach";
-            $prefsForm.append(createLabelAndInput(label, 'czestotliwosc_zdjecia', deviceList[i].czestotliwosc_zdjecia));
-            label = deviceList[i].nazwa_czujnika_temp + " - częstotliwość pomiaru temperatury w sekundach";
-            $prefsForm.append(createLabelAndInput(label, 'czestotliwosc_pomiaru_temp', deviceList[i].czestotliwosc_pomiaru_temp));
-            label = deviceList[i].nazwa_czujnika + " - częstotliwość odczytu czujnika stykowego";
-            $prefsForm.append(createLabelAndInput(label, 'czestotliwosc_odczytu_stanu', deviceList[i].czestotliwosc_odczytu_stanu));
+            $nameSection.append(createNameFormElement(deviceList[i]));
+            $prefsSection.append(createPrefsFormElement(deviceList[i]));
         }
         $emailInput.hide();
         $emailCheckbox.on('click', () => {
@@ -95,20 +88,48 @@ async function initSettingsModal(result) {
         if (settings.ogolne.powiadomienia_email) {
             $emailCheckbox.checked = true;
         }
-        $saveForm.on('click', () => {
+        $saveFormButton.on('click', () => {
 		   console.log($generalForm);
            const generalFormData = $generalForm.serializeArray();
            console.log(generalFormData);
-           console.log($nameForm);
-           const nameFormData = $nameForm.serializeArray();
-           console.log(nameFormData);
-           console.log($prefsForm);
-           const prefsFormData = $prefsForm.serializeArray();
-           console.log(prefsFormData);
+           $($nameSection).find('form').each((index, element) => {
+               console.log(element.serializeArray());
+           });
+            $($prefsSection).find('form').each((index, element) => {
+                console.log(element.serializeArray());
+            });
         });
     } catch (e) {
         console.log(e.responseText);
     }
+}
+
+function createNameFormElement(deviceData) {
+    const $nameForm = $(document.createElement("form"))
+        .attr({
+            id: deviceData.nazwa_kamery + '-name-form',
+            name: deviceData.nazwa_kamery + '-name-form'
+        });
+
+    $nameForm.append(createLabelAndInput(deviceData.nazwa_kamery, 'nazwa_kamery'));
+    $nameForm.append(createLabelAndInput(deviceData.nazwa_czujnika_temp, 'nazwa_czujnika_temp'));
+    $nameForm.append(createLabelAndInput(deviceData.nazwa_czujnika, 'nazwa_czujnika'));
+    return $nameForm;
+}
+
+function createPrefsFormElement(deviceData) {
+    const $prefsForm = $(document.createElement("form"))
+        .attr({
+            id: deviceData.nazwa_kamery + '-prefs-form',
+            name: deviceData.nazwa_kamery + '-prefs-form'
+        });
+    let label = deviceData.nazwa_kamery + " - częstotliwość zdjęcia w sekundach";
+    $prefsForm.append(createLabelAndInput(label, 'czestotliwosc_zdjecia', deviceData.czestotliwosc_zdjecia));
+    label = deviceData.nazwa_czujnika_temp + " - częstotliwość pomiaru temperatury w sekundach";
+    $prefsForm.append(createLabelAndInput(label, 'czestotliwosc_pomiaru_temp', deviceData.czestotliwosc_pomiaru_temp));
+    label = deviceData.nazwa_czujnika + " - częstotliwość odczytu czujnika stykowego";
+    $prefsForm.append(createLabelAndInput(label, 'czestotliwosc_odczytu_stanu', deviceData.czestotliwosc_odczytu_stanu));
+    return $prefsForm;
 }
 
 function createLabelAndInput(labelText, inputName, inputValue) {
