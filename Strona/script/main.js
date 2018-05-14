@@ -35,6 +35,16 @@ function getSettings() {
     })
 }
 
+function postPrefs(id, data) {
+    return $.ajax({
+        url: "post_settings.php?id_kamery=" + id,
+        type: POST,
+        contentType: "application/json",
+        data: data,
+        processData: false
+    })
+}
+
 function displayHomeContent(result) {
     const data = Object.values(result);
     console.log(data);
