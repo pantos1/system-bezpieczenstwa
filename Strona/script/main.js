@@ -46,7 +46,7 @@ function getSettings() {
 function updatePrefsAndNames(id, data) {
     return $.ajax({
         url: "update_prefs.php?id_kamery=" + id,
-        type: POST,
+        type: "POST",
         contentType: "text/plain",
         data: data,
         processData: false
@@ -56,7 +56,7 @@ function updatePrefsAndNames(id, data) {
 function updateSettings(data) {
     return $.ajax({
         url: "update_settings.php",
-        type: POST,
+        type: "POST",
         contentType: "text/plain",
         data: data,
         processData: false
@@ -65,7 +65,6 @@ function updateSettings(data) {
 
 function displayHomeContent(result) {
     const data = Object.values(result);
-    console.log(data);
     for (let i = 0; i < data.length; i++) {
         const card = $(document.createElement("div"))
             .attr({
