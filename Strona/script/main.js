@@ -126,7 +126,7 @@ async function initSettingsModal(result) {
             $emailCheckbox.checked = true;
         }
         $saveFormButton.on('click', () => {
-           const generalFormData = $($generalForm).serialize();
+           const generalFormData = $generalForm.serialize();
            updateSettings(generalFormData);
            $($nameSection).find('form').each((index, element) => {
                updateNames($(element)[0].name, $(element).serialize());
