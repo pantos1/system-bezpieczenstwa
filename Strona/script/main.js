@@ -93,10 +93,11 @@ async function initSettingsModal(result) {
            const generalFormData = $generalForm.serializeArray();
            console.log(generalFormData);
            $($nameSection).find('form').each((index, element) => {
-               console.log(element.serializeArray());
+               console.log($(element));
+               console.log($(element).serializeArray());
            });
             $($prefsSection).find('form').each((index, element) => {
-                console.log(element.serializeArray());
+                console.log($(element).serializeArray());
             });
         });
     } catch (e) {
@@ -108,7 +109,7 @@ function createNameFormElement(deviceData) {
     const $nameForm = $(document.createElement("form"))
         .attr({
             id: deviceData.nazwa_kamery + '-name-form',
-            name: deviceData.nazwa_kamery + '-name-form'
+            name: deviceData.id_kamery
         });
 
     $nameForm.append(createLabelAndInput(deviceData.nazwa_kamery, 'nazwa_kamery'));
