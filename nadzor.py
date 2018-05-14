@@ -6,7 +6,9 @@ import time
 import schedule
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from baza import Base, Kamery, Zdjecia, Czujniki_temperatury, Odczyty, Czujniki, Stany, Pomiary, get_or_create, fetch_all
+from baza import Base, Kamery, Zdjecia, Czujniki_temperatury, Odczyty, Czujniki, Stany, Pomiary, get_or_create, \
+    fetch_all
+
 
 class Grupa():
     # sciezka do zapisu zdjec
@@ -25,19 +27,25 @@ class Grupa():
         self.stan_czujnika = 0
         self.stan_poprzedni = 0
         self.czujnik.gpio = int(self.czujnik.gpio)
-        #self.czujnik_kanal_komenda = 1 << int(self.czujnik_temp.kanal_mux)
+        # self.czujnik_kanal_komenda = 1 << int(self.czujnik_temp.kanal_mux)
         print(self.czujnik_temp.kanal_mux)
         self.czujnik_kanal_komenda = self.kanal(int(self.czujnik_temp.kanal_mux))
         GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-    def kanal(self, kanal):
-        if   (kanal==0): komenda = 0x04
-        elif (kanal==1): komenda = 0x05
-        elif (kanal==2): komenda = 0x06
-        elif (kanal==3): komenda = 0x07
-        else: komenda = 0x00
+    @staticmethod
+    def kanal(kanal):
+        if kanal == 0:
+            komenda = 0x04
+        elif kanal == 1:
+            komenda = 0x05
+        elif kanal == 2:
+            komenda = 0x06
+        elif kanal == 3:
+            komenda = 0x07
+        else:
+            komenda = 0x00
         return komenda
-        
+
     def zrob_zdjecie(self):
         data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         nazwa = data + ".jpg"
@@ -51,27 +59,16 @@ class Grupa():
 
     def pomiar_temperatury_rh(self):
         mux = Grupa.i2c.i2c_open(1, Grupa.multiplexer_adres)
-    
         Grupa.i2c.i2c_write_byte(mux, self.czujnik_kanal_komenda)
-     
+
         czujnik = Grupa.i2c.i2c_open(1, Grupa.czujnik_temp_adres)
         Grupa.i2c.i2c_write_byte(czujnik, self.rhKod)
         time.sleep(0.05)
         (liczba_bitow, data) = Grupa.i2c.i2c_read_device(czujnik, 2)
-        print(liczba_bitow)
-        print(data[0])
-        print(data[1])
         rh = ((data[0] * 256 + data[1]) * 125 / 65536.0) - 6
-        print(rh)
-        
+
         (liczba_bitow, data) = Grupa.i2c.i2c_read_i2c_block_data(czujnik, self.tempKod, 2)
-        print(liczba_bitow)
-        print(data[0])
-        print(data[1])
-        #data0 = Grupa.bus.read_byte(Grupa.czujnik_temp_adres)
-        #data1 = Grupa.bus.read_byte(Grupa.czujnik_temp_adres)
         temp = ((data[0] * 256 + data[1]) * 175.72 / 65536.0) - 46.85
-        print(temp)
 
         odczyt = {
             "id_czujnika_temp": self.czujnik_temp.id_czujnika_temp,
@@ -104,8 +101,10 @@ class Grupa():
         self.pomiar_instance = get_or_create(self.session, Pomiary, **pomiar)
         self.stan_poprzedni = self.stan_czujnika
 
+
 def init_gpio():
     GPIO.setmode(GPIO.BCM)
+
 
 def init_session(config):
     db = create_engine(
@@ -141,6 +140,7 @@ def main():
         schedule.every(czujnik.czestotliwosc_odczytu_stanu).seconds.do(grupa.sprawdz_kontaktron)
     while True:
         schedule.run_pending()
+
 
 if __name__ == "__main__":
     main()

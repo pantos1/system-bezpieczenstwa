@@ -28,20 +28,35 @@ si7021_zielony_kwargs = {
 }
 si7021_zielony = get_or_create(session, Czujniki_temperatury, **si7021_zielony_kwargs)
 
-kontakron_kwargs = {
+kontakron_1_kwargs = {
     "nazwa_czujnika": "Kontaktron 1",
     "gpio": 23,
     "czestotliwosc_odczytu_stanu": 0.1
 }
-kontaktron_1 = get_or_create(session, Czujniki, **kontakron_kwargs)
+kontaktron_1 = get_or_create(session, Czujniki, **kontakron_1_kwargs)
 
-titanum_kwargs = {
+kontakron_2_kwargs = {
+    "nazwa_czujnika": "Kontaktron 2",
+    "gpio": 18,
+    "czestotliwosc_odczytu_stanu": 0.1
+}
+kontaktron_2 = get_or_create(session, Czujniki, **kontakron_2_kwargs)
+
+titanum_1_kwargs = {
     "nazwa_kamery": "Kamera 1 - Titanum",
     "id_czujnika": 1,
     "id_czujnika_temp": 1,
     "czestotliwosc_zdjecia": 10.0
 }
-titanum = get_or_create(session, Kamery, **titanum_kwargs)
+titanum_1 = get_or_create(session, Kamery, **titanum_1_kwargs)
+
+titanum_2_kwargs = {
+    "nazwa_kamery": "Kamera 1 - Titanum",
+    "id_czujnika": 2,
+    "id_czujnika_temp": 2,
+    "czestotliwosc_zdjecia": 10.0
+}
+titanum_2 = get_or_create(session, Kamery, **titanum_2_kwargs)
 
 powiadomienia_kwargs = {
     "klucz": "powiadomienia_email",
