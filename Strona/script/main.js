@@ -147,7 +147,7 @@ function createPrefsFormElement(deviceData) {
     const $prefsForm = $(document.createElement("form"))
         .attr({
             id: deviceData.nazwa_kamery + '-prefs-form',
-            name: deviceData.nazwa_kamery + '-prefs-form'
+            name: deviceData.id_kamery
         });
     let label = deviceData.nazwa_kamery + " - częstotliwość zdjęcia w sekundach";
     $prefsForm.append(createLabelAndInput(label, 'czestotliwosc_zdjecia', deviceData.czestotliwosc_zdjecia));
