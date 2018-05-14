@@ -37,6 +37,7 @@ function getSettings() {
 
 function displayHomeContent(result) {
     const data = Object.values(result);
+    console.log(data);
     for (let i = 0; i < data.length; i++) {
         const card = $(document.createElement("div"))
             .attr({
@@ -166,6 +167,9 @@ async function displayArchive() {
         const data = await getAllData();
         const content = $('#content');
         content.empty();
+        content.attr({
+            class: "uk-flex-column"
+        });
         const result = Object.values(data);
         for (let i = 0; i < result.length; i++) {
             const grid = $(document.createElement("div"))
