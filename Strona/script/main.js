@@ -122,7 +122,7 @@ async function initSettingsModal(result) {
             $emailInput.toggle();
         });
         const settings = await getSettings();
-        if (settings.ogolne.powiadomienia_email) {
+        if (settings.ogolne.powiadomienia_email === "on") {
             $emailCheckbox.checked = true;
         }
         $saveFormButton.on('click', () => {
