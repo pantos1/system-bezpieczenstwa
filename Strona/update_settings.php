@@ -15,6 +15,7 @@ try {
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $result = $stmt->fetch();
+    $stmt->closeCursor();
     echo json_encode($result);
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
