@@ -27,6 +27,14 @@ function getData() {
     })
 }
 
+function getAllData() {
+    return $.ajax({
+        url: "get_data.php?q=archiwum",
+        type: "GET",
+        contentType: "text/plain"
+    });
+}
+
 function getSettings() {
     return $.ajax({
         url: "get_settings.php",
@@ -35,11 +43,21 @@ function getSettings() {
     })
 }
 
-function postPrefs(id, data) {
+function updatePrefsAndNames(id, data) {
     return $.ajax({
-        url: "post_settings.php?id_kamery=" + id,
+        url: "update_prefs.php?id_kamery=" + id,
         type: POST,
-        contentType: "application/json",
+        contentType: "text/plain",
+        data: data,
+        processData: false
+    })
+}
+
+function updateSettings(data) {
+    return $.ajax({
+        url: "update_settings.php",
+        type: POST,
+        contentType: "text/plain",
         data: data,
         processData: false
     })
@@ -99,16 +117,14 @@ async function initSettingsModal(result) {
             $emailCheckbox.checked = true;
         }
         $saveFormButton.on('click', () => {
-		   console.log($generalForm);
-           const generalFormData = $generalForm.serializeArray();
-           console.log(generalFormData);
+           const generalFormData = $($generalForm).serialize();
+           updateSettings(generalFormData);
            $($nameSection).find('form').each((index, element) => {
-               console.log($(element));
-               console.log($(element).serializeArray());
+               updatePrefsAndNames($(element)[0].name, $(element).serialize());
            });
-            $($prefsSection).find('form').each((index, element) => {
-                console.log($(element).serializeArray());
-            });
+           $($prefsSection).find('form').each((index, element) => {
+               updatePrefsAndNames($(element)[0].name, $(element).serialize());
+           });
         });
     } catch (e) {
         console.log(e.responseText);
@@ -255,14 +271,6 @@ async function displayArchive() {
     }
 
     $loadingOverlay.hide();
-}
-
-function getAllData() {
-    return $.ajax({
-        url: "get_data.php?q=archiwum",
-        type: "GET",
-        contentType: "text/plain"
-    });
 }
 
 function initDatePickers() {

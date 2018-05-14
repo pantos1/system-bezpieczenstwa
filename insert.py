@@ -12,21 +12,21 @@ db = create_engine("mysql+mysqldb://" + config['user'] + ":" + config['passwd'] 
 DBSession = sessionmaker(bind=db)
 session = DBSession()
 
-si7021_pomaranczowy_kwargs = {
+si7021_zielony_kwargs = {
     "id_czujnika_temp": 1,
     "nazwa_czujnika_temp": "Si7021_zielony",
     "czestotliwosc_pomiaru_temp": 10.0,
     "kanal_mux": 1
 }
-si7021_pomaranczowy = get_or_create(session, Czujniki_temperatury, **si7021_pomaranczowy_kwargs)
+si7021_zielony = get_or_create(session, Czujniki_temperatury, **si7021_zielony_kwargs)
 
-si7021_zielony_kwargs = {
+si7021_pomaranczowy_kwargs = {
     "id_czujnika_temp": 2,
-    "nazwa_czujnika_temp": "Si7021_zielony",
+    "nazwa_czujnika_temp": "Si7021_pomaranczowy",
     "czestotliwosc_pomiaru_temp": 10.0,
     "kanal_mux": 2
 }
-si7021_zielony = get_or_create(session, Czujniki_temperatury, **si7021_zielony_kwargs)
+si7021_pomaranczowy_kwargs = get_or_create(session, Czujniki_temperatury, **si7021_pomaranczowy_kwargs)
 
 kontakron_1_kwargs = {
     "nazwa_czujnika": "Kontaktron 1",
