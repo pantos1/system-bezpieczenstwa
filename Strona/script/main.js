@@ -43,9 +43,9 @@ function getSettings() {
     })
 }
 
-function updatePrefs(id, data) {
+function updatePrefs(data) {
     return $.ajax({
-        url: "update_prefs.php?id_kamery=" + id,
+        url: "update_prefs.php",
         type: "POST",
         contentType: "application/json",
         data: data,
@@ -53,9 +53,9 @@ function updatePrefs(id, data) {
     })
 }
 
-function updateNames(id, data) {
+function updateNames(data) {
     return $.ajax({
-        url: "update_names.php?id_kamery=" + id,
+        url: "update_names.php",
         type: "POST",
         contentType: "application/json",
         data: data,
@@ -131,10 +131,16 @@ async function initSettingsModal(result) {
            const generalFormData = JSON.stringify($generalForm.serializeArray());
            updateSettings(generalFormData);
            $($nameSection).find('form').each((index, element) => {
-              updateNames($(element)[0].name, $(element).serializeArray());
+	
+				const data = $(element).serializeArray().reduce((a,x) => {a[x.name] = x.value; return a; }, {});
+			   data["id_kamery"] = $(element)[0].name;
+              updateNames(JSON.stringify(data));
            });
            $($prefsSection).find('form').each((index, element) => {
-               updatePrefs($(element)[0].name, $(element).serializeArray());
+			
+			   const data = $(element).serializeArray().reduce((a,x) => {a[x.name] = x.value; return a; }, {});
+			   data["id_kamery"] = $(element)[0].name;
+               updatePrefs(JSON.stringify(data));
            });
         });
     } catch (e) {
