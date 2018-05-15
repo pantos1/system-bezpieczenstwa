@@ -236,7 +236,19 @@ async function displayArchive() {
             class: "uk-flex-column"
         });
         const result = Object.values(data);
+        const $tabNav = $(document.createElement("ul"))
+            .attr({
+                "uk-tab": ""
+            })
+            .appendTo(content);
         for (let i = 0; i < result.length; i++) {
+            $(document.createElement("li"))
+                .append($(document.createElement("a"))
+                    .attr({
+                        "href": "grid-photo" + i
+                    })
+                    .text(result[i].nazwa_kamery))
+                .appendTo($tabNav);
             const grid = $(document.createElement("div"))
                 .attr({
                     id: "grid-photo" + i,
