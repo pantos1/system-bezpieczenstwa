@@ -45,9 +45,9 @@ function getSettings() {
 
 function updatePrefs(id, data) {
     return $.ajax({
-        url: "update_prefs.php?id_kamery=" + id + "&",
+        url: "update_prefs.php?id_kamery=" + id,
         type: "POST",
-        contentType: "text/plain",
+        contentType: "application/json",
         data: data,
         processData: false
     })
@@ -55,9 +55,9 @@ function updatePrefs(id, data) {
 
 function updateNames(id, data) {
     return $.ajax({
-        url: "update_names.php?id_kamery=" + id + "&",
+        url: "update_names.php?id_kamery=" + id,
         type: "POST",
-        contentType: "text/plain",
+        contentType: "application/json",
         data: data,
         processData: false
     })
@@ -131,10 +131,10 @@ async function initSettingsModal(result) {
            const generalFormData = JSON.stringify($generalForm.serializeArray());
            updateSettings(generalFormData);
            $($nameSection).find('form').each((index, element) => {
-              //updateNames($(element)[0].name, $(element).serialize());
+              updateNames($(element)[0].name, $(element).serializeArray());
            });
            $($prefsSection).find('form').each((index, element) => {
-               //updatePrefs($(element)[0].name, $(element).serialize());
+               updatePrefs($(element)[0].name, $(element).serializeArray());
            });
         });
     } catch (e) {
