@@ -244,7 +244,8 @@ async function displayArchive() {
         const $switcherContainer = $(document.createElement("ul"))
             .attr({
                 class: "uk-switcher"
-            });
+            })
+            .appendTo(content);
         for (let i = 0; i < result.length; i++) {
             $(document.createElement("li"))
                 .append($(document.createElement("a"))
