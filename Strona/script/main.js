@@ -241,6 +241,10 @@ async function displayArchive() {
                 "uk-tab": ""
             })
             .appendTo(content);
+        const $switcherContainer = $(document.createElement("ul"))
+            .attr({
+                class: "uk-switcher"
+            });
         for (let i = 0; i < result.length; i++) {
             $(document.createElement("li"))
                 .append($(document.createElement("a"))
@@ -249,6 +253,8 @@ async function displayArchive() {
                     })
                     .text(result[i].nazwa_kamery))
                 .appendTo($tabNav);
+            const switcherElement = $(document.createElement("li"))
+                .appendTo($switcherContainer);
             const grid = $(document.createElement("div"))
                 .attr({
                     id: "grid-photo" + i,
@@ -256,13 +262,7 @@ async function displayArchive() {
                     "uk-grid": "",
                     "uk-lightbox": "animation: slide"
                 })
-                .appendTo(content);
-            $(document.createElement("div"))
-                .attr({
-                    class: "uk-h3 uk-overlay uk-position-large uk-position-top-left"
-                })
-                .text(result[i].nazwa_kamery)
-                .appendTo(grid);
+                .appendTo(switcherElement);
             result[i].zdjecia = Object.values(result[i].zdjecia);
             for (let j = result[i].zdjecia.length - 1; j >= 0; j--) {
                 const albumElement = $(document.createElement("div"))
