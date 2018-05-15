@@ -4,22 +4,19 @@ $username = "root";
 $password = "raspberry";
 $db = "nadzor";
 $input = json_decode(file_get_contents('php://input'));
-echo $input->id_kamery;
 try {
     $rows = array();
     $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "SELECT * FROM kamery NATURAL JOIN czujniki NATURAL JOIN czujniki_temperatury 
-      WHERE id_kamery = '$id_kamery'";
+      WHERE id_kamery = '$input->id_kamery'";
     $stmt = $conn->prepare($sql);
-    //echo $sql;
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     $id_czujnika = $result["id_czujnika"];
     $id_czujnika_temp = $result["id_czujnika_temp"];
     if ($input->nazwa_kamery !== "") {
         $sql = "UPDATE kamery SET nazwa_kamery = '$input->nazwa_kamery' WHERE id_kamery = '$id_kamery'";
-        //echo $sql;
         $stmt = $conn->prepare($sql);
         $stmt->execute();
     }

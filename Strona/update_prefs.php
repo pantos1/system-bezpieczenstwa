@@ -4,7 +4,6 @@ $username = "root";
 $password = "raspberry";
 $db = "nadzor";
 $input = json_decode(file_get_contents('php://input'));
-echo $input->id_kamery;
 try {
     $rows = array();
     $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
@@ -19,9 +18,7 @@ try {
       WHERE 
       id_kamery = '$input->id_kamery'
       ";
-    //echo $sql;  
     $stmt = $conn->prepare($sql);
-    $stmt->execute();
     $stmt->closeCursor();
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
