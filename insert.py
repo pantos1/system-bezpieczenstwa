@@ -60,7 +60,7 @@ titanum_2 = get_or_create(session, Kamery, **titanum_2_kwargs)
 
 powiadomienia_kwargs = {
     "klucz": "powiadomienia_email",
-    "wartosc": False
+    "wartosc": "off"
 }
 powiadomienia = get_or_create(session, Ustawienia, **powiadomienia_kwargs)
 

@@ -4,9 +4,10 @@ from datetime import datetime
 import subprocess
 import time
 import schedule
+import smtplib
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from baza import Base, Kamery, Zdjecia, Czujniki_temperatury, Odczyty, Czujniki, Stany, Pomiary, get_or_create, \
+from baza import Base, Kamery, Zdjecia, Czujniki_temperatury, Odczyty, Czujniki, Stany, Pomiary, Ustawienia, get_or_create, \
     fetch_all
 
 
@@ -18,17 +19,21 @@ class Grupa():
     czujnik_temp_adres = 0x40
     rhKod = 0xF5
     tempKod = 0xE0
+    sender = "systembezpieczenstwa2018@gmail.com"
+    password = "inzynierka"
 
-    def __init__(self, kamera, czujnik_temp, czujnik, session):
+    def __init__(self, kamera, czujnik_temp, czujnik, ustawienia, session):
         self.kamera = kamera
         self.czujnik_temp = czujnik_temp
         self.czujnik = czujnik
+        self.ustawienia = ustawienia
         self.session = session
+        self.smtp = self.init_smtp(Grupa.sender, Grupa.password)
+        self.zdjecie_instance = None
+        self.odczyt_instance = None
         self.stan_czujnika = 0
         self.stan_poprzedni = 0
         self.czujnik.gpio = int(self.czujnik.gpio)
-        # self.czujnik_kanal_komenda = 1 << int(self.czujnik_temp.kanal_mux)
-        print(self.czujnik_temp.kanal_mux)
         self.czujnik_kanal_komenda = self.kanal(int(self.czujnik_temp.kanal_mux))
         GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
@@ -45,6 +50,11 @@ class Grupa():
         else:
             komenda = 0x00
         return komenda
+
+    def init_smtp(self, sender, password):
+        smtp_server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+        smtp_server.login(sender, password)
+        return smtp_server
 
     def zrob_zdjecie(self):
         data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
@@ -82,23 +92,31 @@ class Grupa():
         if GPIO.input(self.czujnik.gpio):
             self.stan_czujnika = 0
             if self.stan_poprzedni == 1:
+                zdjecia = []
                 for i in range(0, 2):
                     self.zrob_zdjecie()
+                    zdjecia.append(self.zdjecie_instance.nazwa)
+                if self.ustawienia.powiadomienia_email == "on" and self.ustawienia.adres_email != "":
+                    recipient = self.ustawienia.adres_email
+                    subject = "Otwarcie czujnika " + datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+                    text = "Otwarty czujnik: " + self.czujnik.nazwa_czujnika
+                    message = "Subject: {}\n\n{}".format(subject, text)
+                    self.smtp.sendmail(Grupa.sender, recipient, message)
         else:
             self.stan_czujnika = 1
         stan = {
             "id_czujnika": self.czujnik.id_czujnika,
             "stan": self.stan_czujnika
         }
-        self.stan_instance = get_or_create(self.session, Stany, **stan)
+        stan_instance = get_or_create(self.session, Stany, **stan)
         data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         pomiar = {
-            "id_stanu": self.stan_instance.id_stanu,
+            "id_stanu": stan_instance.id_stanu,
             "id_odczytu": self.odczyt_instance.id_odczytu,
             "id_zdjecia": self.zdjecie_instance.id_zdjecia,
             "data": data
         }
-        self.pomiar_instance = get_or_create(self.session, Pomiary, **pomiar)
+        pomiar_instance = get_or_create(self.session, Pomiary, **pomiar)
         self.stan_poprzedni = self.stan_czujnika
 
 
@@ -129,9 +147,10 @@ def main():
     kamery = fetch_all(session, Kamery)
     czujniki = fetch_all(session, Czujniki)
     czujniki_temperatury = fetch_all(session, Czujniki_temperatury)
+    ustawienia = fetch_all(session, Ustawienia)
     grupy = []
     for kamera, czujnik_temp, czujnik in zip(kamery.all(), czujniki_temperatury.all(), czujniki.all()):
-        grupa = Grupa(kamera=kamera, czujnik_temp=czujnik_temp, czujnik=czujnik, session=session)
+        grupa = Grupa(kamera=kamera, czujnik_temp=czujnik_temp, czujnik=czujnik, ustawienia=ustawienia, session=session)
         grupy.append(grupa)
         grupa.zrob_zdjecie()
         grupa.pomiar_temperatury_rh()
