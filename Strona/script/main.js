@@ -67,7 +67,7 @@ function updateSettings(data) {
     return $.ajax({
         url: "update_settings.php",
         type: "POST",
-        contentType: "text/plain",
+        contentType: "application/json",
         data: data,
         processData: false
     })
@@ -123,16 +123,18 @@ async function initSettingsModal(result) {
         });
         const settings = await getSettings();
         if (settings.ogolne.powiadomienia_email === "on") {
-            $emailCheckbox.checked = true;
+            $emailCheckbox[0].checked = true;
+            $emailInput.show();
+            $emailInput[0].value = settings.ogolne.adres_email;
         }
         $saveFormButton.on('click', () => {
-           const generalFormData = $generalForm.serialize();
+           const generalFormData = JSON.stringify($generalForm.serializeArray());
            updateSettings(generalFormData);
            $($nameSection).find('form').each((index, element) => {
-               updateNames($(element)[0].name, $(element).serialize());
+              //updateNames($(element)[0].name, $(element).serialize());
            });
            $($prefsSection).find('form').each((index, element) => {
-               updatePrefs($(element)[0].name, $(element).serialize());
+               //updatePrefs($(element)[0].name, $(element).serialize());
            });
         });
     } catch (e) {
