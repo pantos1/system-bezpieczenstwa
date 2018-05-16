@@ -150,8 +150,9 @@ def init_gpio():
 def init_session(config):
     db = create_engine(
         "mysql+mysqldb://" + config['user'] + ":" + config['passwd'] + "@" + config['host'] + "/" + config['db'],
-        echo=True)
-
+        echo=True,
+        pool_pre_ping=True
+    )
     DBSession = sessionmaker(bind=db)
     session = DBSession()
     return session
