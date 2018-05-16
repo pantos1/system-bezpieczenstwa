@@ -96,12 +96,13 @@ class Grupa():
                 for i in range(0, 2):
                     self.zrob_zdjecie()
                     zdjecia.append(self.zdjecie_instance.nazwa)
-                if self.ustawienia.powiadomienia_email == "on" and self.ustawienia.adres_email != "":
-                    recipient = self.ustawienia.adres_email
+                email_setting = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email')
+                recipient = self.ustawienia.filter(Ustawienia.klucz == 'adres_email')
+                if email_setting.wartosc == "on" and recipient.wartosc != "":
                     subject = "Otwarcie czujnika " + datetime.now().strftime("%d-%m-%Y %H:%M:%S")
                     text = "Otwarty czujnik: " + self.czujnik.nazwa_czujnika
                     message = "Subject: {}\n\n{}".format(subject, text)
-                    self.smtp.sendmail(Grupa.sender, recipient, message)
+                    self.smtp.sendmail(Grupa.sender, recipient.wartosc, message)
         else:
             self.stan_czujnika = 1
         stan = {
