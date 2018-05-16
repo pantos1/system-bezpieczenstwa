@@ -35,6 +35,8 @@ class Grupa():
         self.ustawienia = ustawienia
         self.session = session
         self.smtp = self.init_smtp(Grupa.sender, Grupa.password)
+        self.powiadomienia_email = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email').one().wartosc
+        self.odbiorca = self.ustawienia.filter(Ustawienia.klucz == 'adres_email').one().wartosc
         self.zdjecie_instance = None
         self.odczyt_instance = None
         self.stan_czujnika = 0
@@ -102,10 +104,8 @@ class Grupa():
                 zdjecia = []
                 proces = self.zrob_zdjecie()
                 zdjecia.append(self.zdjecie_instance.nazwa)
-                powiadomienia_email = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email').one()
-                odbiorca = self.ustawienia.filter(Ustawienia.klucz == 'adres_email').one()
-                if powiadomienia_email.wartosc == "on" and odbiorca.wartosc != "":
-                    run_threaded(self.wyslij_email, (odbiorca, proces, zdjecia))
+                if self.powiadomienia_email == "on" and self.odbiorca != "":
+                    run_threaded(self.wyslij_email, (self.odbiorca, proces, zdjecia))
         else:
             self.stan_czujnika = 1
         stan = {
@@ -127,7 +127,7 @@ class Grupa():
         proces.wait()
         wiadomosc = MIMEMultipart()
         wiadomosc['From'] = Grupa.sender
-        wiadomosc['To'] = odbiorca.wartosc
+        wiadomosc['To'] = odbiorca
         temat = "Otwarcie czujnika " + datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         wiadomosc['Subject'] = temat
         tekst = "Otwarty czujnik: " + self.czujnik.nazwa_czujnika
