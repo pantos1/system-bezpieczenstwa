@@ -96,8 +96,10 @@ class Grupa():
                 for i in range(0, 2):
                     self.zrob_zdjecie()
                     zdjecia.append(self.zdjecie_instance.nazwa)
-                email_setting = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email')
-                recipient = self.ustawienia.filter(Ustawienia.klucz == 'adres_email')
+                email_setting = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email').one()
+                recipient = self.ustawienia.filter(Ustawienia.klucz == 'adres_email').one()
+    
+    
                 if email_setting.wartosc == "on" and recipient.wartosc != "":
                     subject = "Otwarcie czujnika " + datetime.now().strftime("%d-%m-%Y %H:%M:%S")
                     text = "Otwarty czujnik: " + self.czujnik.nazwa_czujnika
