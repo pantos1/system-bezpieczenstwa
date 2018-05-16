@@ -99,10 +99,9 @@ class Grupa():
             self.stan_czujnika = 0
             if self.stan_poprzedni == 1:
                 zdjecia = []
-                for i in range(0, 2):
-                    proces = self.zrob_zdjecie()
-                    proces.wait()
-                    zdjecia.append(self.zdjecie_instance.nazwa)
+                proces = self.zrob_zdjecie()
+                proces.wait()
+                zdjecia.append(self.zdjecie_instance.nazwa)
                 powiadomienia_email = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email').one()
                 odbiorca = self.ustawienia.filter(Ustawienia.klucz == 'adres_email').one()
                 if powiadomienia_email.wartosc == "on" and odbiorca.wartosc != "":
