@@ -71,7 +71,7 @@ class Grupa():
             "id_kamery": self.kamera.id_kamery,
             "nazwa": nazwa
         }
-        self.zdjecie_instance = get_or_create(self.session, Zdjecia, **zdjecie)
+        self.zdjecie_instance = get_or_create(self.session, Zdjecia, skip_query=True, **zdjecie)
         return proces
 
     def pomiar_temperatury_rh(self):
@@ -93,7 +93,7 @@ class Grupa():
             "rh": rh
         }
 
-        self.odczyt_instance = get_or_create(self.session, Odczyty, **odczyt)
+        self.odczyt_instance = get_or_create(self.session, Odczyty, skip_query=True, **odczyt)
 
     def sprawdz_kontaktron(self):
         if GPIO.input(self.czujnik.gpio):
@@ -112,7 +112,7 @@ class Grupa():
             "id_czujnika": self.czujnik.id_czujnika,
             "stan": self.stan_czujnika
         }
-        stan_instance = get_or_create(self.session, Stany, **stan)
+        stan_instance = get_or_create(self.session, Stany, skip_query=True, **stan)
         data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         pomiar = {
             "id_stanu": stan_instance.id_stanu,
@@ -120,7 +120,7 @@ class Grupa():
             "id_zdjecia": self.zdjecie_instance.id_zdjecia,
             "data": data
         }
-        pomiar_instance = get_or_create(self.session, Pomiary, **pomiar)
+        pomiar_instance = get_or_create(self.session, Pomiary, skip_query=True, **pomiar)
         self.stan_poprzedni = self.stan_czujnika
 
     def wyslij_email(self, odbiorca, proces, zdjecia=None):
