@@ -105,7 +105,9 @@ class Grupa():
                 proces = self.zrob_zdjecie()
                 zdjecia.append(self.zdjecie_instance.nazwa)
                 if self.powiadomienia_email == "on" and self.odbiorca != "":
-                    run_threaded(self.wyslij_email, (self.odbiorca, proces, zdjecia))
+                    tekst = "Otwarty czujnik: " + self.czujnik.nazwa_czujnika
+                    temat = "Otwarcie czujnika " + datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+                    run_threaded(self.wyslij_email, (self.odbiorca, temat, tekst, proces, zdjecia))
         else:
             self.stan_czujnika = 1
         stan = {
@@ -123,14 +125,12 @@ class Grupa():
         pomiar_instance = get_or_create(self.session, Pomiary, skip_query=True, **pomiar)
         self.stan_poprzedni = self.stan_czujnika
 
-    def wyslij_email(self, odbiorca, proces, zdjecia=None):
+    def wyslij_email(self, odbiorca, temat, tekst, proces, zdjecia=None):
         proces.wait()
         wiadomosc = MIMEMultipart()
         wiadomosc['From'] = Grupa.sender
         wiadomosc['To'] = odbiorca
-        temat = "Otwarcie czujnika " + datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         wiadomosc['Subject'] = temat
-        tekst = "Otwarty czujnik: " + self.czujnik.nazwa_czujnika
         wiadomosc.attach(MIMEText(tekst, 'plain'))
         for zdjecie in zdjecia:
             with open(Grupa.sciezka + zdjecie, "rb") as plik:
@@ -140,7 +140,7 @@ class Grupa():
                 )
             zalacznik['Content-Disposition'] = 'attachment; filename="%s"' % path.basename(zdjecie)
             wiadomosc.attach(zalacznik)
-        self.smtp.sendmail(Grupa.sender, odbiorca.wartosc, wiadomosc.as_string())
+        self.smtp.sendmail(Grupa.sender, odbiorca, wiadomosc.as_string())
 
 
 def init_gpio():
@@ -150,7 +150,6 @@ def init_gpio():
 def init_session(config):
     db = create_engine(
         "mysql+mysqldb://" + config['user'] + ":" + config['passwd'] + "@" + config['host'] + "/" + config['db'],
-        echo=True,
         pool_pre_ping=True
     )
     DBSession = sessionmaker(bind=db)
