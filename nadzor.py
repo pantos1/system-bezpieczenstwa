@@ -65,12 +65,13 @@ class Grupa():
         data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         nazwa = data + ".jpg"
         sciezka = Grupa.sciezka + nazwa
-        subprocess.call(["fswebcam", "-r 640x480", sciezka])
+        proces = subprocess.Popen(["fswebcam", "-r 640x480", sciezka])
         zdjecie = {
             "id_kamery": self.kamera.id_kamery,
             "nazwa": nazwa
         }
         self.zdjecie_instance = get_or_create(self.session, Zdjecia, **zdjecie)
+        return proces
 
     def pomiar_temperatury_rh(self):
         mux = Grupa.i2c.i2c_open(1, Grupa.multiplexer_adres)
@@ -99,7 +100,8 @@ class Grupa():
             if self.stan_poprzedni == 1:
                 zdjecia = []
                 for i in range(0, 2):
-                    self.zrob_zdjecie()
+                    proces = self.zrob_zdjecie()
+                    proces.wait()
                     zdjecia.append(self.zdjecie_instance.nazwa)
                 powiadomienia_email = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email').one()
                 odbiorca = self.ustawienia.filter(Ustawienia.klucz == 'adres_email').one()
