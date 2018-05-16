@@ -100,8 +100,8 @@ class Grupa():
                 for i in range(0, 2):
                     self.zrob_zdjecie()
                     zdjecia.append(self.zdjecie_instance.nazwa)
-                powiadomienia_email = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email')
-                odbiorca = self.ustawienia.filter(Ustawienia.klucz == 'adres_email')
+                powiadomienia_email = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email').one()
+                odbiorca = self.ustawienia.filter(Ustawienia.klucz == 'adres_email').one()
                 if powiadomienia_email.wartosc == "on" and odbiorca.wartosc != "":
                     self.wyslij_email(odbiorca=odbiorca, zdjecia=zdjecia)
         else:
