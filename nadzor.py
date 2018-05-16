@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import pigpio
 from datetime import datetime
 import subprocess
+import threading
 import time
 import schedule
 import smtplib
@@ -156,6 +157,10 @@ def init_session(config):
     return session
 
 
+def run_threaded(func):
+    thread = threading.Thread(target=func)
+    thread.start()
+
 def main():
     # konfiguracja do polaczenia z baza danych
     config = {
@@ -176,9 +181,9 @@ def main():
         grupy.append(grupa)
         grupa.zrob_zdjecie()
         grupa.pomiar_temperatury_rh()
-        schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(grupa.zrob_zdjecie)
-        schedule.every(czujnik_temp.czestotliwosc_pomiaru_temp).seconds.do(grupa.pomiar_temperatury_rh)
-        schedule.every(czujnik.czestotliwosc_odczytu_stanu).seconds.do(grupa.sprawdz_kontaktron)
+        schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(run_threaded, grupa.zrob_zdjecie)
+        schedule.every(czujnik_temp.czestotliwosc_pomiaru_temp).seconds.do(run_threaded, grupa.pomiar_temperatury_rh)
+        schedule.every(czujnik.czestotliwosc_odczytu_stanu).seconds.do(run_threaded, grupa.sprawdz_kontaktron)
     while True:
         schedule.run_pending()
 
