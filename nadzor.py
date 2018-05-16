@@ -5,6 +5,10 @@ import subprocess
 import time
 import schedule
 import smtplib
+from os.path import basename
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from baza import Base, Kamery, Zdjecia, Czujniki_temperatury, Odczyty, Czujniki, Stany, Pomiary, Ustawienia, get_or_create, \
@@ -96,13 +100,10 @@ class Grupa():
                 for i in range(0, 2):
                     self.zrob_zdjecie()
                     zdjecia.append(self.zdjecie_instance.nazwa)
-                email_setting = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email')
-                recipient = self.ustawienia.filter(Ustawienia.klucz == 'adres_email')
-                if email_setting.wartosc == "on" and recipient.wartosc != "":
-                    subject = "Otwarcie czujnika " + datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-                    text = "Otwarty czujnik: " + self.czujnik.nazwa_czujnika
-                    message = "Subject: {}\n\n{}".format(subject, text)
-                    self.smtp.sendmail(Grupa.sender, recipient.wartosc, message)
+                powiadomienia_email = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email')
+                odbiorca = self.ustawienia.filter(Ustawienia.klucz == 'adres_email')
+                if powiadomienia_email.wartosc == "on" and odbiorca.wartosc != "":
+                    self.wyslij_email(odbiorca=odbiorca, zdjecia=zdjecia)
         else:
             self.stan_czujnika = 1
         stan = {
@@ -119,6 +120,24 @@ class Grupa():
         }
         pomiar_instance = get_or_create(self.session, Pomiary, **pomiar)
         self.stan_poprzedni = self.stan_czujnika
+
+    def wyslij_email(self, odbiorca, zdjecia=None):
+        wiadomosc = MIMEMultipart()
+        wiadomosc['From'] = Grupa.sender
+        wiadomosc['To'] = odbiorca.wartosc
+        temat = "Otwarcie czujnika " + datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        wiadomosc['Subject'] = temat
+        tekst = "Otwarty czujnik: " + self.czujnik.nazwa_czujnika
+        wiadomosc.attach(MIMEText(tekst, 'plain'))
+        for zdjecie in zdjecia:
+            with open(Grupa.sciezka + zdjecie, "rb") as plik:
+                zalacznik = MIMEApplication(
+                    plik.read(),
+                    Name=basename(plik)
+                )
+            zalacznik['Content-Disposition'] = 'attachment; filename="%s"' % basename(plik)
+            wiadomosc.attach(zalacznik)
+        self.smtp.sendmail(Grupa.sender, odbiorca.wartosc, wiadomosc)
 
 
 def init_gpio():
