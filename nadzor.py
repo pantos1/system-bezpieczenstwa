@@ -101,12 +101,11 @@ class Grupa():
             if self.stan_poprzedni == 1:
                 zdjecia = []
                 proces = self.zrob_zdjecie()
-                proces.wait()
                 zdjecia.append(self.zdjecie_instance.nazwa)
                 powiadomienia_email = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email').one()
                 odbiorca = self.ustawienia.filter(Ustawienia.klucz == 'adres_email').one()
                 if powiadomienia_email.wartosc == "on" and odbiorca.wartosc != "":
-                    self.wyslij_email(odbiorca=odbiorca, zdjecia=zdjecia)
+                    run_threaded(self.wyslij_email, (odbiorca, proces, zdjecia))
         else:
             self.stan_czujnika = 1
         stan = {
@@ -124,7 +123,8 @@ class Grupa():
         pomiar_instance = get_or_create(self.session, Pomiary, **pomiar)
         self.stan_poprzedni = self.stan_czujnika
 
-    def wyslij_email(self, odbiorca, zdjecia=None):
+    def wyslij_email(self, odbiorca, proces, zdjecia=None):
+        proces.wait()
         wiadomosc = MIMEMultipart()
         wiadomosc['From'] = Grupa.sender
         wiadomosc['To'] = odbiorca.wartosc
@@ -157,8 +157,8 @@ def init_session(config):
     return session
 
 
-def run_threaded(func):
-    thread = threading.Thread(target=func)
+def run_threaded(func, args):
+    thread = threading.Thread(target=func, args=args)
     thread.start()
 
 def main():
@@ -181,9 +181,9 @@ def main():
         grupy.append(grupa)
         grupa.zrob_zdjecie()
         grupa.pomiar_temperatury_rh()
-        schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(run_threaded, grupa.zrob_zdjecie)
-        schedule.every(czujnik_temp.czestotliwosc_pomiaru_temp).seconds.do(run_threaded, grupa.pomiar_temperatury_rh)
-        schedule.every(czujnik.czestotliwosc_odczytu_stanu).seconds.do(run_threaded, grupa.sprawdz_kontaktron)
+        schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(grupa.zrob_zdjecie)
+        schedule.every(czujnik_temp.czestotliwosc_pomiaru_temp).seconds.do(grupa.pomiar_temperatury_rh)
+        schedule.every(czujnik.czestotliwosc_odczytu_stanu).seconds.do(grupa.sprawdz_kontaktron)
     while True:
         schedule.run_pending()
 
