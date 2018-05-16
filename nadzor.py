@@ -15,6 +15,7 @@ from baza import Base, Kamery, Zdjecia, Czujniki_temperatury, Odczyty, Czujniki,
     fetch_all
 
 
+
 class Grupa():
     # sciezka do zapisu zdjec
     sciezka = "/var/www/html/img/"
