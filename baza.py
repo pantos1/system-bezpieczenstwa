@@ -114,6 +114,7 @@ class Pomiary(Base):
     odczyt = relationship(Odczyty)
     zdjecia = relationship(Zdjecia)
 
+
 db = create_engine("mysql+mysqldb://" + config['user'] + ":" + config['passwd'] + "@" + config['host'] + "/" + config['db'], echo=True)
 
 Base.metadata.create_all(db)
