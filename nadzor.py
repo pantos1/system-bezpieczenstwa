@@ -140,7 +140,7 @@ class Grupa():
                 )
             zalacznik['Content-Disposition'] = 'attachment; filename="%s"' % path.basename(zdjecie)
             wiadomosc.attach(zalacznik)
-        self.smtp.sendmail(Grupa.sender, odbiorca.wartosc, wiadomosc)
+        self.smtp.sendmail(Grupa.sender, odbiorca.wartosc, wiadomosc.as_string())
 
 
 def init_gpio():
