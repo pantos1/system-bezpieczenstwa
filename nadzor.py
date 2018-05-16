@@ -5,7 +5,7 @@ import subprocess
 import time
 import schedule
 import smtplib
-from os.path import basename
+from os import path
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -136,9 +136,9 @@ class Grupa():
             with open(Grupa.sciezka + zdjecie, "rb") as plik:
                 zalacznik = MIMEApplication(
                     plik.read(),
-                    Name=basename(plik)
+                    Name=path.basename(zdjecie)
                 )
-            zalacznik['Content-Disposition'] = 'attachment; filename="%s"' % basename(plik)
+            zalacznik['Content-Disposition'] = 'attachment; filename="%s"' % path.basename(zdjecie)
             wiadomosc.attach(zalacznik)
         self.smtp.sendmail(Grupa.sender, odbiorca.wartosc, wiadomosc)
 
