@@ -71,7 +71,11 @@ class Grupa():
             "id_kamery": self.kamera.id_kamery,
             "nazwa": nazwa
         }
+<<<<<<< HEAD
         self.zdjecie_instance = get_or_create(self.session, Zdjecia, skip_query=True **zdjecie)
+=======
+        self.zdjecie_instance = get_or_create(self.session, Zdjecia, skip_query=True, **zdjecie)
+>>>>>>> 064447789dfb4f9bfab7d3d6a3a4a29ce38d9545
         return proces
 
     def pomiar_temperatury_rh(self):
