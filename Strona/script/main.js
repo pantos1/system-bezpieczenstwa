@@ -93,7 +93,7 @@ function displayHomeContent(result) {
                 src: "img/" + data[i].nazwa
             })
             .appendTo(card);
-        const temp = parseFloat(data[i].temperatura).toFixed(1);
+        const temp = parseFloat(data[i].temperatura).toFixed(1).toLocaleString();
         const rh = parseInt(data[i].rh);
         const state = data[i].stan == '1' ? "Zamknięty" : "Otwarty";
         $(document.createElement("p"))
@@ -215,7 +215,7 @@ async function refreshData() {
             const img = card.find("img");
             img.attr('src', 'img/' + result[i].nazwa);
             const text = card.find("p");
-            const temp = parseFloat(result[i].temperatura).toFixed(1);
+            const temp = parseFloat(result[i].temperatura).toFixed(1).toLocaleString();
             const rh = parseInt(result[i].rh);
             const state = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
             text.html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" + "</br>" + result[i].nazwa_czujnika + ": " + state);
@@ -285,7 +285,7 @@ async function displayArchive() {
                     })
                     .appendTo(card);
                 const date = result[i].zdjecia[j].data;
-                const temp = parseFloat(result[i].zdjecia[j].temperatura).toFixed(1);
+                const temp = parseFloat(result[i].zdjecia[j].temperatura).toFixed(1).toLocaleString();
                 const rh = parseInt(result[i].zdjecia[j].rh);
                 const state = result[i].zdjecia[j].stan === '1' ? "Zamknięty" : "Otwarty";
                 $(document.createElement("p"))

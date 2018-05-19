@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  19 MAY 2018 18:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  19 MAY 2018 21:26
 entering extended mode
 **"./System bezpieczeństwa praca.tex"
 ("System bezpieczeństwa praca.tex"
@@ -426,32 +426,29 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
 \c@lstlisting=\count98
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 37.
+(Font)              <12> on input line 39.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 37.
+(Font)              <8> on input line 39.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 37.
+(Font)              <6> on input line 39.
  [1
 
 {C:/Users/Piotr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2] ("Syste
 m bezpieczeństwa praca.aux") ) 
 Here is how much of TeX's memory you used:
  3054 strings out of 493305
- 36685 string characters out of 3138874
- 104491 words of memory out of 3000000
+ 36789 string characters out of 3138874
+ 105491 words of memory out of 3000000
  6620 multiletter control sequences out of 15000+200000
  7140 words of font info for 24 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  26i,4n,32p,1249b,967s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Piotr\AppData\Local\MiKTeX\2.9\fonts\
 pk\ljfour\jknappen\ec\dpi600\ecrm1200.pk><C:/Program Files/MiKTeX 2.9/fonts/typ
-e1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfont
-s/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy
-8.pfb>
-Output written on "System bezpieczeństwa praca.pdf" (2 pages, 66258 bytes).
+e1/public/amsfonts/cm/cmsy8.pfb>
+Output written on "System bezpieczeństwa praca.pdf" (2 pages, 40944 bytes).
 PDF statistics:
- 102 PDF objects out of 1000 (max. 8388607)
+ 93 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
