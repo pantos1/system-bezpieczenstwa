@@ -95,9 +95,9 @@ Poza wspomnianymi wyżej relacjami istnieje również relacja ustawienia, która
 Ponadto kamera, czujnik temperatury i czujnik stykowy, który ma wywoływać zdjęcie kamery zostały zgrupowane w ten sposób, że kamera przechowuje klucze przypisanych do niej czujników. Odpowiada to związkom jeden do wielu między kamerą a czujnikiem (temperatury).
 
 \subsection{Fizyczna realizacja bazy danych}
-Baza danych została zaimplementowana przy użyciu systemu zarządzania bazą danych MySQL. Do jej stworzenia został napisany skrypt w języku Python. Wykorzystuje on moduł SQLAlchemy, który umożliwia działanie na relacjach bazy danych jak na obiektach programistycznych. Takie odwzorowanie nazywa się mapowanie obiektowo-relacyjnym (and. Object-Relational Mapping ORM). Ułatwia ono wprowadzanie kolejnych zmian do struktury bazy danych, relacji i związków między nimi.
+Baza danych została zaimplementowana przy użyciu systemu zarządzania bazą danych MySQL. Do stworzenia tabel został napisany skrypt w języku Python. Wykorzystuje on moduł SQLAlchemy, który umożliwia działanie na relacjach bazy danych jak na obiektach programistycznych. Takie odwzorowanie nazywa się mapowanie obiektowo-relacyjnym (and. Object-Relational Mapping ORM). Ułatwia ono wprowadzanie kolejnych zmian do struktury bazy danych, relacji i związków między nimi.
 
-Plik zawierający program tworzący bazę danych nosi nazwę baza.py. W pierwszej kolejność należy stworzyć klasę Base, która zapewnia mapowanie do tabel w bazie danych. Proces tworzenia tabel w bazie polega na stworzeniu klasy odpowiadającej każdej tabeli w bazie, która dziedziczy po klasie Base.
+Plik zawierający program tworzący tabele w bazie danych nosi nazwę baza.py. W pierwszej kolejność należy stworzyć klasę Base, która zapewnia mapowanie do tabel w bazie danych. Proces tworzenia tabel w bazie polega na stworzeniu klasy odpowiadającej każdej tabeli w bazie, która dziedziczy po klasie Base.
 \begin{lstlisting} [language=Python]
 class Pomiary(Base):
     __tablename__ = 'pomiary'
@@ -111,6 +111,8 @@ class Pomiary(Base):
     zdjecia = relationship(Zdjecia)
 \end{lstlisting}
 Klasa Pomiary posłuży jako przykład tworzenia tabeli w bazie danych. Należy zdefiniować atrybut {\_\_}tablename{\_\_}, który jest unikalną nazwą tabeli. Następnie tworzone są kolumny poprzez wywołanie konstruktora klasy Column. Przyjmuje on argumenty dotyczące typu przechowywanego w kolumnie. Dla kolumny będącej kluczem głównym należy ustawić znacznik primary{\_}key jako True. Do zdefiniowania związku z inną relacją należy podać jako argument obiekt klasy ForeignKey, który przechowuje informację, która kolumna w której tabeli służy jako klucz obcy. Następnie należy zdefiniować związek, wywołując funkcję relationship(). Przyjmuje ona jako argument nazwę klasy. Oznacza to, że klasa ta musi być stworzona wcześniej w kodzie.
+
+Dla wszystkich użytych czujników i kamer należy również stworzyć rekordy w bazie danych, odpowiadające im. Odpowiada za to program insert.py. Proces tworzenia nowego wpisu w tabeli polega na stworzeniu słownika zawierającego nazwy kolumn i wartości, które mają być im przypisane. Następnie wywoływana jest funkcja get{\_}or{\_}create, która najpierw sprawdza, czy istnieje rekord w bazie danych o takich wartościach. Jeśli istnieje już, to zwraca go. Jeśli nie istnieje, to tworzy nowy rekord. Dzięki temu do programu można dodawać tworzenie kolejnych rekordów bez obaw o powstanie duplikatów już stworzonych.
 
 \section{Program obsługujący kamery i czujniki}
 
@@ -135,8 +137,6 @@ GPIO.IN - konfiguruje wyprowadzenie jako wejście.
 pull{\_}up{\_}down=GPIO.PUD{\_}UP - to flaga określająca zastosowanie rezystora podciągającego.
 \subsection{Obsługa czujników podłączonych do magistrali I2C}
 Wymogiem technicznym systemu jest również obsługa czujników przy użyciu magistrali I2C. W ramach wykonanego systemu została zapewniona obsługa czujników temperatury i wilgotności. Wybrany został czujnik Si7021 firmy Adafruit. Zapewnia on pomiar temperatury w zakresie od -10 do 85$^\circ$C oraz wilgotności względnej od 0 do 80\%. Są to wartości wystarczające w warunkach pracy w zamkniętym pomieszczeniu.
-
-
 
 Konfiguracja odbywa się w następujący sposób. Do multipleksera przesyłany jest 8-bitowy kod odpowiadający numerowi kanałowi. Aktywacja kanału oznacza ustawienie bitu o pozycji równej numerowi kanałowi jako 1. Po wysłaniu komendy i znaku STOP kanał jest aktywowany. Kolejne komendy można adresować, używając adresu czujnika temperatury. Pierwszą komendą, którą należy wysłać to komenda pomiaru wilgotności względnej. Dostępne są dwa tryby pomiaru tej wielkości: Hold Master Mode oraz No Hold Master Mode. Pierwszy z nich oznacza, że urządzenie nadrzędne wysyła żądanie pomiaru wilgotności. Urządzenie podrzędne potwierdza otrzymanie żądanie i dokonuje pomiaru. Wymaga to zastosowania rozciągania zegara (clock stretching), które polega na utrzymywania przez urządzenie podrzędne linii zegarowej SCL w stanie niskim. Dzieje się to do momentu zakończenia pomiaru przez urządzenie i wystawieniu jego wyniku do rejestru. Drugi tryb różni się tym, że po potwierdzeniu otrzymania żądania wystawiany jest symbol zakończenia komunikacji. Znając maksymalny czas konwersji pomiaru, urządzenie nadrzędne może odczytać wynik z rejestru po jego zakończeniu. 
 
