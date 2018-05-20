@@ -115,10 +115,13 @@ Klasa Pomiary posłuży jako przykład tworzenia tabeli w bazie danych. Należy 
 Dla wszystkich użytych czujników i kamer należy również stworzyć rekordy w bazie danych, odpowiadające im. Odpowiada za to program insert.py. Proces tworzenia nowego wpisu w tabeli polega na stworzeniu słownika zawierającego nazwy kolumn i wartości, które mają być im przypisane. Następnie wywoływana jest funkcja get{\_}or{\_}create, która najpierw sprawdza, czy istnieje rekord w bazie danych o takich wartościach. Jeśli istnieje już, to zwraca go. Jeśli nie istnieje, to tworzy nowy rekord. Dzięki temu do programu można dodawać tworzenie kolejnych rekordów bez obaw o powstanie duplikatów już stworzonych.
 
 \section{Program obsługujący kamery i czujniki}
+Program obsługujący czujniki i kamery musi cyklicznie wykonywać pomiary, odczyty i zdjęcia, a wyniki zapisywać do bazy danych. W związku potrzebne jest rozwiązanie, które pozwoli cyklicznie wykonywać funkcje w ramach jednego programu. Istnieją mechanizmy wewnątrz języka Python, które umożliwiają wykonywanie zadań po minięciu pewnego czasu. Wykorzystanie modułu sched wymagałoby jednak cyklicznego umieszczania zadania w kolejce po jego wykonaniu. Innym modułem jest schedule, który pozwala w jednej linijce zaplanować cykliczne wykonanie zadania. Poniżej przykładowe wywołanie szeregowania przy pomocy tego modułu.
+\begin{lstlisting} [language=Python]
+schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(grupa.zrob_zdjecie)
+\end{lstlisting}
+Jako argument every() podawana jest częstotliwość wykonywania zadania, następnie podawane są jednostki oraz nazwa funkcji jako argument do().
 
-
-
-
+Program obsługujący czujniki początkowo wykonuje zapytanie do bazy danych o wszystkie wpisy z tabel z czujnikami, czujnikami temperatury oraz kamerami. Następnie przechodzi w pętli przez wyniki, tworząc obiekty klasy Grupa. Klasa Grupa reprezentuje kamerę oraz przypisane do niej czujniki. Zawiera ona metody, które pozwalają wykonywać zdjęcie, pomiar temperatury i wilgotność oraz odczyt stanu wyprowadzenia GPIO, do którego jest podłączony czujnik stykowy. Zarządza ona również wysłaniem wiadomości email z powiadomieniem w przypadku otwarcia czujnika.
 
 \subsection{Obsługa czujników stykowych}
 Korzystanie z wyprowadzeń GPIO w języku Python jest możliwe na komputerze Raspberry Pi przy użyciu pakietu RPi.GPIO. Umożliwia on odczyt stanu wyprowadzeń. Konfiguracja obsługi GPIO rozpoczyna się od określenia sposobu numeracji wyprowadzeń. Dostępne są dwie możliwości: GPIO.BOARD oraz GPIO.BCM. Pierwszy odnosi się do fizycznej lokalizacji wyprowadzeń na płytce drukowanej. Drugi sposób oznacza numeracją kanałów system-on-chip (SOC) firmy Broadcomm, który jest użyty w komputerze Raspberry Pi 3B. Ze względu na korzystanie z płytki prototypowej oraz modułu Proto Pi Plus, który korzysta z oznaczeń odpowiadających kanałom SOC w projekcie użyto tego sposobu numeracji.
@@ -135,6 +138,8 @@ GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 self.czujnik.gpio - to atrybut przechowujący numer wyprowadzenia GPIO.
 GPIO.IN - konfiguruje wyprowadzenie jako wejście.
 pull{\_}up{\_}down=GPIO.PUD{\_}UP - to flaga określająca zastosowanie rezystora podciągającego.
+
+
 \subsection{Obsługa czujników podłączonych do magistrali I2C}
 Wymogiem technicznym systemu jest również obsługa czujników przy użyciu magistrali I2C. W ramach wykonanego systemu została zapewniona obsługa czujników temperatury i wilgotności. Wybrany został czujnik Si7021 firmy Adafruit. Zapewnia on pomiar temperatury w zakresie od -10 do 85$^\circ$C oraz wilgotności względnej od 0 do 80\%. Są to wartości wystarczające w warunkach pracy w zamkniętym pomieszczeniu.
 
@@ -142,7 +147,9 @@ Konfiguracja odbywa się w następujący sposób. Do multipleksera przesyłany j
 
 Do obsługi żądań konieczna była odpowiedni pakiet. Pierwszym zastosowanym pakietem był pakiet python-smbus. Korzysta on ze sterownika wbudowanego w jądro systemu Linux. Została przeprowadzona próba komunikacji w trybie Hold Master Mode ze względu na dostępne komendy protokołu I2C. Zakończyła się ona błędem o kodzie io errno5. Wynikał on z tego, że pakiet smbus obsługuje magistralę I2C zgodnie ze standardem SMBus. Posiada on bardziej ścisłe reguły dotyczące czasu trwania transakcji na magistrali. Przy użyciu pakietu nie było możliwe zastosowanie trybu No Hold Master Mode, ponieważ nie dostarczał on komendy odpowiadającej odczytowi rejestru urządzenia o wskazanym adresie. Wszystkie dostępne komendy zawierały zapis do urządzenia przed odczytem.
 
-Innym pakietem umożliwiającym komunikację poprzez magistralę I2C jest pigpio. Opiera on swoje działanie na bibliotece napisanej w języku C. Przed rozpoczęciem działania z pakietu konieczne jest programu pidpiod. Jest to demon -- program działający w tle bez interakcji z użytkownikiem. Pierwszym krokiem jest stworzenie obiektu klasy pigpio.pi. Obiekt ten jest przechowywany jako atrybut klasy Grupa. 
+Innym pakietem umożliwiającym komunikację poprzez magistralę I2C jest pigpio. Opiera on swoje działanie na bibliotece napisanej w języku C. Przed rozpoczęciem działania z pakietu konieczne jest programu pidpiod. Jest to demon -- program działający w tle bez interakcji z użytkownikiem. Musi on działać, zanim wywołany zostanie program nadzor.py. Można to zapewnić, korzystając z narzędzia cron. Wpis do jego tabeli z wywołaniem programu pigpiod poprzedzony @reboot zapewnia, że program zostanie uruchomiony za każdym razem, gdy włączany będzie system operacyjny.
+
+Pierwszym krokiem jest stworzenie obiektu klasy pigpio.pi. Obiekt ten jest przechowywany jako atrybut klasy Grupa. 
 
 Przy użyciu tego modułu możliwe jest przeprowadzenie pomiaru wilgotności względnej w trybie No Hold Master Mode. W pierwszej kolejności wysyłana jest przy pomocy funkcji i2c{\_}write{\_}byte() 8-bitowa komenda pomiaru. Następnie program jest usypiany na 0.05s przy pomocy komendy time.sleep(). Jest to wartość większa niż najdłuższy czas konwersji pomiaru wilgotności względnej podany w karcie katalogowej czujnika Si 7021. Następnie odczytywany jest poprzez funkcję i2c{\_}read{\_}device() wynik pomiaru składający się z dwóch bajtów. Funkcja zwraca liczbę odczytanych bajtów i bajty w formie tablicy. Bajty te można następnie wykorzystać do obliczenia wilgotności względnej na podstawie wzoru z karty katalogowej. 
 

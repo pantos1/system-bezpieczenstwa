@@ -20,7 +20,7 @@ si7021_zielony_kwargs = {
     "czestotliwosc_pomiaru_temp": 10.0,
     "kanal_mux": 1
 }
-si7021_zielony = create(session, Czujniki_temperatury, **si7021_zielony_kwargs)
+si7021_zielony = get_or_create(session, Czujniki_temperatury, **si7021_zielony_kwargs)
 
 si7021_pomaranczowy_kwargs = {
     "id_czujnika_temp": 2,
@@ -28,21 +28,21 @@ si7021_pomaranczowy_kwargs = {
     "czestotliwosc_pomiaru_temp": 10.0,
     "kanal_mux": 2
 }
-si7021_pomaranczowy_kwargs = create(session, Czujniki_temperatury, **si7021_pomaranczowy_kwargs)
+si7021_pomaranczowy_kwargs = get_or_create(session, Czujniki_temperatury, **si7021_pomaranczowy_kwargs)
 
 kontakron_1_kwargs = {
     "nazwa_czujnika": "Kontaktron 1",
     "gpio": 23,
     "czestotliwosc_odczytu_stanu": 0.1
 }
-kontaktron_1 = create(session, Czujniki, **kontakron_1_kwargs)
+kontaktron_1 = get_or_create(session, Czujniki, **kontakron_1_kwargs)
 
 kontakron_2_kwargs = {
     "nazwa_czujnika": "Kontaktron 2",
     "gpio": 18,
     "czestotliwosc_odczytu_stanu": 0.1
 }
-kontaktron_2 = create(session, Czujniki, **kontakron_2_kwargs)
+kontaktron_2 = get_or_create(session, Czujniki, **kontakron_2_kwargs)
 
 titanum_1_kwargs = {
     "nazwa_kamery": "Kamera 1 - Titanum",
@@ -50,7 +50,7 @@ titanum_1_kwargs = {
     "id_czujnika_temp": 1,
     "czestotliwosc_zdjecia": 10.0
 }
-titanum_1 = create(session, Kamery, **titanum_1_kwargs)
+titanum_1 = get_or_create(session, Kamery, **titanum_1_kwargs)
 
 titanum_2_kwargs = {
     "nazwa_kamery": "Kamera 1 - Titanum",
@@ -58,16 +58,16 @@ titanum_2_kwargs = {
     "id_czujnika_temp": 2,
     "czestotliwosc_zdjecia": 10.0
 }
-titanum_2 = create(session, Kamery, **titanum_2_kwargs)
+titanum_2 = get_or_create(session, Kamery, **titanum_2_kwargs)
 
 powiadomienia_kwargs = {
     "klucz": "powiadomienia_email",
     "wartosc": "off"
 }
-powiadomienia = create(session, Ustawienia, **powiadomienia_kwargs)
+powiadomienia = get_or_create(session, Ustawienia, **powiadomienia_kwargs)
 
 adres_email_kwargs = {
     "klucz": "adres_email",
     "wartosc": ""
 }
-adres_email = create(session, Ustawienia, **adres_email_kwargs)
+adres_email = get_or_create(session, Ustawienia, **adres_email_kwargs)
