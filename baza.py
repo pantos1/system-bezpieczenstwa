@@ -3,32 +3,29 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
-#konfiguracja do polaczenia z baza danych
-config ={
+# konfiguracja do polaczenia z baza danych
+config = {
     'host': 'localhost',
     'user': 'root',
     'passwd': 'raspberry',
     'db': 'nadzor'
-    }
-
+}
 
 Base = declarative_base()
 
-def get_or_create(session, model,  skip_query, **kwargs):
-    if not skip_query:
-        instance = session.query(model).filter_by(**kwargs).first()
-        if instance:
-            return instance
-    else:
-        instance = model(**kwargs)
-        session.add(instance)
-        session.commit()
-        return instance
+
+def create(session, model, **kwargs):
+    instance = model(**kwargs)
+    session.add(instance)
+    session.commit()
+    return instance
+
 
 def fetch_all(session, model):
     instances = session.query(model)
     if instances:
         return instances
+
 
 class Ustawienia(Base):
     __tablename__ = 'ustawienia'
@@ -37,6 +34,7 @@ class Ustawienia(Base):
 
     klucz = Column(String(100))
     wartosc = Column(String(100))
+
 
 class Czujniki_temperatury(Base):
     __tablename__ = 'czujniki_temperatury'
@@ -47,16 +45,19 @@ class Czujniki_temperatury(Base):
     czestotliwosc_pomiaru_temp = Column(Float)
     kanal_mux = Column(Integer)
 
+
 class Odczyty(Base):
     __tablename__ = 'odczyty'
 
     id_odczytu = Column(Integer, primary_key=True)
-    id_czujnika_temp = Column(Integer, ForeignKey('czujniki_temperatury.id_czujnika_temp', ondelete='CASCADE'), nullable=False)
+    id_czujnika_temp = Column(Integer, ForeignKey('czujniki_temperatury.id_czujnika_temp', ondelete='CASCADE'),
+                              nullable=False)
 
     temperatura = Column(Float)
     rh = Column(Float)
 
     czujniki_temperatury = relationship(Czujniki_temperatury)
+
 
 class Czujniki(Base):
     __tablename__ = 'czujniki'
@@ -67,6 +68,7 @@ class Czujniki(Base):
     gpio = Column(Integer)
     czestotliwosc_odczytu_stanu = Column(Float)
 
+
 class Stany(Base):
     __tablename__ = 'stany'
 
@@ -76,6 +78,7 @@ class Stany(Base):
     stan = Column(SmallInteger)
 
     czujniki = relationship(Czujniki)
+
 
 class Kamery(Base):
     __tablename__ = 'kamery'
@@ -90,6 +93,7 @@ class Kamery(Base):
 
     nazwa_kamery = Column(String(100))
 
+
 class Zdjecia(Base):
     __tablename__ = 'zdjecia'
 
@@ -99,6 +103,7 @@ class Zdjecia(Base):
     nazwa = Column(String(250))
 
     kamery = relationship(Kamery)
+
 
 class Pomiary(Base):
     __tablename__ = 'pomiary'
@@ -115,6 +120,7 @@ class Pomiary(Base):
     zdjecia = relationship(Zdjecia)
 
 
-db = create_engine("mysql+mysqldb://" + config['user'] + ":" + config['passwd'] + "@" + config['host'] + "/" + config['db'], echo=True)
+db = create_engine(
+    "mysql+mysqldb://" + config['user'] + ":" + config['passwd'] + "@" + config['host'] + "/" + config['db'], echo=True)
 
 Base.metadata.create_all(db)

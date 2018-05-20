@@ -1,11 +1,4 @@
 \documentclass[a4paper,12pt,twoside]{article}
-\usepackage[T1]{fontenc}
-\usepackage{polski}
-\usepackage[utf8]{inputenc}
-\usepackage[polish]{babel}
-\usepackage{listings}
-\usepackage{graphicx} 
-
 \addtolength{\hoffset}{-1.54cm}
 \setlength{\oddsidemargin}{2cm}
 \setlength{\textwidth}{16cm}
@@ -19,10 +12,56 @@
 
 \pagestyle{plain}
 
+\usepackage[T1]{fontenc}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{listings}
+\usepackage{graphicx} 
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ 
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  %frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
 \begin{document}
 
 \section{Architektura systemu}
-System oparty jest o komputer jednopłytkowy (ang. single-board computer) Raspberry Pi 3B. Na komputerze działa dystrybucja Raspbian systemu operacyjnego Linux. Połączenia między czujnikami stykowymi oraz czujnikami I2C są wykonane na płytce prototypowej. Wyprowadzenia GPIO Raspberry Pi są rozszerzone do płytki poprzez moduł ProtoPi Plus. Dzięki temu ułatwione było prototypowanie i testowanie systemu bez konieczności lutowania połączeń. Kamery USB są podłączone do gniazd USB komputera.
+
+\begin{figure}[h]
+\includegraphics[width=\linewidth]{Architektura.png}
+\caption{Schemat architektury systemu}
+\label{fig: architektura}
+\end{figure}
+
+Rysunek \ref{fig: architektura} przedstawia projekt architektury systemu. System oparty jest o komputer jednopłytkowy (ang. single-board computer) Raspberry Pi 3B. Na komputerze działa dystrybucja Raspbian systemu operacyjnego Linux. Połączenia między czujnikami stykowymi oraz czujnikami I2C są wykonane na płytce prototypowej. Wyprowadzenia GPIO Raspberry Pi są rozszerzone do płytki poprzez moduł ProtoPi Plus. Dzięki temu ułatwione było prototypowanie i testowanie systemu bez konieczności lutowania połączeń. Kamery USB są podłączone do gniazd USB komputera.
 
 W systemie zostały zastosowane czujniki zbliżeniowe magnetyczne MC-38. Można je wykorzystać do określenia pozycji drzwi albo okien. Część z przewodami (kontaktron) należy umieścić na framudze a magnes na drzwiach lub oknach. Obwód kontaktronu jest domyślnie rozwarty, a po zbliżeniu magnesu zostaje zamknięty. Czujnik powinien być podłączony do wyprowadzenia GPIO i do masy, aby wykrywać zamknięcie i przerwanie obwodu. Raspberry Pi umożliwia podłączenie każdego wyprowadzenia poprzez wbudowany rezystor podciągający do napięcia zasilania (Vcc). Dzięki temu można wykrywać otwarcie okien lub drzwi jako oddalenie czujników i przerwanie obwodu -- zmianę stanu odczytywaną na wyprowadzeniu z wysokiego na niski. W wykonanym prototypie dłuższy przewód podłączono do wyprowadzenia GPIO, a krótszy do masy na płytce prototypowej. 
 
@@ -36,32 +75,65 @@ Wymogiem systemu jest udostępnianie wyników pomiaru systemu użytkownikowi pop
 
 \section{Baza danych}
 Relacyjna baza danych składa się relacji (tabel), które są połączone związkami. Umożliwia ona programistyczny dostęp do danych poprzez oparty na transakcjach silnik bazy danych. Dzięki temu możliwe jest, aby jeden program zapisywał dane do bazy, a drugi niezależnie je odczytywał. W projekcie użyty został system zarządzania bazą danych MySQL. Zapewnia on dobrą integrację z użytym jako serwer WWW programem Apache.
+\subsection{Projekt bazy danych}
+Projekt bazy danych należy rozpocząć od zdefiniowania, jakie obiekty mają być przechowywane w bazie. W projektowanym systemie niezbędne są informacje o czujnikach i kamerach podłączonych do Raspberry Pi oraz pomiarach wykonanych przez nie. Informacje o urządzeniach mogą zawierać nazwę identyfikującą ich położenie lub przeznaczenie np. "'Kamera w kuchni"' lub "'Czujnik - drzwi wejściowe"'. Każde urządzenie będzie jednak różniło się przechowywanymi informacjami. Tabela z czujnikami temperatur przechowuje dodatkowo informacje o numerze kanału multipleksera, do którego jest podłączona, a tabela z czujnikami stykowymi o numerze wyprowadzenia GPIO, do którego jest podłączony. Z tego powodu informacje o urządzeniach będą przechowywane w różnych tabelach - osobno kamery, czujniki stykowe i czujniki temperatury.
 
-Projekt bazy danych należy rozpocząć od zdefiniowania, jakie obiekty mają być przechowywane w bazie. W projektowanym systemie niezbędne są informacje o czujnikach i kamerach podłączonych do Raspberry Pi oraz pomiarach wykonanych przez nie. Informacje o urządzeniach mogą zawierać nazwę identyfikującą ich położenie lub przeznaczenie np. "Kamera w kuchni" lub "Czujnik - drzwi wejściowe". 
+Baza danych powinna przechowywać informację o stanie czujnika zbliżeniowego, wartości zmierzonej temperatury i wilgotności oraz wykonanym zdjęciu. W bazie danych nie muszą być przechowywane pliki ze zdjęciami, może być to jednoznaczny identyfikator zdjęcia, który pozwoli zlokalizować je w pamięci urządzenia. Tabela z pomiarami powinna również posiadać datę wpisu.
 
-Baza danych powinna przechowywać informację o stanie czujnika zbliżeniowego, wartości zmierzonej temperatury i wilgotności oraz wykonanym zdjęciu. W bazie danych nie muszą być przechowywane pliki ze zdjęciami, może być to jednoznaczny identyfikator zdjęcia, który pozwoli zlokalizować je w pamięci Raspberry Pi. 
+System może jednak obsługiwać wiele kamer i czujników. Oznacza to, że między urządzeniem a pomiarem zachodzi związek wiele do wielu. Polega on na tym, że jedna kamera jest przypisana do wielu pomiarów, a jednocześnie pomiar może mieć wiele kamer. Jest on niemożliwy do zrealizowania przy użyciu kluczy obcych. Konieczne jest zatem wprowadzenie pośredniej tabeli, która zrealizuje w praktyce związek wiele do wielu. Taką tabelą dla przykładu kamery i pomiaru są zdjęcia. Każda kamera może wykonać wiele zdjęć, ale każde zdjęcie ma przypisaną tylko jedną kamerę. Podobnie każdy pomiar odpowiada tylko jednemu zdjęciu, ale jedno zdjęcie może odpowiadać wielu pomiarom. Wynika to z tego, że wpisy do tabeli pomiary są niezależne od wykonywanych zdjęć. Dla czujników temperatury taką tabelą realizującą związek wiele do wielu jest tabela pomiary, a dla czujników stykowych - stany.
 
-System może jednak obsługiwać 
+\begin{figure}[h]
+\includegraphics[width=\linewidth]{er.png}
+\caption{Schemat bazy danych na poziomie logicznym}
+\label{fig: er}
+\end{figure}
+
+Rysunek \ref{fig: er} przedstawia schemat bazy danych na poziomie logicznym. Poziom logiczny to zbiór relacji i związków między nimi, które mogą zostać stworzone w systemie zarządzania bazą danych. 
+
+Poza wspomnianymi wyżej relacjami istnieje również relacja ustawienia, która nie jest w związku z innymi. Jest to relacja, która pozwala przechowywać różne ustawienia systemu, które nie dotyczą bezpośrednio urządzeń. Posiada ona dwie kolumny klucz i wartość. Klucz jest opisem ustawienia, a wartość przechowuje informację o nim np. adres email, na który mają być wysyłane powiadomienia. 
+
+Ponadto kamera, czujnik temperatury i czujnik stykowy, który ma wywoływać zdjęcie kamery zostały zgrupowane w ten sposób, że kamera przechowuje klucze przypisanych do niej czujników. Odpowiada to związkom jeden do wielu między kamerą a czujnikiem (temperatury).
+
+\subsection{Fizyczna realizacja bazy danych}
+Baza danych została zaimplementowana przy użyciu systemu zarządzania bazą danych MySQL. Do jej stworzenia został napisany skrypt w języku Python. Wykorzystuje on moduł SQLAlchemy, który umożliwia działanie na relacjach bazy danych jak na obiektach programistycznych. Takie odwzorowanie nazywa się mapowanie obiektowo-relacyjnym (and. Object-Relational Mapping ORM). Ułatwia ono wprowadzanie kolejnych zmian do struktury bazy danych, relacji i związków między nimi.
+
+Plik zawierający program tworzący bazę danych nosi nazwę baza.py. W pierwszej kolejność należy stworzyć klasę Base, która zapewnia mapowanie do tabel w bazie danych. Proces tworzenia tabel w bazie polega na stworzeniu klasy odpowiadającej każdej tabeli w bazie, która dziedziczy po klasie Base.
+\begin{lstlisting} [language=Python]
+class Pomiary(Base):
+    __tablename__ = 'pomiary'
+    id_pomiaru = Column(Integer, primary_key=True)
+    id_stanu = Column(Integer, ForeignKey('stany.id_stanu', ondelete='CASCADE'), nullable=False)
+    id_odczytu = Column(Integer, ForeignKey('odczyty.id_odczytu', ondelete='CASCADE'), nullable=False)
+    id_zdjecia = Column(Integer, ForeignKey('zdjecia.id_zdjecia', ondelete='CASCADE'), nullable=False)
+    data = Column(DATETIME)
+    stany = relationship(Stany)
+    odczyt = relationship(Odczyty)
+    zdjecia = relationship(Zdjecia)
+\end{lstlisting}
+Klasa Pomiary posłuży jako przykład tworzenia tabeli w bazie danych. Należy zdefiniować atrybut {\_\_}tablename{\_\_}, który jest unikalną nazwą tabeli. Następnie tworzone są kolumny poprzez wywołanie konstruktora klasy Column. Przyjmuje on argumenty dotyczące typu przechowywanego w kolumnie. Dla kolumny będącej kluczem głównym należy ustawić znacznik primary{\_}key jako True. Do zdefiniowania związku z inną relacją należy podać jako argument obiekt klasy ForeignKey, który przechowuje informację, która kolumna w której tabeli służy jako klucz obcy. Następnie należy zdefiniować związek, wywołując funkcję relationship(). Przyjmuje ona jako argument nazwę klasy. Oznacza to, że klasa ta musi być stworzona wcześniej w kodzie.
+
+\section{Program obsługujący kamery i czujniki}
 
 
 
 
-\section{Obsługa czujników stykowych}
-Korzystanie z wyprowadzeń GPIO w programie języku Python jest możliwe na komputerze Raspberry Pi przy użyciu pakietu RPi.GPIO. Umożliwia on odczyt stanu wyprowadzeń. Konfiguracja obsługi GPIO rozpoczyna się od określenia sposobu numeracji wyprowadzeń. Dostępne są dwie możliwości: GPIO.BOARD oraz GPIO.BCM. Pierwszy odnosi się do fizycznej lokalizacji wyprowadzeń na płytce drukowanej. Drugi sposób oznacza numeracją kanałów system-on-chip (SOC) firmy Broadcomm, który jest użyty w komputerze Raspberry Pi 3B. Ze względu na korzystanie z płytki prototypowej oraz modułu Proto Pi Plus, który korzysta z oznaczeń odpowiadających kanałom SOC w projekcie użyto tego sposobu numeracji.
+
+\subsection{Obsługa czujników stykowych}
+Korzystanie z wyprowadzeń GPIO w języku Python jest możliwe na komputerze Raspberry Pi przy użyciu pakietu RPi.GPIO. Umożliwia on odczyt stanu wyprowadzeń. Konfiguracja obsługi GPIO rozpoczyna się od określenia sposobu numeracji wyprowadzeń. Dostępne są dwie możliwości: GPIO.BOARD oraz GPIO.BCM. Pierwszy odnosi się do fizycznej lokalizacji wyprowadzeń na płytce drukowanej. Drugi sposób oznacza numeracją kanałów system-on-chip (SOC) firmy Broadcomm, który jest użyty w komputerze Raspberry Pi 3B. Ze względu na korzystanie z płytki prototypowej oraz modułu Proto Pi Plus, który korzysta z oznaczeń odpowiadających kanałom SOC w projekcie użyto tego sposobu numeracji.
 
 Inicjalizacja obsługi GPIO wywoływana jest w funkcji:  
-\begin{lstlisting}
+\begin{lstlisting} [language=Python]
 def init_gpio():
     GPIO.setmode(GPIO.BCM)
 \end{lstlisting}
 Wykonywana jest ona na początku działania programu nadzor.py w funkcji main(). Obsługa poszczególnych czujników odbywa się w ramach obiektów klasy Grupa. Użycie rezystora podciągającego jest wywoływane w programie nadzor.py w konstruktorze obiektu klasy Grupa w następujący sposób.
-\begin{lstlisting}
+\begin{lstlisting} [language=Python]
 GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 \end{lstlisting}
 self.czujnik.gpio - to atrybut przechowujący numer wyprowadzenia GPIO.
 GPIO.IN - konfiguruje wyprowadzenie jako wejście.
 pull{\_}up{\_}down=GPIO.PUD{\_}UP - to flaga określająca zastosowanie rezystora podciągającego.
-\section{Obsługa czujników podłączonych do magistrali I2C}
+\subsection{Obsługa czujników podłączonych do magistrali I2C}
 Wymogiem technicznym systemu jest również obsługa czujników przy użyciu magistrali I2C. W ramach wykonanego systemu została zapewniona obsługa czujników temperatury i wilgotności. Wybrany został czujnik Si7021 firmy Adafruit. Zapewnia on pomiar temperatury w zakresie od -10 do 85$^\circ$C oraz wilgotności względnej od 0 do 80\%. Są to wartości wystarczające w warunkach pracy w zamkniętym pomieszczeniu.
 
 
@@ -76,7 +148,7 @@ Przy użyciu tego modułu możliwe jest przeprowadzenie pomiaru wilgotności wzg
 
 Czujnik Si 7021 wykonuje również pomiar temperatury potrzebny do wyznaczenia wilgotności względnej. Wynik tego pomiaru jest przechowywany w urządzeniu. Można go odczytać, wysyłając komendę o kodzie 0xE0. Całą transakcję można zrealizować przy użyciu jednej komendy i2c{\_}read{\_}i2c{\_}block{\_}data, ponieważ nie ma potrzeby oczekiwania na konwersję pomiaru temperatury. Wysyła ona żądanie wystawienia wyniku pomiaru temperatury. Następnie odczytywana jest podana liczba 
 bajtów. Bajty te są zapisane do tablicy i użyte do obliczenia wartości temperatury. 
-\section{Obsługa kamer USB}
+\subsection{Obsługa kamer USB}
 Raspberry Pi 3 B posiada 4 gniazda USB, do których mogą podłączone kamery USB. Kamery USB są obsługiwane przy pomocy aplikacji fswebcam. Jest to samodzielny program pozwalający na wywoływanie zdjęć z kamer USB podłączonych do komputerem z systemem typu Unix. Wywołanie tego programu z poziomu skryptu w języku Python wymaga użycia modułu subprocessing. Daje on możliwość otwierania programów w osobnych procesach. Do otwarcia fswebcam użyta została klasa Popen, ponieważ daje możliwość wywołania metody wait(), pozwalającej zaczekać na zakończenie wykonywania się procesu. 
 
 \end{document}
