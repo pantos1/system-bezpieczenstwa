@@ -15,7 +15,6 @@ DBSession = sessionmaker(bind=db)
 session = DBSession()
 
 si7021_zielony_kwargs = {
-    "id_czujnika_temp": 1,
     "nazwa_czujnika_temp": "Si7021_zielony",
     "czestotliwosc_pomiaru_temp": 10.0,
     "kanal_mux": 1
@@ -23,12 +22,11 @@ si7021_zielony_kwargs = {
 si7021_zielony = get_or_create(session, Czujniki_temperatury, **si7021_zielony_kwargs)
 
 si7021_pomaranczowy_kwargs = {
-    "id_czujnika_temp": 2,
     "nazwa_czujnika_temp": "Si7021_pomaranczowy",
     "czestotliwosc_pomiaru_temp": 10.0,
     "kanal_mux": 2
 }
-si7021_pomaranczowy_kwargs = get_or_create(session, Czujniki_temperatury, **si7021_pomaranczowy_kwargs)
+si7021_pomaranczowy = get_or_create(session, Czujniki_temperatury, **si7021_pomaranczowy_kwargs)
 
 kontakron_1_kwargs = {
     "nazwa_czujnika": "Kontaktron 1",
@@ -46,16 +44,16 @@ kontaktron_2 = get_or_create(session, Czujniki, **kontakron_2_kwargs)
 
 titanum_1_kwargs = {
     "nazwa_kamery": "Kamera 1 - Titanum",
-    "id_czujnika": 1,
-    "id_czujnika_temp": 1,
+    "id_czujnika": kontaktron_1.id_czujnka,
+    "id_czujnika_temp": si7021_zielony.id_czujnika_temp,
     "czestotliwosc_zdjecia": 10.0
 }
 titanum_1 = get_or_create(session, Kamery, **titanum_1_kwargs)
 
 titanum_2_kwargs = {
     "nazwa_kamery": "Kamera 1 - Titanum",
-    "id_czujnika": 2,
-    "id_czujnika_temp": 2,
+    "id_czujnika": kontaktron_2.id_czujnika,
+    "id_czujnika_temp": si7021_pomaranczowy.id_czujnika_temp,
     "czestotliwosc_zdjecia": 10.0
 }
 titanum_2 = get_or_create(session, Kamery, **titanum_2_kwargs)
