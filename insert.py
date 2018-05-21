@@ -44,7 +44,7 @@ kontaktron_2 = get_or_create(session, Czujniki, **kontakron_2_kwargs)
 
 titanum_1_kwargs = {
     "nazwa_kamery": "Kamera 1 - Titanum",
-    "id_czujnika": kontaktron_1.id_czujnka,
+    "id_czujnika": kontaktron_1.id_czujnika,
     "id_czujnika_temp": si7021_zielony.id_czujnika_temp,
     "czestotliwosc_zdjecia": 10.0
 }
