@@ -25,18 +25,17 @@ class Grupa():
     czujnik_temp_adres = 0x40
     rhKod = 0xF5
     tempKod = 0xE0
-    sender = "systembezpieczenstwa2018@gmail.com"
-    password = "inzynierka"
 
-    def __init__(self, kamera, czujnik_temp, czujnik, ustawienia, session):
+    def __init__(self, kamera, czujnik_temp, czujnik, ustawienia, session, smtp):
         self.kamera = kamera
         self.czujnik_temp = czujnik_temp
         self.czujnik = czujnik
         self.ustawienia = ustawienia
         self.session = session
-        self.smtp = self.init_smtp(Grupa.sender, Grupa.password)
+        self.smtp = smtp
         self.powiadomienia_email = self.ustawienia.filter(Ustawienia.klucz == 'powiadomienia_email').one().wartosc
         self.odbiorca = self.ustawienia.filter(Ustawienia.klucz == 'adres_email').one().wartosc
+        self.nadawca = self.ustawienia.filter(Ustawienia.klucz == 'adres_email_nadawcy').one().wartosc
         self.zdjecie_instance = None
         self.odczyt_instance = None
         self.stan_czujnika = 0
@@ -58,11 +57,6 @@ class Grupa():
         else:
             komenda = 0x00
         return komenda
-
-    def init_smtp(self, sender, password):
-        smtp_server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-        smtp_server.login(sender, password)
-        return smtp_server
 
     def zrob_zdjecie(self):
         data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
@@ -128,7 +122,7 @@ class Grupa():
     def wyslij_email(self, odbiorca, temat, tekst, proces, zdjecia=None):
         proces.wait()
         wiadomosc = MIMEMultipart()
-        wiadomosc['From'] = Grupa.sender
+        wiadomosc['From'] = self.nadawca
         wiadomosc['To'] = odbiorca
         wiadomosc['Subject'] = temat
         wiadomosc.attach(MIMEText(tekst, 'plain'))
@@ -140,7 +134,7 @@ class Grupa():
                 )
             zalacznik['Content-Disposition'] = 'attachment; filename="%s"' % path.basename(zdjecie)
             wiadomosc.attach(zalacznik)
-        self.smtp.sendmail(Grupa.sender, odbiorca, wiadomosc.as_string())
+        self.smtp.sendmail(self.nadawca, odbiorca, wiadomosc.as_string())
 
 
 def init_gpio():
@@ -155,6 +149,12 @@ def init_session(config):
     DBSession = sessionmaker(bind=db)
     session = DBSession()
     return session
+
+
+def init_smtp(sender, password):
+    smtp_server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+    smtp_server.login(sender, password)
+    return smtp_server
 
 
 def run_threaded(func, args):
@@ -175,9 +175,10 @@ def main():
     czujniki = fetch_all(session, Czujniki)
     czujniki_temperatury = fetch_all(session, Czujniki_temperatury)
     ustawienia = fetch_all(session, Ustawienia)
+    smtp_server = init_smtp(ustawienia.filter(Ustawienia.klucz == 'adres_email_nadawcy').one().wartosc, ustawienia.filter(Ustawienia.klucz == 'haslo_nadawcy').one().wartosc)
     grupy = []
     for kamera, czujnik_temp, czujnik in zip(kamery.all(), czujniki_temperatury.all(), czujniki.all()):
-        grupa = Grupa(kamera=kamera, czujnik_temp=czujnik_temp, czujnik=czujnik, ustawienia=ustawienia, session=session)
+        grupa = Grupa(kamera=kamera, czujnik_temp=czujnik_temp, czujnik=czujnik, ustawienia=ustawienia, session=session, smtp=smtp_server)
         grupy.append(grupa)
         grupa.zrob_zdjecie()
         grupa.pomiar_temperatury_rh()

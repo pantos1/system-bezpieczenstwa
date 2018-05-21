@@ -63,11 +63,11 @@
 
 Rysunek \ref{fig: architektura} przedstawia projekt architektury systemu. System oparty jest o komputer jednopłytkowy (ang. single-board computer) Raspberry Pi 3B. Na komputerze działa dystrybucja Raspbian systemu operacyjnego Linux. Połączenia między czujnikami stykowymi oraz czujnikami I2C są wykonane na płytce prototypowej. Wyprowadzenia GPIO Raspberry Pi są rozszerzone do płytki poprzez moduł ProtoPi Plus. Dzięki temu ułatwione było prototypowanie i testowanie systemu bez konieczności lutowania połączeń. Kamery USB są podłączone do gniazd USB komputera.
 
-W systemie zostały zastosowane czujniki zbliżeniowe magnetyczne MC-38. Można je wykorzystać do określenia pozycji drzwi albo okien. Część z przewodami (kontaktron) należy umieścić na framudze a magnes na drzwiach lub oknach. Obwód kontaktronu jest domyślnie rozwarty, a po zbliżeniu magnesu zostaje zamknięty. Czujnik powinien być podłączony do wyprowadzenia GPIO i do masy, aby wykrywać zamknięcie i przerwanie obwodu. Raspberry Pi umożliwia podłączenie każdego wyprowadzenia poprzez wbudowany rezystor podciągający do napięcia zasilania (Vcc). Dzięki temu można wykrywać otwarcie okien lub drzwi jako oddalenie czujników i przerwanie obwodu -- zmianę stanu odczytywaną na wyprowadzeniu z wysokiego na niski. W wykonanym prototypie dłuższy przewód podłączono do wyprowadzenia GPIO, a krótszy do masy na płytce prototypowej. 
+W systemie zostały zastosowane czujniki zbliżeniowe magnetyczne MC-38. Można je wykorzystać do określenia pozycji drzwi albo okien. Część z przewodami (kontaktron) należy umieścić na framudze a magnes na drzwiach lub oknach. Obwód kontaktronu jest domyślnie rozwarty, a po zbliżeniu magnesu zostaje zamknięty. Czujnik został podłączony do napięcia 3,3V oraz wyprowadzenia GPIO, aby wykrywać zamknięcie i przerwanie obwodu. Wówczas zbliżone czujniki oznaczają zamknięty obwód i wysoki stan na wyprowadzeniu. W przypadku oddalenia czujników i otwarcia obwodu oczekiwany jest stan niski na wyprowadzeniu. W tym celu konieczny jest rezystor ściągający stan wyprowadzenia do masy. Raspberry Pi umożliwia programistyczną aktywacją wbudowanego resystora ściągającego. Dzięki temu można wykrywać otwarcie okien lub drzwi jako oddalenie czujników i przerwanie obwodu -- zmianę stanu z wysokiego na niski.
 
 Wymogiem systemu jest również obsługa wielu czujników i kamer. Adres czujników Si 7021 to 0x70. Nie mają one możliwości programistycznej lub sprzętowej zmiany adresu. Oznacza to, że do jednej magistrali mógłby być podłączony bezpośrednio tylko jeden czujnik. Podłączenie większej liczby czujników o tym samym adresie doprowadziłoby do sytuacji, w której nie można jednoznacznie określić, z którego czujnika została odczytany wynik pomiaru. Raspberry Pi3 B posiada możliwości obsługi dwóch magistral I2C. W założeniach projektowych jest wymaganie obsługi do 4 czujników temperatury każdego przypisanego do jednej kamery. Nie jest więc możliwe rozwiązanie polegające na podłączeniu po jednym czujnika do każdej z magistral. Innym rozwiązaniem tej sytuacji jest zastosowanie multipleksera I2C. Multiplekser zadziała jak przełącznik, który pozwoli na zapis i odczyt z jednym czujnikiem naraz. Przykładem takiego urządzenia jest TCA 9548A firmy Adafruit. Pozwala on na podłączenie do 8 urządzeń korzystających z magistrali I2C.
 
-Do obsługi czujników i kamer wybrałem język Python, ponieważ umożliwia on dzięki wielu dostępnym modułom wysokopoziomową obsługę wyprowadzeń GPIO, magistrali I2C oraz kamer USB. Ponadto istnieje wiele pakietów pozwalających na łatwą komunikację z bazą danych, która będzie miejscem przechowywania wyników pomiaru. 
+Do obsługi czujników i kamer wybrałem język Python, ponieważ umożliwia on dzięki wielu dostępnym modułom wysokopoziomową obsługę wyprowadzeń GPIO, magistrali I2C oraz kamer USB. Ponadto istnieje wiele pakietów pozwalających na łatwą komunikację z bazą danych, która będzie miejscem przechowywania wyników pomiaru. Program w języku Python jest też odpowiedzialny za wysłanie powiadomień email poprzez serwer SMTP Google. Na potrzeby zostało stworzone konto w usłudze Gmail, poprzez które będą wysyłanie powiadomienia. 
 
 W zaprojektowanym systemie bezpieczeństwa program obsługujący urządzenia działa niezależnie od programu udostępniającego dane użytkownikowi. Ponadto są one napisane w innych językach. Konieczny jest zatem sposób komunikacji i wymiany danych pomiędzy nimi. Dane są przechowywane w relacyjnej bazie danych, która poprzez umożliwia dostęp do nich system zarządzania bazą danych (SZBD).
 
@@ -95,7 +95,7 @@ Poza wspomnianymi wyżej relacjami istnieje również relacja ustawienia, która
 Ponadto kamera, czujnik temperatury i czujnik stykowy, który ma wywoływać zdjęcie kamery zostały zgrupowane w ten sposób, że kamera przechowuje klucze przypisanych do niej czujników. Odpowiada to związkom jeden do wielu między kamerą a czujnikiem (temperatury).
 
 \subsection{Fizyczna realizacja bazy danych}
-Baza danych została zaimplementowana przy użyciu systemu zarządzania bazą danych MySQL. Do stworzenia tabel został napisany skrypt w języku Python. Wykorzystuje on moduł SQLAlchemy, który umożliwia działanie na relacjach bazy danych jak na obiektach programistycznych. Takie odwzorowanie nazywa się mapowanie obiektowo-relacyjnym (and. Object-Relational Mapping ORM). Ułatwia ono wprowadzanie kolejnych zmian do struktury bazy danych, relacji i związków między nimi.
+Baza danych została zaimplementowana przy użyciu systemu zarządzania bazą danych MySQL. Do stworzenia tabel został napisany skrypt w języku Python. Wykorzystuje on moduł SQLAlchemy, który umożliwia działanie na relacjach bazy danych jak na obiektach programistycznych. Takie odwzorowanie nazywa się mapowanie obiektowo-relacyjnym (ang. Object-Relational Mapping ORM). Ułatwia ono wprowadzanie kolejnych zmian do struktury bazy danych, relacji i związków między nimi.
 
 Plik zawierający program tworzący tabele w bazie danych nosi nazwę baza.py. W pierwszej kolejność należy stworzyć klasę Base, która zapewnia mapowanie do tabel w bazie danych. Proces tworzenia tabel w bazie polega na stworzeniu klasy odpowiadającej każdej tabeli w bazie, która dziedziczy po klasie Base.
 \begin{lstlisting} [language=Python]
@@ -123,22 +123,8 @@ Jako argument every() podawana jest częstotliwość wykonywania zadania, nastę
 
 Program obsługujący czujniki początkowo wykonuje zapytanie do bazy danych o wszystkie wpisy z tabel z czujnikami, czujnikami temperatury oraz kamerami. Następnie przechodzi w pętli przez wyniki, tworząc obiekty klasy Grupa. Klasa Grupa reprezentuje kamerę oraz przypisane do niej czujniki. Zawiera ona metody, które pozwalają wykonywać zdjęcie, pomiar temperatury i wilgotność oraz odczyt stanu wyprowadzenia GPIO, do którego jest podłączony czujnik stykowy. Zarządza ona również wysłaniem wiadomości email z powiadomieniem w przypadku otwarcia czujnika.
 
-\subsection{Obsługa czujników stykowych}
-Korzystanie z wyprowadzeń GPIO w języku Python jest możliwe na komputerze Raspberry Pi przy użyciu pakietu RPi.GPIO. Umożliwia on odczyt stanu wyprowadzeń. Konfiguracja obsługi GPIO rozpoczyna się od określenia sposobu numeracji wyprowadzeń. Dostępne są dwie możliwości: GPIO.BOARD oraz GPIO.BCM. Pierwszy odnosi się do fizycznej lokalizacji wyprowadzeń na płytce drukowanej. Drugi sposób oznacza numeracją kanałów system-on-chip (SOC) firmy Broadcomm, który jest użyty w komputerze Raspberry Pi 3B. Ze względu na korzystanie z płytki prototypowej oraz modułu Proto Pi Plus, który korzysta z oznaczeń odpowiadających kanałom SOC w projekcie użyto tego sposobu numeracji.
-
-Inicjalizacja obsługi GPIO wywoływana jest w funkcji:  
-\begin{lstlisting} [language=Python]
-def init_gpio():
-    GPIO.setmode(GPIO.BCM)
-\end{lstlisting}
-Wykonywana jest ona na początku działania programu nadzor.py w funkcji main(). Obsługa poszczególnych czujników odbywa się w ramach obiektów klasy Grupa. Użycie rezystora podciągającego jest wywoływane w programie nadzor.py w konstruktorze obiektu klasy Grupa w następujący sposób.
-\begin{lstlisting} [language=Python]
-GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-\end{lstlisting}
-self.czujnik.gpio - to atrybut przechowujący numer wyprowadzenia GPIO.
-GPIO.IN - konfiguruje wyprowadzenie jako wejście.
-pull{\_}up{\_}down=GPIO.PUD{\_}UP - to flaga określająca zastosowanie rezystora podciągającego.
-
+\subsection{Obsługa kamer USB}
+Raspberry Pi 3 B posiada 4 gniazda USB, do których mogą podłączone kamery USB. Kamery USB są obsługiwane przy pomocy aplikacji fswebcam. Jest to samodzielny program pozwalający na wywoływanie zdjęć z kamer USB podłączonych do komputerem z systemem typu Unix. Wywołanie tego programu z poziomu skryptu w języku Python wymaga użycia modułu subprocessing. Daje on możliwość otwierania programów w osobnych procesach. Do otwarcia fswebcam użyta została klasa Popen, ponieważ daje możliwość wywołania metody wait(), pozwalającej zaczekać na zakończenie wykonywania się procesu. 
 
 \subsection{Obsługa czujników podłączonych do magistrali I2C}
 Wymogiem technicznym systemu jest również obsługa czujników przy użyciu magistrali I2C. W ramach wykonanego systemu została zapewniona obsługa czujników temperatury i wilgotności. Wybrany został czujnik Si7021 firmy Adafruit. Zapewnia on pomiar temperatury w zakresie od -10 do 85$^\circ$C oraz wilgotności względnej od 0 do 80\%. Są to wartości wystarczające w warunkach pracy w zamkniętym pomieszczeniu.
@@ -155,7 +141,36 @@ Przy użyciu tego modułu możliwe jest przeprowadzenie pomiaru wilgotności wzg
 
 Czujnik Si 7021 wykonuje również pomiar temperatury potrzebny do wyznaczenia wilgotności względnej. Wynik tego pomiaru jest przechowywany w urządzeniu. Można go odczytać, wysyłając komendę o kodzie 0xE0. Całą transakcję można zrealizować przy użyciu jednej komendy i2c{\_}read{\_}i2c{\_}block{\_}data, ponieważ nie ma potrzeby oczekiwania na konwersję pomiaru temperatury. Wysyła ona żądanie wystawienia wyniku pomiaru temperatury. Następnie odczytywana jest podana liczba 
 bajtów. Bajty te są zapisane do tablicy i użyte do obliczenia wartości temperatury. 
-\subsection{Obsługa kamer USB}
-Raspberry Pi 3 B posiada 4 gniazda USB, do których mogą podłączone kamery USB. Kamery USB są obsługiwane przy pomocy aplikacji fswebcam. Jest to samodzielny program pozwalający na wywoływanie zdjęć z kamer USB podłączonych do komputerem z systemem typu Unix. Wywołanie tego programu z poziomu skryptu w języku Python wymaga użycia modułu subprocessing. Daje on możliwość otwierania programów w osobnych procesach. Do otwarcia fswebcam użyta została klasa Popen, ponieważ daje możliwość wywołania metody wait(), pozwalającej zaczekać na zakończenie wykonywania się procesu. 
+
+\subsection{Obsługa czujników stykowych}
+Korzystanie z wyprowadzeń GPIO w języku Python jest możliwe na komputerze Raspberry Pi przy użyciu pakietu RPi.GPIO. Umożliwia on odczyt stanu wyprowadzeń. Konfiguracja obsługi GPIO rozpoczyna się od określenia sposobu numeracji wyprowadzeń. Dostępne są dwie możliwości: GPIO.BOARD oraz GPIO.BCM. Pierwszy odnosi się do fizycznej lokalizacji wyprowadzeń na płytce drukowanej. Drugi sposób oznacza numeracją kanałów system-on-chip (SOC) firmy Broadcomm, który jest użyty w komputerze Raspberry Pi 3B. Ze względu na korzystanie z płytki prototypowej oraz modułu Proto Pi Plus, który korzysta z oznaczeń odpowiadających kanałom SOC w projekcie użyto tego sposobu numeracji.
+
+Inicjalizacja obsługi GPIO wywoływana jest w funkcji:  
+\begin{lstlisting} [language=Python]
+def init_gpio():
+    GPIO.setmode(GPIO.BCM)
+\end{lstlisting}
+Wykonywana jest ona na początku działania programu nadzor.py w funkcji main(). Obsługa poszczególnych czujników odbywa się w ramach obiektów klasy Grupa. Użycie rezystora ściągającego jest wywoływane w programie nadzor.py w konstruktorze obiektu klasy Grupa w następujący sposób.
+\begin{lstlisting} [language=Python]
+GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+\end{lstlisting}
+self.czujnik.gpio - to atrybut przechowujący numer wyprowadzenia GPIO.
+GPIO.IN - konfiguruje wyprowadzenie jako wejście.
+pull{\_}up{\_}down=GPIO.PUD{\_}UP - to flaga określająca zastosowanie rezystora podciągającego.
+
+Funkcja realizująca obsługę czujników stykowych zaczyna od sprawdzenia wyprowadzenia o numerze przechowywanym jako atrybut klasy. Zwrócenie stanu wysokiego (oznaczanego jako 1/GPIO.HIGH/True) oznacza przypisanie do zmiennej obiektu stan{\_}czujnika wartości 1. Jeśli stan jest niski, zmiennej przypisywane jest 0. Następnie sprawdzany jest poprzedni stan wyprowadzenia przechowywany jako atrybut obiektu klasy Grupa. Jeśli poprzednio stan był wysoki (czujniki były zbliżone), to znaczy, że nastąpiło otwarcie czujników. Zgodnie z wymogami systemu następuję wywołanie zdjęcia - funkcji obsługującej kamery. Do zmiennej zostaje zapisana referencja obiektu klasy Popen, w którym został otworzony program wykonujący zdjęcie. Zostanie on użyty w funkcji wysyłanie powiadomień mailowych.
+
+Wynik odczytu stanu zostaje zapisany do słownika przy kluczu "'stan"' odpowiadającemu kolumnie w tabeli danych. Pozostałym polem w słowniku jest identyfikator czujnika stykowego, dla którego został wykonany odczyt. Następnie wynik zostaje zapisany do bazy danych poprzez funkcję create(). Stan czujnika odczytany w tym wywołaniu funkcji zostaje zapisany w polu stan{\_}poprzedni obiektu klasy Grupa. 
+
+Odczyt czujników stykowych jest najczęściej wykonywanym pomiarem, więc po stworzeniu nowego wpisu w tabeli stany powinien zostać stworzony wpis do tabeli pomiary. Zostaje do niej wpisany rekord zawierający identyfikator właśnie wykonanego odczytu stanu oraz odczytane z atrybutów obiektu identyfikatory ostatnich wykonanych zdjęć oraz pomiarów temperatury. Wraz z nimi zostaje zapisana data wpisu odczytana przy pomocy funkcji datetime.now() zapisana w formacie dzień-miesiąc-rok godzina-minuta-sekunda.
+
+\subsubsection{Wysyłanie powiadomień mailowych}
+Funkcjonalnością systemu jest również wysyłanie powiadomienia mailowego po otwarciu czujnika. 
+
+Przy tworzeniu obiektu zostają zapisane do atrybutów odczytane z bazy danych ustawienia dotyczące powiadomień -- znacznik włączenia powiadomień oraz adres email ich odbiorcy. Jeśli powiadomienia są włączone, czyli znacznik jest ustawiony jako "'on"' oraz adres email nie jest pusty, będzie wysłana wiadomość email.
+
+Przygotowany jest tekst wiadomości informujący, że został otwarty czujnik o nazwie przypisanej do niego. W temacie czujnika zostaje wpisana informacja o otwarciu czujnika i dacie otwarcia odczytanej w momencie wywołania funkcji. Następnie zostaje otworzony nowy wątek, w którym jest wywoływana funkcja wyslij{\_}email(). Argumentami tej funkcji są adres email odbiorcy, temat wiadomości, jej tekst oraz nazwa zdjęcia, która będzie dołączona jako załącznik. Argumentem jest też referencja obiektu Popen, który został stworzony do wywołania w podprocesie programu wykonującego zdjęcia. Jest on użyty do tego, aby wstrzymać działanie funkcji wyslij{\_}email() do czasu zakończenia wykonywania zdjęcia. Jest to osiągnięte przy użyciu funkcji wait() tego obiektu.
+
+Do stworzenia wiadomości email jest wykorzystany obiekt klasy MIMEMultipart. W polach Subject, To i From zostają wpisane odpowiednio temat, odbiorca i nadawca wiadomości email. 
 
 \end{document}

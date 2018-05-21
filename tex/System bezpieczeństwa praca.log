@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  20 MAY 2018 22:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  21 MAY 2018 12:20
 entering extended mode
 **"./System bezpieczeństwa praca.tex"
 ("System bezpieczeństwa praca.tex"
@@ -535,38 +535,44 @@ Package pdftex.def Info: er.png  used on input line 86.
 (pdftex.def)             Requested size: 455.24408pt x 267.82323pt.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
-) [3 <./er.png>]
+) [3 <./er.png>] [4]
 Overfull \hbox (5.89792pt too wide) in paragraph at lines 124--125
 []\T1/cmr/m/n/12 Program ob-s�u-gu-j�cy czuj-niki po-cz�t-kowo wy-ko-nuje za-py
 -ta-nie do bazy da-nych o wszyst-
  []
 
-[4]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 144.
+(Font)              <12> on input line 130.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 144.
+(Font)              <8> on input line 130.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 144.
- [5] [6] [7] ("System bezpieczeństwa praca.aux") ) 
+(Font)              <6> on input line 130.
+[5] [6]
+Overfull \hbox (3.65617pt too wide) in paragraph at lines 161--162
+\T1/cmr/m/n/12 cza-nego jako 1/G-PIO.HIGH/True) ozna-cza przy-pi-sa-nie do zmie
+n-nej obiektu stan_czujnika
+ []
+
+[7] ("System bezpieczeństwa praca.aux") ) 
 Here is how much of TeX's memory you used:
- 4510 strings out of 493305
- 57722 string characters out of 3138874
- 195332 words of memory out of 3000000
- 8002 multiletter control sequences out of 15000+200000
- 10991 words of font info for 29 fonts, out of 3000000 for 9000
+ 4512 strings out of 493305
+ 57746 string characters out of 3138874
+ 194578 words of memory out of 3000000
+ 8003 multiletter control sequences out of 15000+200000
+ 11767 words of font info for 30 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,6n,42p,1249b,1296s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Piotr\AppData\Loc
-al\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\Piotr\A
-ppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1440.pk> <C:\Use
-rs\Piotr\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1200.p
-k> <C:\Users\Piotr\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\
-ecbx1728.pk><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.p
-fb>
-Output written on "System bezpieczeństwa praca.pdf" (7 pages, 167968 bytes).
+ <C:\Users\Piotr\AppData\Local\MiKTeX
+\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1200.pk> <C:\Users\Piotr\AppData\Lo
+cal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\Piotr\
+AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1440.pk> <C:\Us
+ers\Piotr\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1200.
+pk> <C:\Users\Piotr\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600
+\ecbx1728.pk><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.
+pfb>
+Output written on "System bezpieczeństwa praca.pdf" (7 pages, 178959 bytes).
 PDF statistics:
- 246 PDF objects out of 1000 (max. 8388607)
+ 272 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

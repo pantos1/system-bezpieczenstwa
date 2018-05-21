@@ -71,3 +71,17 @@ adres_email_kwargs = {
     "wartosc": ""
 }
 adres_email = get_or_create(session, Ustawienia, **adres_email_kwargs)
+
+adres_email_nadawcy_kwargs = {
+    "klucz": "adres_email_nadawcy",
+    "wartosc": "systembezpieczenstwa2018@gmail.com"
+}
+
+adres_email_nadawcy = get_or_create(session, Ustawienia, **adres_email_nadawcy_kwargs)
+
+haslo_nadawcy_kwargs = {
+    "klucz": "haslo_nadawcy",
+    "wartosc": "inzynierka"
+}
+
+haslo_nadawcy = get_or_create(session, Ustawienia, **haslo_nadawcy_kwargs)
