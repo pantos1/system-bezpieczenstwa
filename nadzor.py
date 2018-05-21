@@ -7,7 +7,7 @@ import time
 import schedule
 import smtplib
 from os import path
-from email.mime.application import MIMEApplication
+from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from sqlalchemy import create_engine
@@ -128,7 +128,7 @@ class Grupa():
         wiadomosc.attach(MIMEText(tekst, 'plain'))
         for zdjecie in zdjecia:
             with open(Grupa.sciezka + zdjecie, "rb") as plik:
-                zalacznik = MIMEApplication(
+                zalacznik = MIMEImage(
                     plik.read(),
                     Name=path.basename(zdjecie)
                 )
