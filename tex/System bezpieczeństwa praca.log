@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  21 MAY 2018 12:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  21 MAY 2018 16:26
 entering extended mode
 **"./System bezpiecze≈Ñstwa praca.tex"
 ("System bezpiecze≈Ñstwa praca.tex"
@@ -436,35 +436,80 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 147.
 )
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\helvet.sty"
+Package: helvet 2005/04/12 PSNFSS-v9.2a (WaS) 
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\tocloft\tocloft.sty"
+Package: tocloft 2017/08/31 v2.3i parameterised ToC, etc., typesetting
+Package tocloft Info: The document has section divisions on input line 51.
+\cftparskip=\skip43
+\cftbeforetoctitleskip=\skip44
+\cftaftertoctitleskip=\skip45
+\cftbeforepartskip=\skip46
+\cftpartnumwidth=\skip47
+\cftpartindent=\skip48
+\cftbeforesecskip=\skip49
+\cftsecindent=\skip50
+\cftsecnumwidth=\skip51
+\cftbeforesubsecskip=\skip52
+\cftsubsecindent=\skip53
+\cftsubsecnumwidth=\skip54
+\cftbeforesubsubsecskip=\skip55
+\cftsubsubsecindent=\skip56
+\cftsubsubsecnumwidth=\skip57
+\cftbeforeparaskip=\skip58
+\cftparaindent=\skip59
+\cftparanumwidth=\skip60
+\cftbeforesubparaskip=\skip61
+\cftsubparaindent=\skip62
+\cftsubparanumwidth=\skip63
+\cftbeforeloftitleskip=\skip64
+\cftafterloftitleskip=\skip65
+\cftbeforefigskip=\skip66
+\cftfigindent=\skip67
+\cftfignumwidth=\skip68
+\c@lofdepth=\count97
+\c@lotdepth=\count98
+\cftbeforelottitleskip=\skip69
+\cftafterlottitleskip=\skip70
+\cftbeforetabskip=\skip71
+\cfttabindent=\skip72
+\cfttabnumwidth=\skip73
+)
 ("System bezpiecze≈Ñstwa praca.aux")
 \openout1 = `"System bezpiecze≈Ñstwa praca.aux"'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 54.
-LaTeX Font Info:    ... okay on input line 54.
-\c@lstlisting=\count97
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 66.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1phv.fd"
+File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
+)
+\c@lstlisting=\count99
 
 ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count98
+\scratchcounter=\count100
 \scratchdimen=\dimen114
 \scratchbox=\box28
-\nofMPsegments=\count99
-\nofMParguments=\count100
+\nofMPsegments=\count101
+\nofMParguments=\count102
 \everyMPshowfont=\toks18
-\MPscratchCnt=\count101
+\MPscratchCnt=\count103
 \MPscratchDim=\dimen115
-\MPnumerator=\count102
-\makeMPintoPDFobject=\count103
+\MPnumerator=\count104
+\makeMPintoPDFobject=\count105
 \everyMPtoPDFconversion=\toks19
 ) ("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\epstopdf-base.sty"
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -518,61 +563,67 @@ Package grfext Info: Graphics extension search list:
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
-<Architektura.png, id=1, 1116.17pt x 201.75375pt>
-File: Architektura.png Graphic file (type png)
-<use Architektura.png>
-Package pdftex.def Info: Architektura.png  used on input line 59.
-(pdftex.def)             Requested size: 455.24408pt x 82.28857pt.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+
+("System bezpiecze≈Ñstwa praca.toc"
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 2.
+)
+\tf@toc=\write3
+\openout3 = `"System bezpiecze≈Ñstwa praca.toc"'.
+
  [1
 
-{C:/Users/Piotr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./Architekt
-ura.png>]
-[2]
-<er.png, id=14, 824.07875pt x 484.81125pt>
+{C:/Users/Piotr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 76.
+<Architektura.png, id=7, 1116.17pt x 201.75375pt>
+File: Architektura.png Graphic file (type png)
+<use Architektura.png>
+Package pdftex.def Info: Architektura.png  used on input line 82.
+(pdftex.def)             Requested size: 455.24408pt x 82.28857pt.
+ [2 <./Architektura.png>] [3]
+<er.png, id=16, 824.07875pt x 484.81125pt>
 File: er.png Graphic file (type png)
 <use er.png>
-Package pdftex.def Info: er.png  used on input line 86.
+Package pdftex.def Info: er.png  used on input line 109.
 (pdftex.def)             Requested size: 455.24408pt x 267.82323pt.
- ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
+ [4 <./er.png>]
+("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
-) [3 <./er.png>] [4]
-Overfull \hbox (5.89792pt too wide) in paragraph at lines 124--125
-[]\T1/cmr/m/n/12 Program ob-s™u-gu-j°cy czuj-niki po-cz°t-kowo wy-ko-nuje za-py
--ta-nie do bazy da-nych o wszyst-
+) [5] [6]
+Overfull \hbox (2.05699pt too wide) in paragraph at lines 163--164
+[]\T1/phv/m/n/12 Przy uªy-ciu tego mo-du™u moª-liwe jest prze-pro-wa-dze-nie po
+-miaru wil-got-no-±ci wzgl¶d-
  []
 
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 130.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 130.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 130.
-[5] [6]
-Overfull \hbox (3.65617pt too wide) in paragraph at lines 161--162
-\T1/cmr/m/n/12 cza-nego jako 1/G-PIO.HIGH/True) ozna-cza przy-pi-sa-nie do zmie
-n-nej obiektu stan_czujnika
- []
+[7] [8]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[7] ("System bezpiecze≈Ñstwa praca.aux") ) 
+ [9]
+[10] ("System bezpiecze≈Ñstwa praca.aux") ) 
 Here is how much of TeX's memory you used:
- 4512 strings out of 493305
- 57746 string characters out of 3138874
- 194578 words of memory out of 3000000
- 8003 multiletter control sequences out of 15000+200000
- 11767 words of font info for 30 fonts, out of 3000000 for 9000
+ 4850 strings out of 493305
+ 62861 string characters out of 3138874
+ 195255 words of memory out of 3000000
+ 8326 multiletter control sequences out of 15000+200000
+ 24582 words of font info for 36 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,6n,42p,1249b,1296s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Piotr\AppData\Local\MiKTeX
-\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1200.pk> <C:\Users\Piotr\AppData\Lo
-cal\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\Piotr\
-AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1440.pk> <C:\Us
-ers\Piotr\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1200.
-pk> <C:\Users\Piotr\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600
-\ecbx1728.pk><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.
-pfb>
-Output written on "System bezpiecze≈Ñstwa praca.pdf" (7 pages, 178959 bytes).
+{C:/Program Files/MiKTeX 2.9/fonts/e
+nc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C
+:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb>
+Output written on "System bezpiecze≈Ñstwa praca.pdf" (10 pages, 135066 bytes).
 PDF statistics:
- 272 PDF objects out of 1000 (max. 8388607)
+ 53 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

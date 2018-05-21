@@ -1,4 +1,5 @@
 \documentclass[a4paper,12pt,twoside]{article}
+\renewcommand{\familydefault}{\sfdefault}
 \addtolength{\hoffset}{-1.54cm}
 \setlength{\oddsidemargin}{2cm}
 \setlength{\textwidth}{16cm}
@@ -19,6 +20,17 @@
 \usepackage{listings}
 \usepackage{graphicx} 
 \usepackage{color}
+\usepackage{helvet}
+
+\usepackage{tocloft}
+\makeatletter
+\renewcommand*\@seccntformat[1]{\csname the#1\endcsname.\enspace}
+\makeatother
+\renewcommand{\cftsecaftersnum}{.}
+\renewcommand{\cftsubsecaftersnum}{.}
+\renewcommand{\cftsubsubsecaftersnum}{.}
+\renewcommand{\cftparaaftersnum}{.}
+\renewcommand{\cftsubparaaftersnum}{.}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -53,8 +65,19 @@
 
 \begin{document}
 
+\tableofcontents
+\setcounter{tocdepth}{2}
+\newpage
+
+\section{Wstęp teoretyczny}
+
 \section{Architektura systemu}
 
+\subsection{Wymagania techniczne i funkcjonalne}
+
+\subsection{Przegląd dostępnych platform}
+
+\subsection{Projekt systemu}
 \begin{figure}[h]
 \includegraphics[width=\linewidth]{Architektura.png}
 \caption{Schemat architektury systemu}
@@ -164,13 +187,47 @@ Wynik odczytu stanu zostaje zapisany do słownika przy kluczu "'stan"' odpowiada
 
 Odczyt czujników stykowych jest najczęściej wykonywanym pomiarem, więc po stworzeniu nowego wpisu w tabeli stany powinien zostać stworzony wpis do tabeli pomiary. Zostaje do niej wpisany rekord zawierający identyfikator właśnie wykonanego odczytu stanu oraz odczytane z atrybutów obiektu identyfikatory ostatnich wykonanych zdjęć oraz pomiarów temperatury. Wraz z nimi zostaje zapisana data wpisu odczytana przy pomocy funkcji datetime.now() zapisana w formacie dzień-miesiąc-rok godzina-minuta-sekunda.
 
-\subsubsection{Wysyłanie powiadomień mailowych}
-Funkcjonalnością systemu jest również wysyłanie powiadomienia mailowego po otwarciu czujnika. 
+\subsection{Wysyłanie powiadomień mailowych}
+Funkcjonalnością systemu jest również wysyłanie powiadomienia mailowego po otwarciu czujnika. Jest ono realizowane poprzez serwer SMTP Google. Ta decyzja projektowa wynika z tego, że konfiguracja własnego serwera SMTP w ramach Raspberry Pi wymagałaby posiadania stałego adresu dostarczanego przez dostawcę usług internetowych, do którego będzie przypisana domena. Prostszym rozwiązaniem jest utworzenie konta email w zewnętrznej usłudze (np. Gmail). 
+
+Połączenie z serwerem SMTP Google jest nawiązane przy użyciu modułu smtplib na początku działania programu nadzor.py. 
+\begin{lstlisting} [language=Python]
+def init_smtp(sender, password):
+    smtp_server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+    smtp_server.login(sender, password)
+    return smtp_server 
+\end{lstlisting}
+Wymogiem Gmaila jest stosowanie szyfrowanego połączenia, które jest stworzone przez funkcję SMTP{\_}SSL poprzez standardowy port 465. Następnie następuje uwierzytelnienie w serwerze poprzez przesłanie adresu email konta, z którego mają być wysyłane wiadomości oraz hasła do niego. Następnie zostaje zwrócona referencja obiektu reprezentującego połączenie z serwerem SMTP.
 
 Przy tworzeniu obiektu zostają zapisane do atrybutów odczytane z bazy danych ustawienia dotyczące powiadomień -- znacznik włączenia powiadomień oraz adres email ich odbiorcy. Jeśli powiadomienia są włączone, czyli znacznik jest ustawiony jako "'on"' oraz adres email nie jest pusty, będzie wysłana wiadomość email.
 
 Przygotowany jest tekst wiadomości informujący, że został otwarty czujnik o nazwie przypisanej do niego. W temacie czujnika zostaje wpisana informacja o otwarciu czujnika i dacie otwarcia odczytanej w momencie wywołania funkcji. Następnie zostaje otworzony nowy wątek, w którym jest wywoływana funkcja wyslij{\_}email(). Argumentami tej funkcji są adres email odbiorcy, temat wiadomości, jej tekst oraz nazwa zdjęcia, która będzie dołączona jako załącznik. Argumentem jest też referencja obiektu Popen, który został stworzony do wywołania w podprocesie programu wykonującego zdjęcia. Jest on użyty do tego, aby wstrzymać działanie funkcji wyslij{\_}email() do czasu zakończenia wykonywania zdjęcia. Jest to osiągnięte przy użyciu funkcji wait() tego obiektu.
 
-Do stworzenia wiadomości email jest wykorzystany obiekt klasy MIMEMultipart. W polach Subject, To i From zostają wpisane odpowiednio temat, odbiorca i nadawca wiadomości email. 
+Do stworzenia wiadomości email jest wykorzystany obiekt klasy MIMEMultipart. W polach Subject, To i From zostają wpisane odpowiednio temat, odbiorca i nadawca wiadomości email. Następnie funkcja otwiera wszystkie pliki ze zdjęciami, których nazwy zostały przekazane w liście jako argument. Dla każdego z nich tworzony jest obiekt MIMEImage, który reprezentuje część wiadomości będącej obrazem. Nie jest tu podawany format zdjęcia, ponieważ obiekt sam dokona sprawdzenia typu zdjęcia przy pomocy modułu imghdr. Dzięki temu zmiana formatu zdjęcia np. z JPEG na PNG nie wymaga zmiany tej części kodu. Przed dołączeniem do wiadomości pliku ze zdjęciem konieczne jest również ustawienie nagłówka Content-Disposition z informacją o tym, że jest to załącznik (attachment) oraz o jego nazwie. Dzięki temu obraz zostanie wyświetlony jako załącznik do pobrania w kliencie poczty elektronicznej.
+
+\section{Strona i serwer WWW}
+
+\subsection{Serwer WWW}
+
+\subsection{Żądania HTTP i ich obsługa -- technika AJAX}
+
+\subsubsection{Strona główna i archiwum}
+
+\subsubsection{Eksport zdarzeń}
+
+\subsubsection{Ustawienia}
+
+\subsection{Interfejs}
+
+\section{Testy systemu}
+
+\section{Wnioski i podsumowanie}
+
+\section{Bibliografia}
+
+\section{Spis załączników}
+
+\section{Załączniki}
+
 
 \end{document}
