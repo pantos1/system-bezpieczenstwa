@@ -43,7 +43,7 @@ class Grupa():
         self.stan_poprzedni = 0
         self.czujnik.gpio = int(self.czujnik.gpio)
         self.czujnik_kanal_komenda = self.kanal(int(self.czujnik_temp.kanal_mux))
-        GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     @staticmethod
     def kanal(kanal):
@@ -99,6 +99,8 @@ class Grupa():
 
     def sprawdz_kontaktron(self):
         if GPIO.input(self.czujnik.gpio):
+            self.stan_czujnika = 1
+        else:
             self.stan_czujnika = 0
             if self.stan_poprzedni == 1:
                 zdjecia = []
@@ -108,8 +110,6 @@ class Grupa():
                     tekst = "Otwarty czujnik: " + self.czujnik.nazwa_czujnika
                     temat = "Otwarcie czujnika " + datetime.now().strftime("%d-%m-%Y %H:%M:%S")
                     run_threaded(self.wyslij_email, (self.odbiorca, temat, tekst, proces, zdjecia))
-        else:
-            self.stan_czujnika = 1
         stan = {
             "id_czujnika": self.czujnik.id_czujnika,
             "stan": self.stan_czujnika
