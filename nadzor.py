@@ -47,13 +47,21 @@ class Grupa():
     @staticmethod
     def kanal(kanal):
         if kanal == 0:
-            komenda = 0x04
+            komenda = 0x01
         elif kanal == 1:
-            komenda = 0x05
+            komenda = 0x02
         elif kanal == 2:
-            komenda = 0x06
+            komenda = 0x04
         elif kanal == 3:
-            komenda = 0x07
+            komenda = 0x08
+        elif kanal == 4:
+            komenda = 0x10
+        elif kanal == 5:
+            komenda = 0x20
+        elif kanal == 6:
+            komenda = 0x40
+        elif kanal == 7:
+            komenda = 0x80
         else:
             komenda = 0x00
         return komenda
@@ -71,25 +79,32 @@ class Grupa():
         return proces
 
     def pomiar_temperatury_rh(self):
-        mux = Grupa.i2c.i2c_open(1, Grupa.multiplexer_adres)
-        Grupa.i2c.i2c_write_byte(mux, self.czujnik_kanal_komenda)
+        try:
+            temp = None
+            rh = None
+            mux = Grupa.i2c.i2c_open(1, Grupa.multiplexer_adres)
+            Grupa.i2c.i2c_write_byte(mux, self.czujnik_kanal_komenda)
+            try:
+                czujnik = Grupa.i2c.i2c_open(1, Grupa.czujnik_temp_adres)
+                Grupa.i2c.i2c_write_byte(czujnik, self.rhKod)
+                time.sleep(0.05)
+                (liczba_bitow, data) = Grupa.i2c.i2c_read_device(czujnik, 2)
+                rh = ((data[0] * 256 + data[1]) * 125 / 65536.0) - 6
 
-        czujnik = Grupa.i2c.i2c_open(1, Grupa.czujnik_temp_adres)
-        Grupa.i2c.i2c_write_byte(czujnik, self.rhKod)
-        time.sleep(0.05)
-        (liczba_bitow, data) = Grupa.i2c.i2c_read_device(czujnik, 2)
-        rh = ((data[0] * 256 + data[1]) * 125 / 65536.0) - 6
+                (liczba_bitow, data) = Grupa.i2c.i2c_read_i2c_block_data(czujnik, self.tempKod, 2)
+                temp = ((data[0] * 256 + data[1]) * 175.72 / 65536.0) - 46.85
+            except pigpio.error:
+                print("Błąd połączenia z czujnikiem I2C: " + self.czujnik_temp.nazwa_czujnika_temp)
+        except pigpio.error:
+            print("Błąd połączenia z multiplekserem I2C")
+        finally:
+            odczyt = {
+                "id_czujnika_temp": self.czujnik_temp.id_czujnika_temp,
+                "temperatura": temp,
+                "rh": rh
+            }
 
-        (liczba_bitow, data) = Grupa.i2c.i2c_read_i2c_block_data(czujnik, self.tempKod, 2)
-        temp = ((data[0] * 256 + data[1]) * 175.72 / 65536.0) - 46.85
-
-        odczyt = {
-            "id_czujnika_temp": self.czujnik_temp.id_czujnika_temp,
-            "temperatura": temp,
-            "rh": rh
-        }
-
-        self.odczyt_instance = create(self.session, Odczyty, **odczyt)
+            self.odczyt_instance = create(self.session, Odczyty, **odczyt)
 
     def sprawdz_kontaktron(self):
         if GPIO.input(self.czujnik.gpio):

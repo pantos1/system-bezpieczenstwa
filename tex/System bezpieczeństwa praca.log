@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  22 MAY 2018 13:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  22 MAY 2018 14:57
 entering extended mode
 **"./System bezpiecze≈Ñstwa praca.tex"
 ("System bezpiecze≈Ñstwa praca.tex"
@@ -593,40 +593,42 @@ Package pdftex.def Info: Architektura.png  used on input line 82.
 Underfull \vbox (badness 2189) has occurred while \output is active []
 
  [3]
-<er.png, id=16, 790.955pt x 638.385pt>
+<er.png, id=16, 831.105pt x 665.48625pt>
 File: er.png Graphic file (type png)
 <use er.png>
 Package pdftex.def Info: er.png  used on input line 109.
-(pdftex.def)             Requested size: 455.24408pt x 367.42892pt.
+(pdftex.def)             Requested size: 455.24408pt x 364.52585pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[4] ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
-File: lstlang1.sty 2015/06/04 1.6 listings language file
-)
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [5 <./er.png>] [6]
+ [4]
+("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+) [5 <./er.png>]
+[6] [7]
 Overfull \hbox (2.05699pt too wide) in paragraph at lines 165--166
 []\T1/phv/m/n/12 Przy uªy-ciu tego mo-du™u moª-liwe jest prze-pro-wa-dze-nie po
 -miaru wil-got-no-±ci wzgl¶d-
  []
 
-[7] [8] [9] [10] ("System bezpiecze≈Ñstwa praca.aux") ) 
+[8] [9] [10] ("System bezpiecze≈Ñstwa praca.aux") ) 
 Here is how much of TeX's memory you used:
  4850 strings out of 493305
  62861 string characters out of 3138874
- 191867 words of memory out of 3000000
+ 186138 words of memory out of 3000000
  8326 multiletter control sequences out of 15000+200000
  24582 words of font info for 36 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,6n,42p,1249b,1296s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX
- 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/u
-hvb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on "System bezpiecze≈Ñstwa praca.pdf" (10 pages, 99157 bytes).
+ 41i,6n,42p,1249b,1830s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9
+/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
+sfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8
+a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb>
+Output written on "System bezpiecze≈Ñstwa praca.pdf" (10 pages, 102240 bytes).
 PDF statistics:
  53 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
