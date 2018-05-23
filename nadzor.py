@@ -81,8 +81,6 @@ class Grupa():
         return proces
 
     def pomiar_temperatury_rh(self):
-        temp = None
-        rh = None
         try:
             Grupa.i2c.i2c_write_byte(Grupa.multiplexer, self.czujnik_kanal_komenda)
             try:
@@ -95,8 +93,12 @@ class Grupa():
                 temp = ((data[0] * 256 + data[1]) * 175.72 / 65536.0) - 46.85
             except pigpio.error:
                 print("Błąd połączenia z czujnikiem I2C: " + self.czujnik_temp.nazwa_czujnika_temp)
+                temp = None
+                rh = None
         except pigpio.error:
             print("Błąd połączenia z multiplekserem I2C")
+            temp = None
+            rh = None
         finally:
             odczyt = {
                 "id_czujnika_temp": self.czujnik_temp.id_czujnika_temp,
