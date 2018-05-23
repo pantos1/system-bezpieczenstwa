@@ -44,19 +44,21 @@ kontaktron_2 = get_or_create(session, Czujniki, **kontakron_2_kwargs)
 
 titanum_1_kwargs = {
     "nazwa_kamery": "Kamera 1 - Titanum",
+    "sciezka_urzadzenia": "/dev/video0",
     "id_czujnika": kontaktron_1.id_czujnika,
     "id_czujnika_temp": si7021_zielony.id_czujnika_temp,
     "czestotliwosc_zdjecia": 10.0
 }
 titanum_1 = get_or_create(session, Kamery, **titanum_1_kwargs)
 
-titanum_2_kwargs = {
-    "nazwa_kamery": "Kamera 1 - Titanum",
+creative_2_kwargs = {
+    "nazwa_kamery": "Kamera 2 - Creative",
+    "sciezka_urzadzenia": "/dev/video1",
     "id_czujnika": kontaktron_2.id_czujnika,
     "id_czujnika_temp": si7021_pomaranczowy.id_czujnika_temp,
     "czestotliwosc_zdjecia": 10.0
 }
-titanum_2 = get_or_create(session, Kamery, **titanum_2_kwargs)
+creative_2 = get_or_create(session, Kamery, **creative_2_kwargs)
 
 powiadomienia_kwargs = {
     "klucz": "powiadomienia_email",

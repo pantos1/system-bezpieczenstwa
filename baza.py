@@ -103,6 +103,7 @@ class Kamery(Base):
     czujniki_temperatury = relationship(Czujniki_temperatury)
 
     nazwa_kamery = Column(String(100))
+    sciezka_urzadzenia = Column(String(100))
 
 
 class Zdjecia(Base):

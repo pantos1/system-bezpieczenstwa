@@ -72,7 +72,8 @@ class Grupa():
         data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         nazwa = data + ".jpg"
         sciezka = Grupa.sciezka + nazwa
-        proces = subprocess.Popen(["fswebcam", "-r 640x480", sciezka])
+        znacznik_urzadzenia = "-d " + self.kamera.sciezka_urzadzenia
+        proces = subprocess.Popen(["fswebcam", "-r 640x480", znacznik_urzadzenia, sciezka])
         zdjecie = {
             "id_kamery": self.kamera.id_kamery,
             "nazwa": nazwa
