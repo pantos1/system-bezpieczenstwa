@@ -93,8 +93,8 @@ function displayHomeContent(result) {
                 src: "img/" + data[i].nazwa
             })
             .appendTo(card);
-        const temp = result[i].temperatura ? parseFloat(result[i].temperatura).toFixed(1).toLocaleString() : "-";
-        const rh = result[i].rh ? parseInt(result[i].rh) : "-";
+        const temp = data[i].temperatura ? parseFloat(data[i].temperatura).toFixed(1).toLocaleString() : "-";
+        const rh = data[i].rh ? parseInt(data[i].rh) : "-";
         const state = data[i].stan == '1' ? "Zamknięty" : "Otwarty";
         $(document.createElement("p"))
             .html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" + "</br>" + data[i].nazwa_czujnika + ": " + state)
@@ -214,17 +214,17 @@ function createLabelAndInput(labelText, inputName, inputValue) {
 
 async function refreshData() {
     try {
-        const data = await getData();
-        const result = Object.values(data);
+        const result = await getData();
+        const data = Object.values(result);
         for (let i = 0; i < result.length; i++) {
             const card = $(`#${result[i].id_kamery}`);
             const img = card.find("img");
-            img.attr('src', 'img/' + result[i].nazwa);
+            img.attr('src', 'img/' + data[i].nazwa);
             const text = card.find("p");
-            const temp = result[i].temperatura ? parseFloat(result[i].temperatura).toFixed(1).toLocaleString() : "-";
-            const rh = result[i].rh ? parseInt(result[i].rh) : "-";
-            const state = result[i].stan == '1' ? "Zamknięty" : "Otwarty";
-            text.html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" + "</br>" + result[i].nazwa_czujnika + ": " + state);
+            const temp = data[i].temperatura ? parseFloat(data[i].temperatura).toFixed(1).toLocaleString() : "-";
+            const rh = data[i].rh ? parseInt(data[i].rh) : "-";
+            const state = data[i].stan == '1' ? "Zamknięty" : "Otwarty";
+            text.html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" + "</br>" + data[i].nazwa_czujnika + ": " + state);
         }
     } catch (e) {
         console.log(e.responseText);
@@ -235,13 +235,13 @@ async function displayArchive() {
     const $loadingOverlay = $('#loading-overlay');
     $loadingOverlay.show();
     try {
-        const data = await getAllData();
+        const result = await getAllData();
         const content = $('#content');
         content.empty();
         content.attr({
             class: "uk-flex-column"
         });
-        const result = Object.values(data);
+        const data = Object.values(result);
         const $tabNav = $(document.createElement("ul"))
             .attr({
                 "uk-tab": ""
@@ -252,13 +252,13 @@ async function displayArchive() {
                 class: "uk-switcher"
             })
             .appendTo(content);
-        for (let i = 0; i < result.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             $(document.createElement("li"))
                 .append($(document.createElement("a"))
                     .attr({
                         "href": "grid-photo" + i
                     })
-                    .text(result[i].nazwa_kamery))
+                    .text(data[i].nazwa_kamery))
                 .appendTo($tabNav);
             const switcherElement = $(document.createElement("li"))
                 .appendTo($switcherContainer);
@@ -270,13 +270,13 @@ async function displayArchive() {
                     "uk-lightbox": "animation: slide"
                 })
                 .appendTo(switcherElement);
-            result[i].zdjecia = Object.values(result[i].zdjecia);
-            for (let j = result[i].zdjecia.length - 1; j >= 0; j--) {
+            data[i].zdjecia = Object.values(data[i].zdjecia);
+            for (let j = data[i].zdjecia.length - 1; j >= 0; j--) {
                 const albumElement = $(document.createElement("div"))
                     .appendTo($("#grid-photo" + i));
                 const photoLink = $(document.createElement("a"))
                     .attr({
-                        href: "img/" + result[i].zdjecia[j].nazwa,
+                        href: "img/" + data[i].zdjecia[j].nazwa,
                         "data-type": "iframe"
                     })
                     .appendTo(albumElement);
@@ -287,15 +287,15 @@ async function displayArchive() {
                     .appendTo(photoLink);
                 $(document.createElement("img"))
                     .attr({
-                        src: "img/" + result[i].zdjecia[j].nazwa
+                        src: "img/" + data[i].zdjecia[j].nazwa
                     })
                     .appendTo(card);
-                const date = result[i].zdjecia[j].data;
-                const temp = result[i].zdjecia[j].temperatura ? parseFloat(result[i].zdjecia[j].temperatura).toFixed(1).toLocaleString() : "-";
-                const rh = result[i].zdjecia[j].rh ? parseInt(result[i].zdjecia[j].rh) : "-";
-                const state = result[i].zdjecia[j].stan === '1' ? "Zamknięty" : "Otwarty";
+                const date = data[i].zdjecia[j].data;
+                const temp = data[i].zdjecia[j].temperatura ? parseFloat(data[i].zdjecia[j].temperatura).toFixed(1).toLocaleString() : "-";
+                const rh = data[i].zdjecia[j].rh ? parseInt(data[i].zdjecia[j].rh) : "-";
+                const state = data[i].zdjecia[j].stan === '1' ? "Zamknięty" : "Otwarty";
                 $(document.createElement("p"))
-                    .html(date + "</br>Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" + "</br>" + result[i].zdjecia[j].nazwa_czujnika + ": " + state)
+                    .html(date + "</br>Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" + "</br>" + data[i].zdjecia[j].nazwa_czujnika + ": " + state)
                     .attr({
                         class: "uk-text-small"
                     })
