@@ -25,6 +25,7 @@ class Grupa():
     czujnik_temp_adres = 0x40
     rhKod = 0xF5
     tempKod = 0xE0
+    multiplexer = i2c.i2c_open(1, multiplexer_adres)
 
     def __init__(self, kamera, czujnik_temp, czujnik, ustawienia, session, smtp):
         self.kamera = kamera
@@ -42,6 +43,7 @@ class Grupa():
         self.stan_poprzedni = 0
         self.czujnik.gpio = int(self.czujnik.gpio)
         self.czujnik_kanal_komenda = self.kanal(int(self.czujnik_temp.kanal_mux))
+        self.czujnik_i2c = Grupa.i2c.i2c_open(1, Grupa.czujnik_temp_adres)
         GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     @staticmethod
@@ -79,19 +81,17 @@ class Grupa():
         return proces
 
     def pomiar_temperatury_rh(self):
+        temp = None
+        rh = None
         try:
-            temp = None
-            rh = None
-            mux = Grupa.i2c.i2c_open(1, Grupa.multiplexer_adres)
-            Grupa.i2c.i2c_write_byte(mux, self.czujnik_kanal_komenda)
+            Grupa.i2c.i2c_write_byte(Grupa.multiplexer, self.czujnik_kanal_komenda)
             try:
-                czujnik = Grupa.i2c.i2c_open(1, Grupa.czujnik_temp_adres)
-                Grupa.i2c.i2c_write_byte(czujnik, self.rhKod)
+                Grupa.i2c.i2c_write_byte(self.czujnik_i2c, self.rhKod)
                 time.sleep(0.05)
-                (liczba_bitow, data) = Grupa.i2c.i2c_read_device(czujnik, 2)
+                (liczba_bitow, data) = Grupa.i2c.i2c_read_device(self.czujnik_i2c, 2)
                 rh = ((data[0] * 256 + data[1]) * 125 / 65536.0) - 6
 
-                (liczba_bitow, data) = Grupa.i2c.i2c_read_i2c_block_data(czujnik, self.tempKod, 2)
+                (liczba_bitow, data) = Grupa.i2c.i2c_read_i2c_block_data(self.czujnik_i2c, self.tempKod, 2)
                 temp = ((data[0] * 256 + data[1]) * 175.72 / 65536.0) - 46.85
             except pigpio.error:
                 print("Błąd połączenia z czujnikiem I2C: " + self.czujnik_temp.nazwa_czujnika_temp)
@@ -161,8 +161,8 @@ def init_session(config):
         "mysql+mysqldb://" + config['user'] + ":" + config['passwd'] + "@" + config['host'] + "/" + config['db'],
         pool_pre_ping=True
     )
-    DBSession = sessionmaker(bind=db)
-    session = DBSession()
+    db_sessionmaker = sessionmaker(bind=db)
+    session = db_sessionmaker()
     return session
 
 
@@ -184,24 +184,30 @@ def main():
         'passwd': 'raspberry',
         'db': 'nadzor'
     }
-    init_gpio()
     session = init_session(config)
-    kamery = fetch_all(session, Kamery)
-    czujniki = fetch_all(session, Czujniki)
-    czujniki_temperatury = fetch_all(session, Czujniki_temperatury)
-    ustawienia = fetch_all(session, Ustawienia)
-    smtp_server = init_smtp(ustawienia.filter(Ustawienia.klucz == 'adres_email_nadawcy').one().wartosc, ustawienia.filter(Ustawienia.klucz == 'haslo_nadawcy').one().wartosc)
-    grupy = []
-    for kamera, czujnik_temp, czujnik in zip(kamery.all(), czujniki_temperatury.all(), czujniki.all()):
-        grupa = Grupa(kamera=kamera, czujnik_temp=czujnik_temp, czujnik=czujnik, ustawienia=ustawienia, session=session, smtp=smtp_server)
-        grupy.append(grupa)
-        grupa.zrob_zdjecie()
-        grupa.pomiar_temperatury_rh()
-        schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(grupa.zrob_zdjecie)
-        schedule.every(czujnik_temp.czestotliwosc_pomiaru_temp).seconds.do(grupa.pomiar_temperatury_rh)
-        schedule.every(czujnik.czestotliwosc_odczytu_stanu).seconds.do(grupa.sprawdz_kontaktron)
-    while True:
-        schedule.run_pending()
+    try:
+        init_gpio()
+        kamery = fetch_all(session, Kamery)
+        czujniki = fetch_all(session, Czujniki)
+        czujniki_temperatury = fetch_all(session, Czujniki_temperatury)
+        ustawienia = fetch_all(session, Ustawienia)
+        smtp_server = init_smtp(ustawienia.filter(Ustawienia.klucz == 'adres_email_nadawcy').one().wartosc,
+                                ustawienia.filter(Ustawienia.klucz == 'haslo_nadawcy').one().wartosc)
+        grupy = []
+        for kamera, czujnik_temp, czujnik in zip(kamery.all(), czujniki_temperatury.all(), czujniki.all()):
+            grupa = Grupa(kamera=kamera, czujnik_temp=czujnik_temp, czujnik=czujnik, ustawienia=ustawienia,
+                          session=session, smtp=smtp_server)
+            grupy.append(grupa)
+            grupa.zrob_zdjecie()
+            grupa.pomiar_temperatury_rh()
+            schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(grupa.zrob_zdjecie)
+            schedule.every(czujnik_temp.czestotliwosc_pomiaru_temp).seconds.do(grupa.pomiar_temperatury_rh)
+            schedule.every(czujnik.czestotliwosc_odczytu_stanu).seconds.do(grupa.sprawdz_kontaktron)
+        while True:
+            schedule.run_pending()
+    finally:
+        GPIO.cleanup()
+        session.close()
 
 
 if __name__ == "__main__":
