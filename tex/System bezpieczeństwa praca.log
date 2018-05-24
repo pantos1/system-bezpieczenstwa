@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  23 MAY 2018 17:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  24 MAY 2018 14:15
 entering extended mode
 **"./System bezpieczeństwa praca.tex"
 ("System bezpieczeństwa praca.tex"
@@ -439,59 +439,75 @@ Package color Info: Driver file: pdftex.def on input line 147.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\helvet.sty"
 Package: helvet 2005/04/12 PSNFSS-v9.2a (WaS) 
 )
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\courier.sty"
+Package: courier 2005/04/12 PSNFSS-v9.2a (WaS) 
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\fancyhdr\fancyhdr.sty"
+Package: fancyhdr 2017/06/30 v3.9a Extensive control of page headers and footer
+s
+\f@nch@headwidth=\skip43
+\f@nch@O@elh=\skip44
+\f@nch@O@erh=\skip45
+\f@nch@O@olh=\skip46
+\f@nch@O@orh=\skip47
+\f@nch@O@elf=\skip48
+\f@nch@O@erf=\skip49
+\f@nch@O@olf=\skip50
+\f@nch@O@orf=\skip51
+)
 ("C:\Program Files\MiKTeX 2.9\tex\latex\tocloft\tocloft.sty"
 Package: tocloft 2017/08/31 v2.3i parameterised ToC, etc., typesetting
 Package tocloft Info: The document has section divisions on input line 51.
-\cftparskip=\skip43
-\cftbeforetoctitleskip=\skip44
-\cftaftertoctitleskip=\skip45
-\cftbeforepartskip=\skip46
-\cftpartnumwidth=\skip47
-\cftpartindent=\skip48
-\cftbeforesecskip=\skip49
-\cftsecindent=\skip50
-\cftsecnumwidth=\skip51
-\cftbeforesubsecskip=\skip52
-\cftsubsecindent=\skip53
-\cftsubsecnumwidth=\skip54
-\cftbeforesubsubsecskip=\skip55
-\cftsubsubsecindent=\skip56
-\cftsubsubsecnumwidth=\skip57
-\cftbeforeparaskip=\skip58
-\cftparaindent=\skip59
-\cftparanumwidth=\skip60
-\cftbeforesubparaskip=\skip61
-\cftsubparaindent=\skip62
-\cftsubparanumwidth=\skip63
-\cftbeforeloftitleskip=\skip64
-\cftafterloftitleskip=\skip65
-\cftbeforefigskip=\skip66
-\cftfigindent=\skip67
-\cftfignumwidth=\skip68
+\cftparskip=\skip52
+\cftbeforetoctitleskip=\skip53
+\cftaftertoctitleskip=\skip54
+\cftbeforepartskip=\skip55
+\cftpartnumwidth=\skip56
+\cftpartindent=\skip57
+\cftbeforesecskip=\skip58
+\cftsecindent=\skip59
+\cftsecnumwidth=\skip60
+\cftbeforesubsecskip=\skip61
+\cftsubsecindent=\skip62
+\cftsubsecnumwidth=\skip63
+\cftbeforesubsubsecskip=\skip64
+\cftsubsubsecindent=\skip65
+\cftsubsubsecnumwidth=\skip66
+\cftbeforeparaskip=\skip67
+\cftparaindent=\skip68
+\cftparanumwidth=\skip69
+\cftbeforesubparaskip=\skip70
+\cftsubparaindent=\skip71
+\cftsubparanumwidth=\skip72
+\cftbeforeloftitleskip=\skip73
+\cftafterloftitleskip=\skip74
+\cftbeforefigskip=\skip75
+\cftfigindent=\skip76
+\cftfignumwidth=\skip77
 \c@lofdepth=\count97
 \c@lotdepth=\count98
-\cftbeforelottitleskip=\skip69
-\cftafterlottitleskip=\skip70
-\cftbeforetabskip=\skip71
-\cfttabindent=\skip72
-\cfttabnumwidth=\skip73
+\cftbeforelottitleskip=\skip78
+\cftafterlottitleskip=\skip79
+\cftbeforetabskip=\skip80
+\cfttabindent=\skip81
+\cfttabnumwidth=\skip82
 )
 ("System bezpieczeństwa praca.aux")
 \openout1 = `"System bezpieczeństwa praca.aux"'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 66.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 74.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1phv.fd"
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
@@ -564,7 +580,7 @@ G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
 )
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 76.
 
 ("System bezpieczeństwa praca.toc"
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
@@ -583,75 +599,73 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 {C:/Users/Piotr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 76.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 82.
 <Architektura.png, id=7, 1116.17pt x 201.75375pt>
 File: Architektura.png Graphic file (type png)
 <use Architektura.png>
-Package pdftex.def Info: Architektura.png  used on input line 82.
+Package pdftex.def Info: Architektura.png  used on input line 103.
 (pdftex.def)             Requested size: 455.24408pt x 82.28857pt.
  [2 <./Architektura.png>]
-Underfull \vbox (badness 2189) has occurred while \output is active []
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 121.
 
- [3]
-<er.png, id=16, 831.105pt x 665.48625pt>
-File: er.png Graphic file (type png)
-<use er.png>
-Package pdftex.def Info: er.png  used on input line 109.
-(pdftex.def)             Requested size: 455.24408pt x 364.52585pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [4]
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1pcr.fd"
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
 ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
-) [5 <./er.png>]
-<Grupa.png, id=24, 417.56pt x 645.41125pt>
+)
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3]
+<Grupa.png, id=17, 417.56pt x 645.41125pt>
 File: Grupa.png Graphic file (type png)
 <use Grupa.png>
-Package pdftex.def Info: Grupa.png  used on input line 152.
+Package pdftex.def Info: Grupa.png  used on input line 130.
 (pdftex.def)             Requested size: 227.62204pt x 351.83572pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[6] [7 <./Grupa.png>]
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <12> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 168.
-
-Overfull \hbox (14.02385pt too wide) in paragraph at lines 170--171
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 136.
+[4]
+Overfull \hbox (14.02385pt too wide) in paragraph at lines 145--146
 \T1/phv/m/n/12 prze-pro-wa-dze-nia po-miaru w tym try-bie przy po-mocy funk-cji
  i2c_smbus_read_word_data()
  []
 
-[8] [9] [10]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[5 <./Grupa.png>] [6] [7] [8] [9]
+<er.png, id=43, 831.105pt x 665.48625pt>
+File: er.png Graphic file (type png)
+<use er.png>
+Package pdftex.def Info: er.png  used on input line 214.
+(pdftex.def)             Requested size: 455.24408pt x 364.52585pt.
+ [10 <./er.png>] [11] [12]
+("System bezpieczeństwa praca.aux")
 
- [11]
-[12] ("System bezpieczeństwa praca.aux") ) 
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 4862 strings out of 493305
- 62996 string characters out of 3138874
- 186162 words of memory out of 3000000
- 8335 multiletter control sequences out of 15000+200000
- 27598 words of font info for 38 fonts, out of 3000000 for 9000
+ 5028 strings out of 493305
+ 65084 string characters out of 3138874
+ 200853 words of memory out of 3000000
+ 8489 multiletter control sequences out of 15000+200000
+ 28219 words of font info for 40 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,7n,42p,1308b,1830s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/e
-nc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
-m/cmmi12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.
-pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/P
-rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program F
-iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
-ype1/urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helve
-tic/uhvro8a.pfb>
-Output written on "System bezpieczeństwa praca.pdf" (12 pages, 161837 bytes).
+ 41i,12n,43p,1308b,1235s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
+KTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
+pe1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
+c/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
+ts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb
+><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTeX 2.
+9/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on "System bezpieczeństwa praca.pdf" (12 pages, 171166 bytes).
 PDF statistics:
- 80 PDF objects out of 1000 (max. 8388607)
+ 84 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

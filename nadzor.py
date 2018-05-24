@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import pigpio
 from datetime import datetime
-import subprocess
+from subprocess import PIPE, Popen
 import threading
 import time
 import schedule
@@ -73,11 +73,19 @@ class Grupa():
         nazwa = data + ".jpg"
         sciezka = Grupa.sciezka + nazwa
         znacznik_urzadzenia = "-d " + self.kamera.sciezka_urzadzenia
-        proces = subprocess.Popen(["fswebcam", "-r 640x480", znacznik_urzadzenia, sciezka])
-        zdjecie = {
-            "id_kamery": self.kamera.id_kamery,
-            "nazwa": nazwa
-        }
+        proces = Popen(["fswebcam", "-r 640x480", znacznik_urzadzenia, sciezka], stdout=PIPE, stderr=PIPE)
+        try:
+            (wyjscie, bledy) = proces.communicate()
+            if bledy != b'': raise IOError
+            zdjecie = {
+                "id_kamery": self.kamera.id_kamery,
+                "nazwa": nazwa
+            }
+        except IOError:
+            zdjecie = {
+                "id_kamery": self.kamera.id_kamery,
+                "nazwa": "Brak zdjęcia"
+            }
         self.zdjecie_instance = create(self.session, Zdjecia, **zdjecie)
         return proces
 

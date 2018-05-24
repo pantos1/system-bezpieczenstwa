@@ -31,14 +31,14 @@ si7021_pomaranczowy = get_or_create(session, Czujniki_temperatury, **si7021_poma
 kontakron_1_kwargs = {
     "nazwa_czujnika": "Kontaktron 1",
     "gpio": 23,
-    "czestotliwosc_odczytu_stanu": 0.1
+    "czestotliwosc_odczytu_stanu": 0.3
 }
 kontaktron_1 = get_or_create(session, Czujniki, **kontakron_1_kwargs)
 
 kontakron_2_kwargs = {
     "nazwa_czujnika": "Kontaktron 2",
     "gpio": 18,
-    "czestotliwosc_odczytu_stanu": 0.1
+    "czestotliwosc_odczytu_stanu": 0.3
 }
 kontaktron_2 = get_or_create(session, Czujniki, **kontakron_2_kwargs)
 
