@@ -84,7 +84,7 @@ class Grupa():
         except IOError:
             zdjecie = {
                 "id_kamery": self.kamera.id_kamery,
-                "nazwa": "Brak zdjęcia"
+                "nazwa": None
             }
         self.zdjecie_instance = create(self.session, Zdjecia, **zdjecie)
         return proces
