@@ -146,7 +146,6 @@ class Grupa():
         self.stan_poprzedni = self.stan_czujnika
 
     def wyslij_email(self, odbiorca, temat, tekst, zdjecia=None):
-        print("email")
         wiadomosc = MIMEMultipart()
         wiadomosc['From'] = self.nadawca
         wiadomosc['To'] = odbiorca
@@ -160,7 +159,6 @@ class Grupa():
                 )
             zalacznik['Content-Disposition'] = 'attachment; filename="%s"' % path.basename(zdjecie)
             wiadomosc.attach(zalacznik)
-        print(wiadomosc.as_string())
         self.smtp.sendmail(self.nadawca, odbiorca, wiadomosc.as_string())
 
 
