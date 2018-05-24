@@ -20,6 +20,7 @@
 \usepackage{color}
 \usepackage{helvet}
 \usepackage{courier}
+\usepackage{pdfpages}
 
 \usepackage{fancyhdr}
 \fancypagestyle{plain}{
@@ -72,6 +73,7 @@
 }
 
 \begin{document}
+\includepdf[pages=-]{title.pdf}
 
 \tableofcontents
 \setcounter{tocdepth}{2}
@@ -118,7 +120,7 @@ W zaprojektowanym systemie bezpieczeństwa program obsługujący urządzenia dzi
 Wymogiem systemu jest umożliwienie użytkownikowi dostępu do zebranych danych poprzez stronę WWW. Konieczny jest zatem serwer HTTP, na którym będzie umieszczona strona. Jednym z najbardziej środowisk do prowadzenia serwerów WWW jest Apache. Jest on dostępny w wersji dla systemu Raspbian, który działa na Raspberry Pi. Umieszczona na serwerze strona będzie komunikowała się z serwerem poprzez żądania HTTP. Szkielet strony w postaci pliku HTML będzie wypełniony danymi zebranymi przez kamery i czujniku po zrealizowaniu żądań wysyłanych asynchronicznie (technika AJAX) do serwera. Za obsługę żądań po stronie serwerowej będą odpowiedzialne mikroserwisy w postaci skryptów w języku PHP. Skrypty łączą się z bazą danych, w której są przechowywane dane zebrane z kamer i czujników. Następnie zwracają dane w odpowiedzi na żądania klienta. Język PHP jest dobrze zintegrowany z serwerem Apache i jest jedną z najbardziej popularnych technologii na serwerach WWW. 
 
 \section{Program procedury obsługi kamer i czujników}
-Program obsługujący czujniki i kamery musi cyklicznie wykonywać pomiary, odczyty i zdjęcia, a wyniki zapisywać do bazy danych. Potrzebne jest narzędzie, które pozwoli okresowo wykonywać funkcje w ramach jednego programu. Istnieją mechanizmy wewnątrz języka Python(moduł \texttt{sched}), które umożliwiają wykonywanie zadań po minięciu pewnego czasu. Wykorzystanie tego modułu wymagałoby jednak cyklicznego umieszczania zadania w kolejce po jego wykonaniu. Innym modułem jest biblioteka \texttt{schedule}, który pozwala w jednej linijce zaplanować cykliczne wykonanie zadania. Poniżej przykładowe wywołanie szeregowania przy pomocy tego modułu.
+Program obsługujący czujniki i kamery musi cyklicznie wykonywać pomiary, odczyty i zdjęcia, a wyniki zapisywać do bazy danych. Potrzebne jest narzędzie, które pozwoli okresowo wykonywać funkcje w ramach jednego programu. Istnieją mechanizmy wewnątrz języka Python(moduł \texttt{sched}), które umożliwiają wykonywanie zadań po minięciu pewnego czasu lub zaplanowanie ich do wykonania o konkretnej porze. Wykorzystanie tego modułu wymagałoby jednak ponownego zaplanowania zadania po każdym jego wykonaniu. Modułem, który umożliwia dokonanie tego w prostszy sposób, jest biblioteka \texttt{schedule}. Jest on przeznaczony do planowania cyklicznego wykonywania zadań w określonych interwałach. Przykładowe wywołanie szeregowania przy użyciu \texttt{schedule} przedstawiono poniżej.
 \begin{lstlisting} [language=Python]
 schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(grupa.zrob_zdjecie)
 \end{lstlisting}
@@ -133,10 +135,12 @@ Program obsługujący czujniki początkowo wykonuje zapytanie do bazy danych o w
 \end{center}
 \end{figure}
 
-Rysunek \ref{fig: Grupa} przedstawia diagram UML klasy Grupa. Skrótem \textit{m} oznaczone są metody klasy, a \textit{f} - atrybuty. Działanie poszczególnych metod jest opisane w poniższych podpunktach. 
+Rysunek \ref{fig: Grupa} przedstawia diagram UML klasy Grupa. Skrótem \textit{m} oznaczone są metody klasy, a \textit{f} - atrybuty. Działanie poszczególnych metod jest opisane w poniższych podrozdziałach. 
 
 \subsection{Obsługa kamer USB}
-Raspberry Pi 3 B posiada 4 gniazda USB, do których mogą podłączone kamery USB. Kamery USB są obsługiwane przy pomocy aplikacji fswebcam. Jest to samodzielny program pozwalający na wywoływanie zdjęć z kamer USB podłączonych do komputerem z systemem typu Unix. Wywołanie tego programu z poziomu skryptu w języku Python wymaga użycia modułu subprocessing. Daje on możliwość otwierania programów w osobnych procesach. Do otwarcia fswebcam użyta została klasa Popen. Argumentami programu fswebcam są rozdzielczość (640x480px) oraz nazwa pliku ze zdjęciem. Zdjęcie jest zapisywane w miejscu wskazanym przez atrybut klasy Grupa o nazwie sciezka (/var/www/html/img). Dzięki temu dostęp do zdjęć ma strona internetowa umieszczona w serwerze WWW.
+Kamery USB są obsługiwane przy pomocy aplikacji \texttt{fswebcam}. Jest to samodzielna aplikacja pozwalająca na wywoływanie zdjęć z kamer USB podłączonych do komputera z systemem typu Unix. Wywołanie tego programu z poziomu programu w języku Python wymaga użycia modułu \texttt{subprocessing}. Daje on możliwość otwierania programów w osobnych procesach. Do otwarcia \texttt{fswebcam} użyta została klasa \texttt{Popen}. Do wywoływanego programu można przekazać sekwencję argumentów. Użytymi argumentami programu \texttt{fswebcam} są rozdzielczość, nazwa wirtualnego węzła kamery oraz ścieżka, gdzie zdjęcie ma być zapisane.
+
+Rozdzielczość zdjęcia jest ustawiona jako 640x480 pikseli. Jest to maksymalna przetestowana możliwa rozdzielczość kamery Titanum Onyx. Kolejną komendą jest nazwa wirtualnego węzła kamery (ang. \textit{virtual device node}). Jest to plik, który system Linux tworzy podczas pierwszego podłączenie urządzenia. Plik ten jest przechowywany w folderze \texttt{/dev}. Użycie tej komendy pozwala na wywołanie zdjęcia przez konkretną kamerę. Zdjęcie jest zapisywane w miejscu wskazanym przez atrybut klasy Grupa o nazwie sciezka (/var/www/html/img). Dzięki temu dostęp do zdjęć ma strona internetowa umieszczona w serwerze WWW.
 
 Po wywołaniu procesu funkcja kontynuuje działanie, zapisując nazwę zdjęcia (będącą aktualną datą) w tabeli zdjecia wraz z identyfikatorem kamery, która zostało wykonane. Rodzi to pewien problem związany z tym, że nie istnieje sprawdzenie błędów pochodzących z procesu. W bazie danych zostaje zapisana nazwa zdjęcia, które mogło zostać niewykonane. Jest to pozornie problem, natomiast brak znalezienia zdjęcia o wskazanej nazwie przez stronę WWW będzie jasną informacją dla użytkownika, że wystąpił błąd. Dzięki takiemu podejściu funkcja nie blokuje dalszego wykonywania zaszeregowanych programów oczekiwaniem na zakończenie procesu. Wykonywanie funkcji w osobnym wątku doprowadziłoby do tego, że zdjęcie byłoby przypisane do późniejszych pomiarów w zależności od czasu zakończenia procesu a nie wywołania jego wykonania. Funkcja zrob{\_}zdjecie zwraca obiekt klasy Popen reprezentujący proces z wykonywanym programem fswebcam. 
 \subsection{Obsługa czujników podłączonych do magistrali I2C}

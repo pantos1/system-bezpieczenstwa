@@ -124,12 +124,12 @@ class Grupa():
             self.stan_czujnika = 0
             if self.stan_poprzedni == 1:
                 zdjecia = []
-                proces = self.zrob_zdjecie()
+                self.zrob_zdjecie()
                 zdjecia.append(self.zdjecie_instance.nazwa)
                 if self.powiadomienia_email == "on" and self.odbiorca != "":
                     tekst = "Otwarty czujnik: " + self.czujnik.nazwa_czujnika
                     temat = "Otwarcie czujnika " + datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-                    run_threaded(self.wyslij_email, (self.odbiorca, temat, tekst, proces, zdjecia))
+                    run_threaded(self.wyslij_email, (self.odbiorca, temat, tekst, zdjecia))
         stan = {
             "id_czujnika": self.czujnik.id_czujnika,
             "stan": self.stan_czujnika
@@ -145,8 +145,7 @@ class Grupa():
         pomiar_instance = create(self.session, Pomiary, **pomiar)
         self.stan_poprzedni = self.stan_czujnika
 
-    def wyslij_email(self, odbiorca, temat, tekst, proces, zdjecia=None):
-        proces.wait()
+    def wyslij_email(self, odbiorca, temat, tekst, zdjecia=None):
         wiadomosc = MIMEMultipart()
         wiadomosc['From'] = self.nadawca
         wiadomosc['To'] = odbiorca
