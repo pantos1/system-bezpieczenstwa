@@ -72,8 +72,8 @@ class Grupa():
         data = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         nazwa = data + ".jpg"
         sciezka = Grupa.sciezka + nazwa
-        znacznik_urzadzenia = "-d " + self.kamera.sciezka_urzadzenia
-        proces = Popen(["fswebcam", "-r 640x480", znacznik_urzadzenia, sciezka], stdout=PIPE, stderr=PIPE)
+        znacznik_urzadzenia = "-d" + self.kamera.sciezka_urzadzenia
+        proces = Popen(["fswebcam", "-q", znacznik_urzadzenia, "-r 640x480", sciezka], stdout=PIPE, stderr=PIPE)
         try:
             (wyjscie, bledy) = proces.communicate()
             if bledy != b'': raise IOError
