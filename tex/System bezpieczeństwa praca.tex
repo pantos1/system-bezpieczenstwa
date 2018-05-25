@@ -177,11 +177,20 @@ X                                             & X                               
 X                                             & \begin{tabular}[c]{@{}l@{}}0\\ 1\end{tabular} & X                                             & X                                             & X                                             & X                                             & X                                             & X                                             & \begin{tabular}[c]{@{}l@{}}Kanał 6 nieaktywny\\ Kanał 6 aktywny\end{tabular} \\ \hline
 \begin{tabular}[c]{@{}l@{}}0\\ 1\end{tabular} & X                                             & X                                             & X                                             & X                                             & X                                             & X                                             & X                                             & \begin{tabular}[c]{@{}l@{}}Kanał 7 nieaktywny\\ Kanał 7 aktywny\end{tabular} \\ \hline
 \end{tabular}
-\caption{Definicja bajtu sterującego \cite{multiplekser}}
+\caption{Definicja bajtu sterującego. Źródło: \cite{multiplekser}}
 \label{command_byte}
 \end{table}
 
-Pierwszą komendą, którą należy wysłać do czujnika to komenda pomiaru wilgotności względnej. W dokumentacji czujnika Si7021 opisane są dwie metody pomiaru - Hold Master Mode oraz No Hold Master Mode. Pierwsza z nich oznacza, że urządzenie nadrzędne wysyła żądanie pomiaru wilgotności. Urządzenie podrzędne potwierdza otrzymanie żądanie i dokonuje pomiaru. Wymaga to zastosowania rozciągania zegara (ang. \textit{clock stretching}), które polega na utrzymywania przez urządzenie podrzędne linii zegarowej SCK w stanie niskim. Dzieje się to do momentu zakończenia pomiaru przez urządzenie i wystawieniu jego wyniku do rejestru. Drugi tryb pomiaru (No Hold Master Mode) różni się tym, że po wysłaniu kodu pomiaru (0xF5) oraz żądania odczytu urządzenie nie potwierdza odbioru do momentu zakończenia konwersji pomiaru. Następnie należy odczytać dwubajtowy wynik pomiaru z rejestru czujnika. Należałoby zatem wysłać osobno bajt z kodem pomiaru, a następnie odczekać na wykonanie pomiaru, którego maksymalny czas jest opisany w specyfikacji, wysłać żądanie odczytu i odebrać wynik.
+Pierwszą komendą, którą należy wysłać do czujnika to komenda pomiaru wilgotności względnej. W dokumentacji czujnika Si7021 opisane są dwie metody pomiaru - Hold Master Mode oraz No Hold Master Mode. Ich porównanie zostało przedstawione na rysunku \ref{fig: metody_pomiaru}. Kolorem białym zostały oznaczone komendy wysyłane przez urządzenie nadrzędne, a szarym przez urządzenie podrzędne. W pierwszej z nich urządzenie nadrzędne wysyła żądanie pomiaru (bajt \textit{Measure Cmd}). Po potwierdzeniu odbioru wysyłane jest żądanie odczytu (bit \textit{R}) Urządzenie podrzędne potwierdza otrzymanie żądania i dokonuje pomiaru. Wymaga to zastosowania rozciągania zegara (ang. \textit{clock stretching}), które polega na utrzymywaniu przez urządzenie podrzędne linii zegarowej SCK w stanie niskim. Dzieje się to do momentu zakończenia pomiaru przez urządzenie i wystawieniu jego wyniku do rejestru. Wynik pomiaru składa się z dwóch bajtów, które należy odebrać w jednej transakcji. Następnie komunikacja kończy się poprzez wystawienie znaku STOP (bit \textit{P}).
+Drugi tryb pomiaru (No Hold Master Mode) różni się tym, że po wysłaniu kodu pomiaru (0xF5) oraz żądania odczytu urządzenie nie potwierdza odbioru do momentu zakończenia konwersji pomiaru. Następnie należy odczytać dwubajtowy wynik pomiaru z rejestru czujnika. Należałoby zatem wysłać osobno bajt z kodem pomiaru, a następnie odczekać na wykonanie pomiaru, którego maksymalny czas jest opisany w specyfikacji, wysłać żądanie odczytu i odebrać wynik.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=\linewidth]{Si7021_pomiar.png}
+\caption{Porównanie sekwencji komend I2C do wykonania pomiaru czujnikiem Si7021. Źródło: \cite{czujnik_temp}}
+\label{fig: metody_pomiaru}
+\end{center}
+\end{figure}
 
 Do programistycznej komunikacji poprzez I2C potrzebna była odpowiednia bibliotek. Pierwszym zastosowanym modułem był python-smbus. Korzysta on ze sterownika wbudowanego w jądro systemu Linux. Próba przeprowadzenia pomiaru w trybie Hold Master Mode przy pomocy funkcji \texttt{i2c{\_}smbus{\_}read{\_}word{\_}data()} oraz \texttt{i2c{\_}smbus{\_}read{\_}i2c{\_}block{\_}data()} zakończyła się błędem o kodzie \texttt{io errno5}. Wynikał on z tego, że pakiet smbus obsługuje magistralę I2C zgodnie ze standardem SMBus -- rozszerzeniem I2C. Posiada on bardziej ścisłe reguły dotyczące czasu trwania transakcji na magistrali. Obie wymienione funkcje odczytu pakietu python-smbus są poprzedzone wysłaniem żądania do urządzenia. Oznacza to, że nie można przy ich pomocy odczytać samego wyniku pomiaru po wysłaniu kodu pomiaru w trybie No Hold Master Mode (0xE5). Inna dostępna funkcja \texttt{i2c{\_}smbus{\_}read{\_}byte()} pozwala na odczyt wyłącznie jednego bajtu. Dwukrotne wysłanie żądania przy pomocy tej funkcji prowadzi do dwukrotnego odczytania pierwszego bajtu pomiaru.
 
@@ -305,7 +314,12 @@ Odczyt czujników stykowych jest najczęściej wykonywanym pomiarem, więc po st
 \bibitem{multiplekser}
 Karta katalogowa multipleksera TCA9548A:
 \url{http://www.ti.com/lit/ds/symlink/tca9548a.pdf}
+
+\bibitem{czujnik_temp}
+Karta katalogowa czujnika temperatury i wilgotności Si7021:
+\url{https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf}
 \end{thebibliography}
+
 
 \section{Załączniki}
 

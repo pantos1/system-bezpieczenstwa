@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  24 MAY 2018 22:50
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  25 MAY 2018 09:29
 entering extended mode
 **"./System bezpieczeÅ„stwa praca.tex"
 ("System bezpieczeÅ„stwa praca.tex"
@@ -816,59 +816,64 @@ File: omsphv.fd
 LaTeX Font Info:    Font shape `OMS/phv/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 153.
  [5] [6 <./Grupa.png>] [7]
-Overfull \hbox (6.26248pt too wide) in paragraph at lines 186--187
+<Si7021_pomiar.png, id=224, 462.528pt x 475.7775pt>
+File: Si7021_pomiar.png Graphic file (type png)
+<use Si7021_pomiar.png>
+Package pdftex.def Info: Si7021_pomiar.png  used on input line 189.
+(pdftex.def)             Requested size: 455.24408pt x 468.30602pt.
+
+Overfull \hbox (6.26248pt too wide) in paragraph at lines 195--196
 \T1/pcr/m/n/12 i2c_smbus_read_i2c_block_data() \T1/phv/m/n/12 za-ko«-czy-ªa si¦
  bª¦-dem o ko-dzie \T1/pcr/m/n/12 io errno5\T1/phv/m/n/12 .
  []
 
-[8]
-Overfull \hbox (13.30511pt too wide) in paragraph at lines 214--215
+[8 <./Si7021_pomiar.png>] [9]
+Overfull \hbox (13.30511pt too wide) in paragraph at lines 223--224
 \T1/phv/m/n/12 wy-pro-wa-dze-nia ma by¢ skon-fi-gu-ro-wa-ne ja-ko wej-±cie (\T1
 /pcr/m/n/12 GPIO.IN\T1/phv/m/n/12 ) czy wyj-±cie (\T1/pcr/m/n/12 GPIO.OUT\T1/ph
 v/m/n/12 ).
  []
 
-[9]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [10]
-<er.png, id=251, 831.105pt x 665.48625pt>
+[10] [11]
+<er.png, id=261, 831.105pt x 665.48625pt>
 File: er.png Graphic file (type png)
 <use er.png>
-Package pdftex.def Info: er.png  used on input line 247.
+Package pdftex.def Info: er.png  used on input line 256.
 (pdftex.def)             Requested size: 455.24408pt x 364.52585pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[11]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [12 <./er.png>] [13]
-Underfull \hbox (badness 1755) in paragraph at lines 306--308
+[12] [13 <./er.png>]
+Underfull \hbox (badness 1755) in paragraph at lines 315--317
 []\T1/phv/m/n/12 Karta ka-ta-lo-go-wa mul-ti-plek-se-ra TCA9548A: []$\T1/pcr/m/
 n/12 http : / / www . ti . com / lit / ds /
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 313.
-[14]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 313.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [14]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 327.
+
+[15]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 327.
  ("System bezpieczeÅ„stwa praca.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 313.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 313.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 327.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 327.
 Package rerunfilecheck Info: File `"System bezpieczeÅ„stwa praca".out' has not 
 changed.
 (rerunfilecheck)             Checksum: C30E06CE2655984AE8CAD622393A80F6;2030.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 313.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 327.
  ) 
 Here is how much of TeX's memory you used:
- 8926 strings out of 493305
- 126183 string characters out of 3138874
- 279255 words of memory out of 3000000
- 12265 multiletter control sequences out of 15000+200000
+ 8936 strings out of 493305
+ 126354 string characters out of 3138874
+ 270422 words of memory out of 3000000
+ 12271 multiletter control sequences out of 15000+200000
  28219 words of font info for 40 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,18n,43p,1221b,1236s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,18n,43p,1221b,1888s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
 KTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9
 /fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
@@ -878,9 +883,9 @@ ts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb
 ><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program F
 iles/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTeX 2.
 9/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on "System bezpieczeÅ„stwa praca.pdf" (14 pages, 329854 bytes).
+Output written on "System bezpieczeÅ„stwa praca.pdf" (15 pages, 352514 bytes).
 PDF statistics:
- 336 PDF objects out of 1000 (max. 8388607)
- 79 named destinations out of 1000 (max. 500000)
- 260 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 348 PDF objects out of 1000 (max. 8388607)
+ 82 named destinations out of 1000 (max. 500000)
+ 265 words of extra memory for PDF output out of 10000 (max. 10000000)
 
