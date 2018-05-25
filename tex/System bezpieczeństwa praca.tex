@@ -22,6 +22,7 @@
 \usepackage{pdfpages}
 \usepackage{multirow}
 \usepackage{hyperref}
+\usepackage{float}
 \renewcommand*{\tablename}{Tabela}
 
 \usepackage{fancyhdr}
@@ -128,8 +129,7 @@ schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(grupa.zrob_zdjecie)
 \end{lstlisting}
 Jako argument \texttt{every()} podawana jest częstotliwość wykonywania zadania, następnie podawane są jednostki oraz nazwa funkcji jako argument \texttt{do()}.
 
-Program jest napisany przy użyciu metodyki obiektowej. Takie podejście pozwala powiązać czujnik z kamerą, która będzie wykonywała zdjęcia w przypadku jego otwarcia. Klasa Grupa reprezentuje te dwa urządzenia oraz dodatkowo przypisany do nich czujnik temperatury. Zawiera ona metody, które wykonujące zdjęcie, pomiar temperatury i wilgotności oraz odczyt stanu wyprowadzenia GPIO, do którego jest podłączony czujnik stykowy. Zarządza ona również wysłaniem wiadomości email z powiadomieniem w przypadku otwarcia czujnika.
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.5\linewidth]{Grupa.png}
 \caption{Diagram UML klasy Grupa}
@@ -139,8 +139,10 @@ Program jest napisany przy użyciu metodyki obiektowej. Takie podejście pozwala
 
 Rysunek \ref{fig: Grupa} przedstawia diagram UML klasy Grupa. Skrótem \textit{m} oznaczone są metody klasy, a \textit{f} - atrybuty. Działanie poszczególnych metod jest opisane w poniższych podrozdziałach. 
 
+Program jest napisany przy użyciu metodyki obiektowej. Takie podejście pozwala powiązać czujnik z kamerą, która będzie wykonywała zdjęcia w przypadku jego otwarcia. Klasa Grupa reprezentuje te dwa urządzenia oraz dodatkowo przypisany do nich czujnik temperatury. Zawiera ona metody, które wykonujące zdjęcie, pomiar temperatury i wilgotności oraz odczyt stanu wyprowadzenia GPIO, do którego jest podłączony czujnik stykowy. Zarządza ona również wysłaniem wiadomości email z powiadomieniem w przypadku otwarcia czujnika.
+
 \subsection{Obsługa kamer USB}
-Kamery USB są obsługiwane przez funkcję \texttt{wyslij{\_}email}. Do samego wykonywania zdjęć użyta jest aplikacja \texttt{fswebcam}. Jest to samodzielny program pozwalający na wywoływanie zdjęć z kamer USB podłączonych do komputera z systemem typu Unix. Program ten pozwala na wywołanie zdjęcia z określonej kamery, zdefiniowane rozdzielczości zdjęcia, umieszczenie na zdjęciu podpisu z datą i godziną wykonania zdjęcia. 
+Kamery USB są obsługiwane przez metodę \texttt{wyslij{\_}email}. Do samego wykonywania zdjęć użyta jest aplikacja \texttt{fswebcam}. Jest to samodzielny program pozwalający na wywoływanie zdjęć z kamer USB podłączonych do komputera z systemem typu Unix. Program ten pozwala na wywołanie zdjęcia z określonej kamery, zdefiniowane rozdzielczości zdjęcia, umieszczenie na zdjęciu podpisu z datą i godziną wykonania zdjęcia. 
 
 Wywołanie \texttt{fswebcam} z poziomu programu w języku Python wymaga użycia modułu \texttt{subprocessing}. Daje on możliwość otwierania programów w osobnych procesach. W tym przypadku użyta została klasa \texttt{Popen} z tego modułu otwierająca nowy podproces. Klasa jest dostępna zarówno w wersji języka Python 2 jak i 3. Tworząc obiekt klasy, należy przekazać do niego listę składającą się z nazwy programu, który chcemy uruchomić i jego argumentów. Dodatkowo można określić, czy i gdzie kierować informacje ze standardowych strumieni wejścia/wyjścia procesu.
 
@@ -150,9 +152,9 @@ proces = Popen(["fswebcam", "-q", "-d/dev/video0", "-r 640x480", "/var/www/html/
 
 Użytymi argumentami programu \texttt{fswebcam} w powyższym przykładowym wywołaniu są:
 \begin{itemize}
-\item \texttt{"-r"} -- rozdzielczość , 
-\item \texttt{"-d"} -- nazwa wirtualnego węzła kamery,
-\item \texttt{"-q"} -- tryb cichy,
+\item \texttt{-r} -- rozdzielczość , 
+\item \texttt{-d} -- nazwa wirtualnego węzła kamery,
+\item \texttt{-q} -- tryb cichy,
 \item ścieżka, gdzie zdjęcie ma być zapisane.
 \end{itemize}
 Standardowe strumienie wyjścia i błędów są przekierowane do obiektów \texttt{pipe}, dzięki czemu ich wartość będzie można następnie odczytać. Program \texttt{fswebcam} domyślnie przekierowuje wszystkie komunikaty do strumienia błędów. Użycie trybu cichego zapewnia, że w strumieniu błędów znajdzie się jedynie informacja o błędach.
@@ -161,7 +163,8 @@ Zdjęcie jest zapisywane w formacie JPG w rozdzielczości 640x480 pikseli. Jest 
 
 Po wywołaniu procesu funkcja oczekuje na jego wykonanie i odbiera informacje ze strumienia wyjścia i błędów przy pomocy metody \texttt{communicate()}. Jeśli zawartość strumienia błędów nie jest pusta, podniesiony jest wyjątek \texttt{IOError}. Na tej podstawie podejmowana jest decyzja o nazwie zdjęcia, która będzie zapisana do bazy danych. 
 \subsection{Obsługa czujników podłączonych do magistrali I2C}
-Multiplekser TCA9548A umożliwia podłączenie do 8 urządzeń korzystających z magistrali I2C. Użyte czujniki temperatury i wilgotności Si 7021 posiadają taki sam adres, więc multiplekser powinien być skonfigurowany do zestawienia komunikacji z każdym z nich osobno. Aktywacja pojedynczego kanału odbywa się poprzez przesłanie do multipleksera 8 bitowego kodu odpowiadającego jego numerowi. Kod tworzony jest przez ustawienie bitu o pozycji równej numerowi kanału jako 1. Definicja bajtu sterującego została pokazana w tabeli \ref{command_byte} Pozostałe pola powinny być ustawione jako 0. Operację tą wykonuje pomocnicza funkcja \texttt{kanal}. Zwraca ona 8 bitową komendę odpowiadającą numerowi kanału. Po wysłaniu komendy i znaku STOP kanał jest aktywowany. Kolejne komendy można adresować, używając adresu czujnika temperatury.
+\subsubsection{Komunikacja z multiplekserem TCA9548A}
+Multiplekser TCA9548A umożliwia podłączenie do 8 urządzeń korzystających z magistrali I2C. Użyte czujniki temperatury i wilgotności Si 7021 posiadają taki sam adres, więc multiplekser powinien być skonfigurowany do zestawienia komunikacji z każdym z nich osobno. Aktywacja pojedynczego kanału odbywa się poprzez przesłanie do multipleksera 8 bitowego kodu odpowiadającego jego numerowi. Kod tworzony jest przez ustawienie bitu o pozycji równej numerowi kanału jako 1. Pozostałe pola powinny być ustawione jako 0. Definicja bajtu sterującego została pokazana w tabeli \ref{command_byte}. Operację tą wykonuje pomocnicza funkcja \texttt{kanal}. Zwraca ona 8 bitową komendę odpowiadającą numerowi kanału. Po wysłaniu komendy i znaku STOP kanał jest aktywowany. Kolejne komendy można adresować, używając adresu czujnika temperatury.
 \begin{table}[h]
 \centering
 \begin{tabular}{|llllllll|l|}
@@ -181,22 +184,24 @@ X                                             & \begin{tabular}[c]{@{}l@{}}0\\ 1
 \label{command_byte}
 \end{table}
 
-Pierwszą komendą, którą należy wysłać do czujnika to komenda pomiaru wilgotności względnej. W dokumentacji czujnika Si7021 opisane są dwie metody pomiaru - Hold Master Mode oraz No Hold Master Mode. Ich porównanie zostało przedstawione na rysunku \ref{fig: metody_pomiaru}. Kolorem białym zostały oznaczone komendy wysyłane przez urządzenie nadrzędne, a szarym przez urządzenie podrzędne. W pierwszej z nich urządzenie nadrzędne wysyła żądanie pomiaru (bajt \textit{Measure Cmd}). Po potwierdzeniu odbioru wysyłane jest żądanie odczytu (bit \textit{R}) Urządzenie podrzędne potwierdza otrzymanie żądania i dokonuje pomiaru. Wymaga to zastosowania rozciągania zegara (ang. \textit{clock stretching}), które polega na utrzymywaniu przez urządzenie podrzędne linii zegarowej SCK w stanie niskim. Dzieje się to do momentu zakończenia pomiaru przez urządzenie i wystawieniu jego wyniku do rejestru. Wynik pomiaru składa się z dwóch bajtów, które należy odebrać w jednej transakcji. Następnie komunikacja kończy się poprzez wystawienie znaku STOP (bit \textit{P}).
-Drugi tryb pomiaru (No Hold Master Mode) różni się tym, że po wysłaniu kodu pomiaru (0xF5) oraz żądania odczytu urządzenie nie potwierdza odbioru do momentu zakończenia konwersji pomiaru. Następnie należy odczytać dwubajtowy wynik pomiaru z rejestru czujnika. Należałoby zatem wysłać osobno bajt z kodem pomiaru, a następnie odczekać na wykonanie pomiaru, którego maksymalny czas jest opisany w specyfikacji, wysłać żądanie odczytu i odebrać wynik.
+\subsubsection{Komunikacja z czujnikiem Si7021}
+Pierwszą komendą, którą należy wysłać do czujnika, jest komenda pomiaru wilgotności względnej. W dokumentacji czujnika Si7021 opisane są dwie metody pomiaru - Hold Master Mode oraz No Hold Master Mode. Ich porównanie zostało przedstawione na rysunku \ref{fig: metody_pomiaru}. Kolorem białym są oznaczone komendy wysyłane przez urządzenie nadrzędne (ang. \textit{master}), a szarym przez urządzenie podrzędne (ang. \textit{slave}). W pierwszej z nich urządzenie nadrzędne wysyła żądanie pomiaru (bajt \textit{Measure Cmd}). Po potwierdzeniu odbioru wysyłane jest żądanie odczytu (znak \textit{R}) Urządzenie podrzędne potwierdza otrzymanie żądania i dokonuje pomiaru. Wymaga to zastosowania rozciągania zegara (ang. \textit{clock stretching}), które polega na utrzymywaniu przez urządzenie podrzędne linii zegarowej SCK w stanie niskim. Dzieje się to do momentu zakończenia pomiaru przez urządzenie i wystawieniu jego wyniku do rejestru. Wynik pomiaru składa się z dwóch bajtów, które należy odebrać w jednej transakcji. Następnie komunikacja kończy się poprzez wystawienie znaku STOP (znak \textit{P}). Drugi tryb pomiaru (No Hold Master Mode) różni się tym, że po wysłaniu kodu pomiaru (0xF5) oraz żądania odczytu urządzenie nie potwierdza odbioru do momentu zakończenia konwersji pomiaru. Następnie należy odczytać dwubajtowy wynik pomiaru z rejestru czujnika.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
-\includegraphics[width=\linewidth]{Si7021_pomiar.png}
+\includegraphics[width=0.8\linewidth]{Si7021_pomiar.png}
 \caption{Porównanie sekwencji komend I2C do wykonania pomiaru czujnikiem Si7021. Źródło: \cite{czujnik_temp}}
 \label{fig: metody_pomiaru}
 \end{center}
 \end{figure}
 
-Do programistycznej komunikacji poprzez I2C potrzebna była odpowiednia bibliotek. Pierwszym zastosowanym modułem był python-smbus. Korzysta on ze sterownika wbudowanego w jądro systemu Linux. Próba przeprowadzenia pomiaru w trybie Hold Master Mode przy pomocy funkcji \texttt{i2c{\_}smbus{\_}read{\_}word{\_}data()} oraz \texttt{i2c{\_}smbus{\_}read{\_}i2c{\_}block{\_}data()} zakończyła się błędem o kodzie \texttt{io errno5}. Wynikał on z tego, że pakiet smbus obsługuje magistralę I2C zgodnie ze standardem SMBus -- rozszerzeniem I2C. Posiada on bardziej ścisłe reguły dotyczące czasu trwania transakcji na magistrali. Obie wymienione funkcje odczytu pakietu python-smbus są poprzedzone wysłaniem żądania do urządzenia. Oznacza to, że nie można przy ich pomocy odczytać samego wyniku pomiaru po wysłaniu kodu pomiaru w trybie No Hold Master Mode (0xE5). Inna dostępna funkcja \texttt{i2c{\_}smbus{\_}read{\_}byte()} pozwala na odczyt wyłącznie jednego bajtu. Dwukrotne wysłanie żądania przy pomocy tej funkcji prowadzi do dwukrotnego odczytania pierwszego bajtu pomiaru.
+Do programistycznej komunikacji poprzez I2C potrzebna była odpowiednia bibliotek. Pierwszym zastosowanym modułem był python-smbus. Korzysta on ze sterownika wbudowanego w jądro systemu Linux. Do przeprowadzenia pomiaru w trybie Hold Master Mode można użyć funkcji \texttt{i2c{\_}smbus{\_}read{\_}word{\_}data()} \linebreak lub\texttt{i2c{\_}smbus{\_}read{\_}i2c{\_}block{\_}data()}. Obie są zgodne z przedstawioną powyżej sekwencją pomiaru. Różnią się liczbą odebranych bajtów. Pierwsza funkcja odbiera dokładnie dwa bajty, a druga odbiera bajty z urządzenia do momentu zakończenia komunikacji przez urządzenie podrzędne\cite{smbus}. Próba przeprowadzenia pomiaru przy ich użyciu zakończyła się błędem o kodzie \texttt{io errno5}. Wynikał on z tego, że pakiet smbus obsługuje magistralę I2C zgodnie ze standardem SMBus -- rozszerzeniem I2C. Posiada on bardziej ścisłe reguły dotyczące czasu trwania transakcji na magistrali. Obie wymienione funkcje odczytu pakietu python-smbus są poprzedzone wysłaniem żądania do urządzenia. Oznacza to, że nie można przy ich pomocy odczytać samego wyniku pomiaru po wysłaniu kodu pomiaru w trybie No Hold Master Mode (0xE5). Inna dostępna funkcja \texttt{i2c{\_}smbus{\_}read{\_}byte()} pozwala na odczyt wyłącznie jednego bajtu. Dwukrotne wysłanie żądania przy pomocy tej funkcji prowadzi do dwukrotnego odczytania pierwszego bajtu pomiaru. 
 
-Innym pakietem umożliwiającym komunikację poprzez magistralę I2C jest pigpio. Opiera on swoje działanie na bibliotece napisanej w języku C. Przed rozpoczęciem działania z pakietu konieczne jest uruchomienie programu pidpiod. Jest to demon -- program działający w tle bez interakcji z użytkownikiem. Musi on działać, zanim wywołany zostanie program nadzor.py. Można to zapewnić, korzystając z narzędzia \texttt{cron}. Wpis do jego tabeli z wywołaniem programu pigpiod poprzedzony \texttt{@reboot} umieszczony przed wpisem programu nadzor.py zapewnia, że program zostanie uruchomiony za każdym razem, gdy włączany będzie system operacyjny.
+Innym pakietem umożliwiającym komunikację poprzez magistralę I2C jest pigpio. Umożliwia on obsługę wyprowadzeń GPIO na Raspberry Pi w tym tych, które są skonfigurowane jako magistrala I2C. Opiera on swoje działanie na bibliotece napisanej w języku C. Przed rozpoczęciem działania z pakietu konieczne jest uruchomienie programu pidpiod. Jest to demon -- program działający w tle bez interakcji z użytkownikiem. Musi on działać, zanim wywołany zostanie program nadzor.py. Można to zapewnić, korzystając z narzędzia \texttt{cron}. Wpis do jego tabeli z wywołaniem programu pigpiod poprzedzony \texttt{@reboot} umieszczony przed podobnym wpisem programu nadzor.py zapewnia, że program zostanie uruchomiony za każdym razem, gdy włączany będzie system operacyjny.
 
-Pierwszym krokiem jest stworzenie obiektu klasy \texttt{pigpio.pi}. Obiekt ten jest przechowywany jako atrybut \textit{i2c} klasy Grupa. Następnie konieczne jest otwarcie komunikacji z urządzeniem i zwrócenie identyfikatora, który będzie używany do wysyłania żądań do urządzeń. Przy użyciu tego modułu możliwe jest przeprowadzenie pomiaru wilgotności względnej w trybie No Hold Master Mode. W pierwszej kolejności wysyłana jest przy pomocy funkcji \texttt{i2c{\_}write{\_}byte()} 8-bitowa komenda pomiaru. Następnie program jest usypiany na 0.05s przy pomocy komendy \texttt{time.sleep()}. Jest to wartość większa niż najdłuższy czas konwersji pomiaru wilgotności względnej podany w karcie katalogowej czujnika Si 7021. Następnie odczytywany jest poprzez funkcję \texttt{i2c{\_}read{\_}device()} wynik pomiaru składający się z dwóch bajtów. Funkcja zwraca liczbę odczytanych bajtów i bajty w formie tablicy. Bajty te można następnie wykorzystać do obliczenia wilgotności względnej na podstawie wzoru \ref{RH} podanego w karcie katalogowej. ${Kod_{RH}}$ oznacza tablicę bajtów, do której został zapisany wynik pomiaru.
+Pierwszym krokiem jest stworzenie obiektu klasy \texttt{pigpio.pi}. Obiekt ten jest przechowywany jako atrybut \textit{i2c} klasy Grupa. Następnie konieczne jest otwarcie komunikacji z urządzeniem i zwrócenie identyfikatora, który będzie używany do wysyłania żądań do urządzeń. Funkcje tego modułu umożliwiają przeprowadzenie pomiaru wilgotności względnej w trybie \textit{No Hold Master Mode}. W pierwszej kolejności wysyłana jest przy pomocy funkcji \texttt{i2c{\_}write{\_}byte()} 8-bitowa komenda pomiaru. Realizuje ona sekwencję pomiaru do momentu potwierdzenia odbioru komendy przez urządzenie podrzędne. Następnie urządzenie oczekuje znaku powtórzonego startu (\textit{Sr}). Dopuszczalne jest jednak przesłanie znaku STOP i zakończenie komunikacji.
+
+Następnie program jest usypiany na 0.05s przy pomocy komendy \texttt{time.sleep()}. Jest to wartość większa niż najdłuższy czas konwersji pomiaru wilgotności względnej podany w karcie katalogowej czujnika Si 7021. W tym czasie zachodzi konwersja pomiaru i można przejść do tej części procedury, która składa się z wysłaniu bitu odczytu (\textit{R}) i odebrania dwóch bajtów wyniku pomiaru. Można to zrealizować poprzez funkcję \texttt{i2c{\_}read{\_}device()}\cite{i2c_read_device}. Funkcja zwraca liczbę odczytanych bajtów i bajty w formie tablicy. Bajty te można następnie wykorzystać do obliczenia wilgotności względnej na podstawie wzoru \ref{RH} podanego w karcie katalogowej. ${Kod_{RH}}$ oznacza tablicę bajtów, do której został zapisany wynik pomiaru.
 \begin{equation} \label{RH}
 \%RH = \frac{(Kod_{RH}[0] * 256 + Kod_{RH}[1]) * 125}{65536} - 6  
 \end{equation}
@@ -220,27 +225,26 @@ Wykonywana jest ona na początku działania programu \texttt{nadzor.py} w funkcj
 \begin{lstlisting} [language=Python]
 GPIO.setup(self.czujnik.gpio, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 \end{lstlisting}
-Pierwszym argumentem tej funkcji jest numer wyprowadzenia GPIO, drugi określa, czy wyprowadzenia ma być skonfigurowane jako wejście (\texttt{GPIO.IN}) czy wyjście (\texttt{GPIO.OUT}). Trzeci argument to znacznik określający, czy ma zostać użyty rezystor ściągający czy podciągający.
+Pierwszym argumentem tej funkcji jest numer wyprowadzenia GPIO, drugi określa, czy wyprowadzenie ma być skonfigurowane jako wejście (\texttt{GPIO.IN}) czy wyjście (\texttt{GPIO.OUT}). Trzeci argument to znacznik określający, czy ma zostać użyty rezystor ściągający czy podciągający.
 
 Funkcja realizująca obsługę czujników stykowych zaczyna od sprawdzenia wyprowadzenia o numerze przechowywanym jako atrybut klasy. Zwrócenie stanu wysokiego (oznaczanego jako \texttt{1/GPIO.HIGH/True}) oznacza przypisanie do zmiennej \texttt{stan{\_}czujnika} wartości 1. Jeśli stan jest niski, zmiennej przypisywane jest 0. Następnie sprawdzany jest poprzedni stan wyprowadzenia przechowywany jako atrybut obiektu klasy Grupa. Jeśli poprzednio stan był wysoki (czujniki były zbliżone), to znaczy, że nastąpiło otwarcie czujników. Zgodnie z wymogami systemu następuję wywołanie zdjęcia - funkcji obsługującej kamery. Dodatkowo program przechodzi do wysłania powiadomienia email.
 
 \subsection{Wysyłanie powiadomień e-mail}
-Funkcjonalnością systemu jest również wysyłanie powiadomienia mailowego po otwarciu czujnika. Jest ono realizowane poprzez serwer SMTP Google. Ta decyzja projektowa wynika z tego, że konfiguracja własnego serwera SMTP w ramach Raspberry Pi wymagałaby posiadania stałego adresu dostarczanego przez dostawcę usług internetowych, do którego będzie przypisana domena. Prostszym rozwiązaniem jest utworzenie konta email w zewnętrznej usłudze (np. Gmail) i korzystanie z jej serwera SMTP. 
+Funkcjonalnością systemu jest również wysyłanie powiadomienia mailowego po otwarciu czujnika. Jest ono realizowane poprzez serwer SMTP Google. Ta decyzja projektowa wynika z tego, że konfiguracja serwera SMTP działającego na Raspberry Pi wymagałoby posiadania stałego adresu IP dostarczanego przez dostawcę usług internetowych oraz domeny, która będzie przypisana do tego adresu. Prostszym rozwiązaniem jest utworzenie konta email w zewnętrznej usłudze (np. Gmail) i korzystanie z jej serwera SMTP. 
 
-Połączenie z serwerem SMTP Google jest nawiązane przy użyciu modułu \texttt{smtplib} na początku działania programu nadzor.py. 
+Połączenie z serwerem SMTP Google jest nawiązywane przy użyciu modułu \texttt{smtplib} na początku działania programu nadzor.py. 
 \begin{lstlisting} [language=Python]
 def init_smtp(sender, password):
     smtp_server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
     smtp_server.login(sender, password)
     return smtp_server 
 \end{lstlisting}
-Wymogiem Gmaila jest stosowanie szyfrowanego połączenia, które jest stworzone przez funkcję \texttt{SMTP{\_}SSL}. Komunikacja odbywa się na standardowym dla tego połączenia porcie 465. Następnie następuje uwierzytelnienie w serwerze poprzez przesłanie adresu email konta, z którego mają być wysyłane wiadomości oraz hasła do niego. Następnie zostaje zwrócona referencja obiektu reprezentującego połączenie z serwerem SMTP.
+Wymogiem Gmaila jest stosowanie szyfrowanego połączenia SSL, które jest nawiązywane przez funkcję \texttt{SMTP{\_}SSL}. Komunikacja odbywa się na standardowym dla tego połączenia porcie 465. Następnie dokonuje się uwierzytelnienie użytkownika na serwerze poprzez przesłanie adresu email konta, z którego mają być wysyłane wiadomości oraz hasła do niego. Funkcja zwraca referencję obiektu reprezentującego połączenie z serwerem SMTP.
 
-Przy tworzeniu obiektu zostają zapisane do atrybutów odczytane z bazy danych ustawienia dotyczące powiadomień -- znacznik włączenia powiadomień oraz adres email ich odbiorcy. Jeśli powiadomienia są włączone, czyli znacznik jest ustawiony jako "'on"' oraz adres email nie jest pusty, wysłana będzie wiadomość email.
+W przypadku gdy zostanie otwarty czujnik stykowy oprócz wykonania zdjęcia, sprawdzany jest stan znacznika powiadomień e-mail. Jeśli jest on równy "'on"', a adres e-mail odbiorcy powiadomień nie jest pusty, rozpoczyna się procedura wysłania powiadomienia. Przygotowany jest tekst wiadomości zawierający informację o otwarciu czujniku i przypisanej mu nazwie. Na temat wiadomości składa się informacja o otwarciu czujnika i dacie i godzinie otwarcia. Następnie zostaje otworzony nowy wątek, w którym jest wywoływana funkcja \texttt{wyslij{\_}email()}. Argumentami tej funkcji są adres e-mail odbiorcy, temat wiadomości, jej tekst oraz nazwa zdjęcia, która będzie dołączona jako załącznik. Do otwarcia wątku użyta jest pomocnicza funkcja \texttt{run{\_}threaded}. Użycie wątku zapewnia, że funkcja wysyłająca powiadomienie jest wykonywana współbieżnie z pozostałymi funkcjami sprawdzającymi stany czujników.
 
-Przygotowany jest tekst wiadomości informujący, że został otwarty czujnik o nazwie przypisanej do niego. W temacie czujnika zostaje wpisana informacja o otwarciu czujnika i dacie otwarcia odczytanej w momencie wywołania funkcji. Następnie zostaje otworzony nowy wątek, w którym jest wywoływana funkcja \texttt{wyslij{\_}email()}. Argumentami tej funkcji są adres email odbiorcy, temat wiadomości, jej tekst oraz nazwa zdjęcia, która będzie dołączona jako załącznik.
-
-Do stworzenia wiadomości email jest wykorzystany obiekt klasy \texttt{MIMEMultipart}. W polach \texttt{Subject}, \texttt{To} i \texttt{From} zostają wpisane odpowiednio temat, odbiorca i nadawca wiadomości email. Następnie funkcja otwiera wszystkie pliki ze zdjęciami, których nazwy zostały przekazane w liście jako argument. Dla każdego z nich tworzony jest obiekt MIMEImage, który reprezentuje część wiadomości będącej obrazem. Nie jest tu podawany format zdjęcia, ponieważ obiekt sam dokona sprawdzenia typu zdjęcia przy pomocy modułu \texttt{imghdr}. Dzięki temu zmiana formatu zdjęcia np. z JPEG na PNG nie wymaga zmiany tej części kodu. Przed dołączeniem do wiadomości pliku ze zdjęciem konieczne jest również ustawienie nagłówka \texttt{Content-Disposition} z informacją o tym, że jest to załącznik (\textit{attachment}) oraz o jego nazwie. Dzięki temu obraz zostanie wyświetlony jako załącznik do pobrania w kliencie poczty elektronicznej.
+Do stworzenia wiadomości e-mail jest wykorzystany obiekt klasy \texttt{MIMEMultipart}. Reprezentuje ona wieloczęściową wiadomość e-mail zgodną ze standardem MIME (ang. \textit{Multipurpose Internet Mail Extensions}\cite{mime1}\cite{mime2}.  W polach \texttt{Subject}, \texttt{To} i \texttt{From} zostają wpisane odpowiednio temat, odbiorca i nadawca wiadomości e-mail. Następnie funkcja otwiera plik ze zdjęciem, które zostało wywołane przez otwarcie czujnika i tworzony jest obiekt MIMEImage, który reprezentuje część wiadomości będącej obrazem. Nie jest tu podawany format zdjęcia, ponieważ obiekt sam dokona sprawdzenia typu zdjęcia przy pomocy modułu \texttt{imghdr}\cite{python-mime}. Dzięki temu zmiana formatu zdjęcia np. z JPEG na PNG nie wymaga zmiany tej części kodu. Przed dołączeniem do wiadomości pliku ze zdjęciem konieczne jest również ustawienie nagłówka \texttt{Content-Disposition} z informacją o tym, że jest to załącznik (\textit{attachment}) oraz o jego nazwie. Dzięki temu obraz zostanie wyświetlony jako załącznik do pobrania w kliencie poczty elektronicznej.\cite{content-disposition}. Po dołączeniu załączników następuje wysłanie wiadomości e-mail.
+\newpage
 
 \section{Baza danych}
 \subsection{Założenia wstępne}
@@ -262,7 +266,7 @@ Rysunek \ref{fig: er} przedstawia schemat bazy danych na poziomie logicznym. Poz
 
 Baza zawiera tabele czujniki, kamery i czujniki{\_}temperatury z informacjami o poszczególnych typach urządzeń: nazwie, częstotliwości wywoływania pomiaru lub zdjęcia i sprzętowej lokalizacji urządzenia (numer wyprowadzenia, kanał multipleksera). Tabele stany, zdjęcia i odczyty zawierają informacje o realizacjach pomiarów wykonane przez te urządzenia. Tabela pomiary przedstawia status systemu w czasie, zawierając klucze aktualnych na ten moment zdjęć, odczytów i stanów. 
 
-Poza wspomnianymi wyżej relacjami istnieje również relacja ustawienia, która nie jest w związku z żadną inną. Jest to relacja, która pozwala przechowywać różne ustawienia systemu, które nie dotyczą bezpośrednio urządzeń. Posiada ona dwie kolumny klucz i wartość. Klucz jest opisem ustawienia, a wartość przechowuje informację o nim np. adres email, na który mają być wysyłane powiadomienia. Wartość ta może być zmieniona poprzez interfejs na stronie WWW, ale jest wykorzystywana przez program obsługujący kamery i czujniki. Przechowywanie tych danych w bazie zapewnia ich niezależność od wykonywania poszczególnego programu.
+Poza wspomnianymi wyżej relacjami istnieje również relacja ustawienia, która nie jest w związku z żadną inną. Jest to relacja, która pozwala przechowywać różne ustawienia systemu, które nie dotyczą bezpośrednio urządzeń. Posiada ona dwie kolumny klucz i wartość. Klucz jest opisem ustawienia, a wartość przechowuje informację o nim np. adres e-mail, na który mają być wysyłane powiadomienia. Wartość ta może być zmieniona poprzez interfejs na stronie WWW, ale jest wykorzystywana przez program obsługujący kamery i czujniki. Przechowywanie tych danych w bazie zapewnia ich niezależność od wykonywania poszczególnego programu.
 
 Ponadto kamera, czujnik temperatury i czujnik stykowy, który ma wywoływać zdjęcie kamery zostały zgrupowane w ten sposób, że kamera przechowuje klucze przypisanych do niej czujników. Odpowiada to związkom jeden do wielu między kamerą a czujnikiem (temperatury).
 
@@ -308,8 +312,8 @@ Odczyt czujników stykowych jest najczęściej wykonywanym pomiarem, więc po st
 
 \section{Wnioski i podsumowanie}
 
+\newpage
 \section{Bibliografia}
-
 \begin{thebibliography}{9}
 \bibitem{multiplekser}
 Karta katalogowa multipleksera TCA9548A:
@@ -318,9 +322,35 @@ Karta katalogowa multipleksera TCA9548A:
 \bibitem{czujnik_temp}
 Karta katalogowa czujnika temperatury i wilgotności Si7021:
 \url{https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf}
+
+\bibitem{smbus}
+Opis protokołu SMBus
+\url{https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/plain/Documentation/i2c/smbus-protocol}
+
+\bibitem{i2c_read_device}
+Dokumentacja funkcji \texttt{i2c{\_}read{\_}device()}
+\url{http://abyz.me.uk/rpi/pigpio/python.html#i2c_read_device}
+
+\bibitem{mime1}
+Freed N., Borenstein N., Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies, RFC 2045, IETF, listopad 1996, DOI: 10.17487/RFC2045.
+\url{https://tools.ietf.org/html/rfc2045}
+
+\bibitem{mime2}
+Freed N., Borenstein N., Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types, RFC 2046, IETF, listopad 1996, DOI: 10.17487/RFC2046.
+\url{https://tools.ietf.org/html/rfc2046}
+
+\bibitem{content-disposition}
+
+\url{https://tools.ietf.org/html/rfc6266}
+Reschke J. Use of the Content-Disposition Header Field in the Hypertext Transfer Protocol (HTTP)
+\bibitem{python-mime}
+Dokumentacja modułu Python email.mime
+\url{https://docs.python.org/3/library/email.mime.html}
+
+
 \end{thebibliography}
 
-
+\newpage
 \section{Załączniki}
 
 
