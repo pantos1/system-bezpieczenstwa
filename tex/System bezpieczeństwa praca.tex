@@ -76,6 +76,7 @@
 }
 
 \begin{document}
+
 \includepdf[pages=-]{title.pdf}
 
 \tableofcontents
@@ -86,22 +87,99 @@
 
 \subsection{Współczesne systemy monitoringu i bezpieczeństwa}
 
-\subsection{Koncepcja "'inteligentnego domu"'}
+\subsection{Koncepcja "inteligentnego domu"}
 
 \subsection{Motywacje i cel pracy}
+\newpage
 
 \section{Architektura systemu}
 
 \subsection{Wymagania techniczne i funkcjonalne}
+System bezpieczeństwa powinien łączyć funkcję monitoringu z możliwością kontroli otwarcia drzwi i okien oraz pomiaru warunków środowiskowych. Monitoring powinien być zrealizowany poprzez kamery USB ze względu na ich cenę i dostępność. System powinien być skalowalny i umożliwiać rozbudowę o dodatkowe kamery, co odpowiada np. rozszerzeniu monitoringu o dodatkowe pomieszczenia. Dane zebrane przez system należy udostępnić przez graficzny interfejs użytkownika w postaci strony WWW. Podłączenie systemu do sieci domowej LAN (ang. \textit{Local Area Network}) i dokonanie odpowiednich ustawień w panelu administracyjnym rutera umożliwi dostęp do strony WWW z dowolnego miejsca przez Internet.
 
+System powinien być zrealizowany w postaci komputera jednopłytkowego z systemem Linux, na którym działał będzie serwer WWW. Odpowiada on za dostęp do strony WWW i danych zebranych przez system. Kontrolę otwarcia drzwi i okien można zrealizować poprzez czujniki stykowe, które należy podłączyć do wyprowadzeń GPIO. Zintegrowane czujniki środowiskowe wymagają obsługi cyfrowych magistral (np. I2C czy OneWire). Komputer powinien być wyposażony w gniazda USB, do których będą podłączone kamery. Monitoring przy pomocy kamer nie musi być prowadzony w postaci ciągłego nagrania, które wymaga sporej pamięci. Wystarczające będzie okresowe wykonywanie zdjęć oraz dodatkowo wyzwalanie zdjęcia w przypadku otwarcia drzwi lub okna -- otwarcia czujnika stykowego przypisanego do kamery. 
+
+Interfejs użytkownika musi prezentować aktualny stan systemu w postaci dostępu do ostatnich wykonanych zdjęć, odczytów czujników środowiskowych oraz stanu czujników stykowych (otwarty/zamknięty). Ponadto użytkownik powinien mieć dostęp do przeszłych zdjęć i pomiarów w postaci archiwum. Historia odczytów systemu powinna być również dostępna w formie eksportowanej listy np. w formacie \textit{csv}. Użytkownik powinien mieć również możliwość dokonania zmian w systemie poprzez panel ustawień. Może on umożliwiać np. włączenie wysyłania powiadomień e-mail w przypadku otwarcia czujnika.
+
+Dane zebrane przez system z kamer i czujników powinny być więc zapisane w systemie tak, by umożliwić do nich dostęp serwerowi WWW, na którym będzie działać strona WWW. Pomiary wykonywane przez system powinny być zapisywane wraz z datą i godziną ich wykonania. Dostęp do tych danych powinien być niezależny od programu zapisującego wyniki pomiarów i prowadzącego monitoring.
+
+Podsumowując, wymagania techniczne stojące przed systemem to:
+\begin{itemize}
+\item wykorzystanie komputera jednopłytkowego,
+\item użycie systemu Linux,
+\item użycie serwera WWW,
+\item obsługa wielu kamer USB,
+\item obsługa wielu dwustanowych czujników stykowych poprzez wyprowadzenia GPIO,
+\item obsługa wielu czujników środowiskowych korzystających np. z I2C lub OneWire,
+\item możliwość połączenia z Internetem poprzez Ethernet lub Wi-Fi.
+\end{itemize}
+
+Wymagania funkcjonalne systemu to:
+\begin{itemize}
+\item dostęp do stanu systemu poprzez stronę WWW,
+\item dostęp do archiwalnych stanów systemu,
+\item możliwość eksportu listy pomiarów i zdarzeń do pliku (np. w formacie \textit{csv}),
+\item dostęp do ustawień systemu poprzez interfejs użytkownika,
+\item wysyłanie powiadomień e-mail w przypadku otwarcia czujnika,
+\item wywoływanie zdjęcia po otwarciu czujnika.
+\end{itemize}
+ 
 \subsection{Przegląd dostępnych platform}
+Jednymi z najbardziej popularnych komputerów jednopłytkowych jest Raspberry Pi rozwijany przez Raspberry Pi Foundation jako narzędzie edukacyjne do nauczania programowania i elektroniki. Wokół tego projektu powstała duża grupa amatorów i entuzjastów dzielących się swoimi projektami. Jednym z konkurentów Raspberry Pi jest BeagleBone rozwijany przez Texas Instruments również zgodnie z filozofią \textit{open-hardware} -- sprzętu o otwartym źródle. Oba komputery oparte są o procesory ARM Cortex w formie \textit{System On Chip} -- układu scalonego zawierającego procesor wraz z układami pamięci, peryferiami i układami przetwornikami analogowo-cyfrowymi i cyfrowo-analogowymi. Oba komputery umożliwiają zainstalowanie na nich dystrybucji systemu Linux. Najnowszymi modelami w momencie rozpoczęcia projektu (w marcu 2017 roku) były Raspberry Pi Model 3B oraz BeagleBone Black. Porównanie obu komputerów przedstawiono w tabeli \ref{porównanieSBC}.
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\hline \noalign{\vskip 2mm}
+                         & Raspberry Pi 3B & BeagleBone Black \\ \hline \noalign{\vskip 2mm}
+Rok wydania              & 2016            & 2013             \\
+CPU                      & ARM Cortex-A53  & ARM Cortex-A8    \\
+Liczba rdzeni            & 4               & 1                \\
+Częstotliwość taktowania & 1,2 GHz         & 1 GHz            \\
+RAM                      & 1 GB LPDDR2     & 512 MB DDR3L     \\
+Liczb gniazd USB         & 4               & 1                \\
+WLAN                     & b/g/n           & brak             \\
+Ethernet                 & 10/100          & 10/100           \\
+I2C                      & Tak             & Tak              \\
+Liczba wyprowadzeń GPIO  & 40              & 66               \\
+Maksymalny pobór mocy 	 & 3 W             & 2,3 W            \\ \hline
+\end{tabular}
+\caption{Porównanie specyfikacji technicznej Raspberry Pi 3B i BeagleBone Black \cite{rpi} \cite{bb_black} \cite{porownanie_wiki}}
+\label{porównanieSBC}
+\end{table}
+
+Przewagą komputera Raspberry Pi 3B jest szybszy procesor o większej liczbie rdzeni, co pozwala na równoległe wykonywanie większej liczby procesów oraz większa pojemność pamięci RAM. Ponadto wyposażony on jest zarówno w gniazdo Ethernet jak i adapter WLAN w większości popularnych standardów, co pozwala prowadzić bezprzewodową komunikację. Może być to przewaga w przypadku, gdyby system miał być zainstalowany z daleka od rutera. Komputer BeagleBone Black ma nieco niższą wartość poboru mocy oraz więcej wyprowadzeń GPIO. Na każdy czujnik stykowy będzie jednak potrzebne jedno wyprowadzenie GPIO oraz podłączenie do masy, zatem 40 wyprowadzeń Raspberry Pi 3B z pewnością będzie wystarczające. Na tej podstawie wybrałem Raspberry Pi 3B do projektowanego systemu.
+
+Wśród dostępnych dystrybucji systemu Linux na Raspberry Pi są m.in. Raspbian (domyślna dystrybucja oparta o Debian) i Ubuntu Mate. W projekcie zostanie użyty system Raspbian, ponieważ jest on uniwersalny i spełnia wszystkie stawiane wymogi -- obsługę wyprowadzeń GPIO, magistrali I2C oraz możliwość działania jako serwer WWW (np. przy użyciu Apache). System Raspbian posiada również interfejs graficzny, co może być przydatną cechą w przypadku, gdyby konieczna była bezpośrednia interwencja administratora systemu z pominięciem interfejsu użytkownika. Raspberry Pi 3B posiada wyjście HDMI, do którego można podłączyć monitor i wygodnie zarządzać komputerem.
 
 \subsection{Czujniki warunków środowiskowych}
-Wymogiem technicznym systemu jest również obsługa czujników przy użyciu magistrali I2C. W ramach wykonanego systemu została zapewniona obsługa czujników temperatury i wilgotności. Wybrany został czujnik Si7021 firmy Adafruit. Zapewnia on pomiar temperatury w zakresie od -10 do 85$^\circ$C oraz wilgotności względnej od 0 do 80\%. Są to wartości wystarczające w warunkach pracy w zamkniętym pomieszczeniu.
+Wymogiem technicznym systemu jest również obsługa czujników środowiskowych. Najważniejszymi parametrami, które należy zmierzyć w warunkach domowych są temperatura i wilgotność względna powietrza. Wpływają one na jakość powietrza w pomieszczeniach oraz na poziom zachorowań wśród przebywających w nich. Badania wykazały związek między wilgotnością względną w domu i pracy oraz liczbą dni spędzonych na zwolnieniu lekarskim. Zbyt niska lub zbyt wysoka wilgotność powietrza w pomieszczeniach prowadzi do zwiększenia przypadków zachorowań na choroby układu oddechowego. \cite{zachorowania} 
+
+Przykładowymi czujnikami temperatury i wilgotności dostępnymi na rynku są Adafruit SHT31, Adafruit Si7021 oraz Grove TH02. Są to czujniki umieszczone na płytkach \textit{breakout-board}, które posiadają wyprowadzenia linii I2C, masy oraz zasilania. Porównanie specyfikacji czujników znajduje się w tabeli \ref{czujniki_temp}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lllllll}
+\hline \noalign{\vskip 2mm}
+       & \multicolumn{2}{c}{Temperatura} & \multicolumn{2}{c}{Wilgotność} &          \\ \cline{2-5} \noalign{\vskip 2mm}
+       & Zakres pomiarowy  & Dokładność  & Zakres pomiarowy  & Dokładność & Cena     \\ \hline \noalign{\vskip 2mm}
+SHT31  & $-$40 -- 125 $^\circ$C      & $\pm$ 0,3 $^\circ$C    & 0 -- 100\% RH      & $\pm$ 2 \%RH    & 79,80 zł \\
+Si7021 & $-$10 -- 85 $^\circ$C       & $\pm$ 0,4 $^\circ$C    & 0 -- 80\% RH       & $\pm$ 3 \%RH    & 39,70 zł \\
+TH02   & $-$40 -- 85 $^\circ$C         & $\pm$ 0,5 $^\circ$C    & 0 -- 80\% RH       & $\pm$ 4,5 \%RH                  & 54,00 zł \\
+\hline
+\end{tabular}
+\caption{Porównanie specyfikacji czujników temperatury i wilgotności \cite{czujnik_temp} \cite{sht31} \cite{th02} (ceny za sztukę: \url{www.botland.com.pl}).}
+\label{czujniki_temp}
+\end{table}
+
+Na podstawie danych przedstawionych w tabeli \ref{czujniki_temp} wybrałem czujnik Si7021 jako użyty w projekcie czujnik środowiskowy. Zapewnia on pomiar temperatury i wilgotności względnej w zakresie wartości panujących w warunkach pokojowych oraz ma najniższą cenę. Przewagą czujnika SHT31 była możliwość zmiany adresu I2C poprzez podłączenie wyprowadzenia do stanu wysokiego lub niskiego. Byłoby to jednak rozwiązanie możliwe do zastosowania przy tylko dwóch czujnikach w systemie. 
 
 \subsection{Czujniki stykowe}
+Magnetyczne czujniki zbliżeniowe mogą być użyte do określenia pozycji drzwi lub okien i tym samym realizować nadzór nad ich stanem. Czujniki te mogą wykryć dwa stany -- zamknięty i otwarty. W systemie zostały użyte czujniki zbliżeniowe MC-38 składające się z kontaktronu i magnesu. Obwód kontaktronu jest domyślnie rozwarty, a po zbliżeniu magnesu następuje jego zamknięcie i przepływ prądu. Wybrałem ten czujnik ze względu na łatwość ewentualnego montażu -- czujnik posiada taśmę samoprzylepną i otwory na śruby montażowe.
 
 \subsection{Kamery cyfrowe}
+Kamery USB zastosowane w systemie mogą pozwolić na realizację domowego monitoringu niedużym kosztem. Ich uniwersalność pozwala również wykorzystać je w innych domowych zastosowaniach np. jako kamerę do rozmów przez komunikatory internetowe takie jak Skype czy Google Hangouts. W projektowanym systemie zadaniem kamer będzie cykliczne wykonywanie zdjęć. Celem powinno być znalezienie złotego środka między jakością zdjęć wykonywanych przez kamery i ich ceną. Jakość powinna być na tyle dobra, by zdjęcie umożliwiło identyfikację ewentualnego intruza. Koszt jest kategorią bardziej subiektywną, ale kamera USB powinna być konkurencyjna cenowo wobec kamer IP, których koszt zaczyna się od ok. 150 zł.\cite{komputer_świat}
+
+W systemie zastosowałem dwie kamery z różnego przedziału cenowego. Kamera Titanum Onyx posiada matrycę CMOS, która umożliwia wykonywanie zdjęć o rozdzielczości do 5 megapikseli przy zastosowaniu interpolacji. Co ważne kamera jest kompatybilna z UVC (\textit{USB Video Class}) -- sterownikiem wbudowanym w system Linux. Kamera posiada również przełącznik włączający 3 diody LED, które mogą być przydatne w przypadku zdjęć nocnych. Koszt kamery to ok. 50 zł. Drugą kamerą jest Creative VFO 790, która posiada matrycę wykonującą zdjęcia w rozdzielczości HD 720p (1280x720 pikseli). Jest ona również kompatybilna z UVC. Optyka kamery jest w przeciwieństwie do pierwszej stałoogniskowa. Koszt kamery to ok. 110 zł.
 
 \subsection{Projekt części sprzętowej systemu}
 \begin{figure}[h]
@@ -116,13 +194,12 @@ W systemie zostały zastosowane czujniki zbliżeniowe magnetyczne MC-38. Można 
 
 Wymogiem systemu jest również obsługa wielu kamer i czujników, w tym czujników temperatury i wilgotności poprzez magistralę I2C. Adres I2C wybranych do projektu czujników Si 7021 to 0x70. Nie mają one możliwości programistycznej lub sprzętowej zmiany adresu. Oznacza to, że do jednej magistrali mógłby być podłączony bezpośrednio tylko jeden czujnik. Podłączenie większej liczby czujników o tym samym adresie doprowadziłoby do sytuacji, w której nie można jednoznacznie określić, z którego czujnika został odczytany wynik pomiaru. Raspberry Pi3 B posiada możliwości obsługi dwóch magistral I2C. W założeniach projektowych jest wymaganie obsługi do 4 czujników temperatury każdego przypisanego do jednej kamery. Nie jest więc możliwe rozwiązanie polegające na podłączeniu po jednym czujniku do każdej z magistral. Innym rozwiązaniem tego problemu jest zastosowanie multipleksera I2C. Multiplekser zadziała jak przełącznik, który pozwoli na komunikację z jednym czujnikiem naraz. Przykładem takiego urządzenia jest TCA 9548A firmy Adafruit. Pozwala on na podłączenie do 8 urządzeń korzystających z magistrali I2C.
 
-Do napisania programu obsługującego czujniki i kamery wybrałem język Python, ponieważ umożliwia on dzięki wielu dostępnym modułom wysokopoziomową obsługę wyprowadzeń GPIO, magistrali I2C oraz kamer USB. Ponadto istnieje wiele pakietów pozwalających na łatwą komunikację z bazą danych, która będzie miejscem przechowywania wyników pomiaru. Program w języku Python jest też odpowiedzialny za wysłanie powiadomień email poprzez serwer SMTP Google. Na potrzeby projektu zostało stworzone konto w usłudze Gmail, poprzez które będą wysyłanie powiadomienia. 
-
 W zaprojektowanym systemie bezpieczeństwa program obsługujący urządzenia działa niezależnie od programu udostępniającego poprzez serwer WWW dane użytkownikowi. Konieczny jest zatem sposób komunikacji i wymiany danych pomiędzy nimi. Relacyjna baza danych pozwala na przechowywanie danych w tabelach, do których dostęp zagwarantowany jest poprzez odpowiedni interfejs programistyczny. 
 
-Wymogiem systemu jest umożliwienie użytkownikowi dostępu do zebranych danych poprzez stronę WWW. Konieczny jest zatem serwer HTTP, na którym będzie umieszczona strona. Jednym z najbardziej środowisk do prowadzenia serwerów WWW jest Apache. Jest on dostępny w wersji dla systemu Raspbian, który działa na Raspberry Pi. Umieszczona na serwerze strona będzie komunikowała się z serwerem poprzez żądania HTTP. Szkielet strony w postaci pliku HTML będzie wypełniony danymi zebranymi przez kamery i czujniku po zrealizowaniu żądań wysyłanych asynchronicznie (technika AJAX) do serwera. Za obsługę żądań po stronie serwerowej będą odpowiedzialne mikroserwisy w postaci skryptów w języku PHP. Skrypty łączą się z bazą danych, w której są przechowywane dane zebrane z kamer i czujników. Następnie zwracają dane w odpowiedzi na żądania klienta. Język PHP jest dobrze zintegrowany z serwerem Apache i jest jedną z najbardziej popularnych technologii na serwerach WWW. 
-
+\newpage
 \section{Program procedury obsługi kamer i czujników}
+Do napisania programu obsługującego czujniki i kamery wybrałem język Python, ponieważ umożliwia on poprzez wiele dostępnych modułów wysokopoziomową obsługę wyprowadzeń GPIO, magistrali I2C oraz kamer USB. Ponadto istnieje wiele pakietów pozwalających na łatwą komunikację z bazą danych, która będzie miejscem przechowywania wyników pomiaru. Program w języku Python jest też odpowiedzialny za wysłanie powiadomień email poprzez serwer SMTP Google. Na potrzeby projektu zostało stworzone konto w usłudze Gmail, poprzez które będą wysyłanie powiadomienia. 
+
 Program nadzor.py obsługujący czujniki i kamery musi cyklicznie wykonywać pomiary, odczyty i zdjęcia, a wyniki zapisywać do bazy danych. Potrzebne jest narzędzie, które pozwoli okresowo wykonywać funkcje w ramach jednego programu. Istnieją mechanizmy wewnątrz języka Python(moduł \texttt{sched}), które umożliwiają wykonywanie zadań po minięciu pewnego czasu lub zaplanowanie ich do wykonania o konkretnej porze. Wykorzystanie tego modułu wymagałoby jednak ponownego zaplanowania zadania po każdym jego wykonaniu. Modułem, który umożliwia dokonanie tego w prostszy sposób, jest biblioteka \texttt{schedule}. Jest ona przeznaczona do planowania cyklicznego wykonywania zadań. Przykładowe wywołanie szeregowania przy użyciu \texttt{schedule} przedstawiono poniżej.
 \begin{lstlisting} [language=Python]
 schedule.every(kamera.czestotliwosc_zdjecia).seconds.do(grupa.zrob_zdjecie)
@@ -170,7 +247,7 @@ Multiplekser TCA9548A umożliwia podłączenie do 8 urządzeń korzystających z
 \begin{tabular}{|llllllll|l|}
 \hline
 \multicolumn{8}{|l|}{Bity rejestru sterującego}                                                                                                                                                                                                                                                                                                                                                & \multicolumn{1}{c|}{\multirow{2}{*}{Działanie}}                              \\ \cline{1-8}
-B7                                          & B6                                            & B5                                            & B4                                            & B3                                            & B2                                            & B1                                            & \multicolumn{1}{l}{B0}                       & \multicolumn{1}{|c|}{}                                                        \\ \hline
+B7                                          & B6                                            & B5                                            & B4                                            & B3                                            & B2                                            & B1                                            & \multicolumn{1}{l}{B0}                       & \multicolumn{1}{|c|}{}                                                        \\ \hline 
 X                                             & X                                             & X                                             & X                                             & X                                             & X                                             & X                                             & \begin{tabular}[c]{@{}l@{}}0\\ 1\end{tabular} & \begin{tabular}[c]{@{}l@{}}Kanał 0 nieaktywny\\ Kanał 0 aktywny\end{tabular} \\ \hline
 X                                             & X                                             & X                                             & X                                             & X                                             & X                                             & \begin{tabular}[c]{@{}l@{}}0\\ 1\end{tabular} & X                                             & \begin{tabular}[c]{@{}l@{}}Kanał 1 nieaktywny\\ Kanał 1 aktywny\end{tabular} \\ \hline
 X                                             & X                                             & X                                             & X                                             & X                                             & \begin{tabular}[c]{@{}l@{}}0\\ 1\end{tabular} & X                                             & X                                             & \begin{tabular}[c]{@{}l@{}}Kanał 2 nieaktywny\\ Kanał 2 aktywny\end{tabular} \\ \hline
@@ -293,11 +370,12 @@ Dla wszystkich użytych czujników i kamer należy również stworzyć rekordy w
 Wynik odczytu stanu zostaje zapisany do słownika przy kluczu "'stan"' odpowiadającemu kolumnie w tabeli danych. Pozostałym polem w słowniku jest identyfikator czujnika stykowego, dla którego został wykonany odczyt. Następnie wynik zostaje zapisany do bazy danych poprzez funkcję create(). Stan czujnika odczytany w tym wywołaniu funkcji zostaje zapisany w polu stan{\_}poprzedni obiektu klasy Grupa. 
 
 Odczyt czujników stykowych jest najczęściej wykonywanym pomiarem, więc po stworzeniu nowego wpisu w tabeli stany powinien zostać stworzony wpis do tabeli pomiary. Zostaje do niej wpisany rekord zawierający identyfikator właśnie wykonanego odczytu stanu oraz odczytane z atrybutów obiektu identyfikatory ostatnich wykonanych zdjęć oraz pomiarów temperatury. Wraz z nimi zostaje zapisana data wpisu odczytana przy pomocy funkcji datetime.now() zapisana w formacie dzień-miesiąc-rok godzina-minuta-sekunda.
+\newpage
 
 \section{Strona i serwer WWW}
 
 \subsection{Serwer WWW}
-
+Wymogiem systemu jest umożliwienie użytkownikowi dostępu do zebranych danych poprzez stronę WWW. Konieczny jest zatem serwer HTTP, na którym będzie umieszczona strona. Jednym z najbardziej środowisk do prowadzenia serwerów WWW jest Apache. Jest on dostępny w wersji dla systemu Raspbian, który działa na Raspberry Pi. Umieszczona na serwerze strona będzie komunikowała się z serwerem poprzez żądania HTTP. Szkielet strony w postaci pliku HTML będzie wypełniony danymi zebranymi przez kamery i czujniku po zrealizowaniu żądań wysyłanych asynchronicznie (technika AJAX) do serwera. Za obsługę żądań po stronie serwerowej będą odpowiedzialne mikroserwisy w postaci skryptów w języku PHP. Skrypty łączą się z bazą danych, w której są przechowywane dane zebrane z kamer i czujników. Następnie zwracają dane w odpowiedzi na żądania klienta. Język PHP jest dobrze zintegrowany z serwerem Apache i jest jedną z najbardziej popularnych technologii na serwerach WWW. 
 \subsection{Żądania HTTP i ich obsługa -- technika AJAX}
 
 \subsubsection{Strona główna i archiwum}
@@ -307,14 +385,29 @@ Odczyt czujników stykowych jest najczęściej wykonywanym pomiarem, więc po st
 \subsubsection{Ustawienia}
 
 \subsection{Interfejs użytkownika}
+\newpage
 
 \section{Testy systemu}
 
+\newpage
 \section{Wnioski i podsumowanie}
 
 \newpage
 \section{Bibliografia}
 \begin{thebibliography}{9}
+
+\bibitem{rpi}
+Specyfikacja Raspberry Pi Model 3B
+\url{https://www.raspberrypi.org/products/raspberry-pi-3-model-b/}
+
+\bibitem{bb_black}
+Specyfikacja BeagleBone Black
+\url{https://elinux.org/Beagleboard:BeagleBoneBlack}
+
+\bibitem{porownanie_wiki}
+Porównanie komputerów jednopłytkowych (ang.)
+\url{https://en.wikipedia.org/wiki/Comparison_of_single-board_computers}
+
 \bibitem{multiplekser}
 Karta katalogowa multipleksera TCA9548A:
 \url{http://www.ti.com/lit/ds/symlink/tca9548a.pdf}
@@ -322,6 +415,14 @@ Karta katalogowa multipleksera TCA9548A:
 \bibitem{czujnik_temp}
 Karta katalogowa czujnika temperatury i wilgotności Si7021:
 \url{https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf}
+
+\bibitem{sht31}
+Karta katalogowa czujnika temperatury i wilgotności SHT31D:
+\url{http://www.mouser.com/ds/2/682/Sensirion_Humidity_Sensors_SHT3x_Datasheet_digital-971521.pdf}
+
+\bibitem{th02}
+Karta katalogowa czujnika temperatury i wilgotności SHT31D:
+\url{https://raw.githubusercontent.com/SeeedDocument/Grove-TemptureAndHumidity_Sensor-High-Accuracy_AndMini-v1.0/master/res/TH02_SENSOR.pdf}
 
 \bibitem{smbus}
 Opis protokołu SMBus
@@ -340,13 +441,20 @@ Freed N., Borenstein N., Multipurpose Internet Mail Extensions (MIME) Part Two: 
 \url{https://tools.ietf.org/html/rfc2046}
 
 \bibitem{content-disposition}
-
-\url{https://tools.ietf.org/html/rfc6266}
 Reschke J. Use of the Content-Disposition Header Field in the Hypertext Transfer Protocol (HTTP)
+\url{https://tools.ietf.org/html/rfc6266}
+
 \bibitem{python-mime}
 Dokumentacja modułu Python email.mime
 \url{https://docs.python.org/3/library/email.mime.html}
 
+\bibitem{zachorowania}
+Arundel A. V., Sterling E. M., Biggin J. H. i Sterling T. D., Indirect health effects of relative humidity in indoor environments, \textit{Environmental Health Perspectives} 1986;65:351-361
+\url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1474709/}
+
+\bibitem{komputer_świat}
+Dziedzic K., Kamera IP w sieci. Stwórz prywatny monitoring
+\url{http://www.komputerswiat.pl/poradniki/sprzet/kamery-internetowe/2015/07/kamera-ip-w-sieci.aspx}
 
 \end{thebibliography}
 
