@@ -23,6 +23,7 @@
 \usepackage{multirow}
 \usepackage{hyperref}
 \usepackage{float}
+\usepackage{textgreek}
 \renewcommand*{\tablename}{Tabela}
 
 \usepackage{fancyhdr}
@@ -97,9 +98,9 @@
 \subsection{Wymagania techniczne i funkcjonalne}
 System bezpieczeństwa powinien łączyć funkcję monitoringu z możliwością kontroli otwarcia drzwi i okien oraz pomiaru warunków środowiskowych. Monitoring powinien być zrealizowany poprzez kamery USB ze względu na ich cenę i dostępność. System powinien być skalowalny i umożliwiać rozbudowę o dodatkowe kamery, co odpowiada np. rozszerzeniu monitoringu o dodatkowe pomieszczenia. Dane zebrane przez system należy udostępnić przez graficzny interfejs użytkownika w postaci strony WWW. Podłączenie systemu do sieci domowej LAN (ang. \textit{Local Area Network}) i wykonanie odpowiednich ustawień w panelu administracyjnym rutera umożliwi dostęp do strony WWW z dowolnego miejsca przez Internet.
 
-System powinien być zrealizowany w postaci komputera jednopłytkowego z systemem Linux, na którym będzie działał serwer WWW. Odpowiada on za dostęp do strony WWW i danych zebranych przez system. Kontrolę otwarcia drzwi i okien można zrealizować poprzez czujniki stykowe, które należy podłączyć do wyprowadzeń GPIO. Zintegrowane czujniki środowiskowe wymagają obsługi magistral (np. I2C czy OneWire). Komputer powinien być wyposażony w gniazda USB, do których będą podłączone kamery. Monitoring przy pomocy kamer nie musi być prowadzony w postaci ciągłego nagrania, które wymaga sporej pamięci. Wystarczające będzie okresowe wykonywanie zdjęć oraz dodatkowo wyzwalanie zdjęcia w przypadku otwarcia drzwi lub okna -- otwarcia czujnika stykowego przypisanego do kamery. 
+System powinien być zrealizowany w postaci komputera jednopłytkowego z systemem Linux, na którym będzie działał serwer WWW. Odpowiada on za dostęp do strony WWW i danych zebranych przez system. Kontrolę otwarcia drzwi i okien można zrealizować poprzez czujniki stykowe, które należy podłączyć do wyprowadzeń GPIO. Dostępne na rynku zintegrowane czujniki warunków środowiskowych (np. temperatury i wilgotności) wymagają obsługi magistral (np. I2C czy OneWire). Komputer powinien być wyposażony w gniazda USB, do których będą podłączone kamery. Monitoring przy pomocy kamer nie musi być prowadzony w postaci ciągłego nagrania, które wymaga sporej ilości miejsca w pamięci. Wystarczające będzie okresowe wykonywanie zdjęć oraz dodatkowo wyzwalanie zdjęcia w przypadku otwarcia drzwi lub okna -- otwarcia czujnika stykowego przypisanego do kamery. 
 
-Interfejs użytkownika musi prezentować aktualny stan systemu w postaci dostępu do ostatnich wykonanych zdjęć, odczytów czujników środowiskowych oraz stanu czujników stykowych (otwarty/zamknięty). Ponadto użytkownik powinien mieć dostęp do przeszłych zdjęć i pomiarów w postaci archiwum. Historia odczytów systemu powinna być również dostępna w formie eksportowanej listy np. w formacie \textit{csv}. Użytkownik powinien mieć również możliwość dokonania zmian w systemie poprzez panel ustawień. Może on umożliwiać np. włączenie wysyłania powiadomień e-mail w przypadku otwarcia czujnika.
+Interfejs użytkownika musi prezentować aktualny stan systemu w postaci dostępu do ostatnich wykonanych zdjęć, odczytów czujników środowiskowych oraz stanu czujników stykowych (otwarty/zamknięty). Ponadto użytkownik powinien mieć dostęp do przeszłych zdjęć i pomiarów w postaci archiwum. Historia odczytów systemu powinna być również dostępna w formie eksportowanej listy np. w formacie \textit{csv}. Użytkownik powinien mieć również możliwość dokonania zmian ustawień systemu przez panel administracyjny. Może on umożliwiać np. włączenie wysyłania powiadomień e-mail w przypadku otwarcia czujnika.
 
 Dane zebrane przez system z kamer i czujników powinny być więc zapisane w systemie tak, by umożliwić do nich dostęp serwerowi WWW, na którym będzie działać strona WWW. Pomiary wykonywane przez system powinny być zapisywane wraz z datą i godziną ich wykonania. Dostęp do tych danych powinien być niezależny od programu zapisującego wyniki pomiarów i prowadzącego monitoring.
 
@@ -123,9 +124,17 @@ Wymagania funkcjonalne systemu to:
 \item wysyłanie powiadomień e-mail w przypadku otwarcia czujnika,
 \item wywoływanie zdjęcia po otwarciu czujnika.
 \end{itemize}
- 
+
+Na podstawie powyższych wymagań opracowana została architektura systemu, którą jest przedstawiona na rysunku \ref{fig: architektura} i zostanie omówiona w poniższych podrozdziałach.
+\begin{figure}[h]
+\includegraphics[width=\linewidth]{architektura.png}
+\caption{Architektura systemu bezpieczeństwa.}
+\label{fig: architektura}
+\end{figure}
+
+
 \subsection{Przegląd dostępnych platform}
-Jednymi z najbardziej popularnych komputerów jednopłytkowych jest Raspberry Pi rozwijany przez Raspberry Pi Foundation jako narzędzie edukacyjne do nauczania programowania i elektroniki. Wokół tego projektu powstała duża grupa amatorów i entuzjastów dzielących się swoimi projektami. Jednym z konkurentów Raspberry Pi jest BeagleBone rozwijany przez Texas Instruments również zgodnie z filozofią \textit{open-hardware} -- sprzętu o otwartym dostępie do źródła i projektów. Oba komputery oparte są o procesory ARM Cortex w formie \textit{System On Chip} -- układu scalonego zawierającego procesor wraz z układami pamięci, peryferiami i układami przetwornikami analogowo-cyfrowymi i cyfrowo-analogowymi. Oba komputery umożliwiają zainstalowanie na nich dystrybucji systemu Linux. Najnowszymi modelami w momencie rozpoczęcia projektu (w marcu 2017 roku) były Raspberry Pi Model 3B oraz BeagleBone Black. Porównanie obu komputerów przedstawiono w tabeli \ref{porównanieSBC}.
+Jednymi z najbardziej popularnych komputerów jednopłytkowych jest Raspberry Pi rozwijany przez Raspberry Pi Foundation jako narzędzie edukacyjne do nauczania programowania i elektroniki. Wokół tego projektu powstała duża grupa amatorów i entuzjastów dzielących się swoimi projektami. Jednym z konkurentów Raspberry Pi jest BeagleBone rozwijany przez Texas Instruments również zgodnie z filozofią \textit{open-hardware} -- sprzętu o otwartym dostępie do źródła i projektów. Oba komputery oparte są o procesory ARM Cortex w formie \textit{System On Chip} -- układu scalonego zawierającego procesor wraz z układami pamięci, peryferiami i przetwornikami analogowo-cyfrowymi i cyfrowo-analogowymi. Oba komputery umożliwiają zainstalowanie na nich dystrybucji systemu Linux. Najnowszymi modelami w momencie rozpoczęcia projektu (w marcu 2017 roku) były Raspberry Pi Model 3B oraz BeagleBone Black. Porównanie obu komputerów przedstawiono w tabeli \ref{porównanieSBC}.
 \begin{table}[h]
 \centering
 \begin{tabular}{lll}
@@ -149,7 +158,7 @@ Maksymalny pobór mocy 	 & 3 W             & 2,3 W            \\ \hline
 
 Przewagą komputera Raspberry Pi 3B jest szybszy procesor o większej liczbie rdzeni, co pozwala na równoległe wykonywanie większej liczby procesów, oraz większa pojemność pamięci RAM. Ponadto ma on możliwość podłączenia zarówno do sieci przewodowej (Ethernet) jak i bezprzewodowej (WLAN). Może być to przewaga w przypadku, gdyby system miał być zainstalowany z daleka od rutera. Komputer BeagleBone Black ma niższą wartość poboru mocy oraz więcej wyprowadzeń GPIO. Na każdy czujnik stykowy będzie jednak potrzebne jedno wyprowadzenie GPIO oraz podłączenie do masy, zatem 40 wyprowadzeń Raspberry Pi 3B z pewnością będzie wystarczające. Z tych powodów wybrałem platformę Raspberry Pi 3B do projektowanego systemu.
 
-Wśród dostępnych dystrybucji systemu Linux na Raspberry Pi są m.in. Raspbian (domyślna dystrybucja oparta o Debian) i Ubuntu Mate. W projekcie zostanie użyty system Raspbian, ponieważ jest on uniwersalny i spełnia wszystkie stawiane wymogi -- obsługę wyprowadzeń GPIO, magistrali I2C oraz możliwość działania jako serwer WWW (np. przy użyciu Apache). System Raspbian posiada również interfejs graficzny, co może być przydatną cechą w przypadku, gdyby konieczna była bezpośrednia interwencja administratora systemu z pominięciem interfejsu użytkownika. Raspberry Pi 3B posiada wyjście HDMI, do którego można podłączyć monitor i wygodnie zarządzać komputerem.
+Wśród dostępnych dystrybucji systemu Linux na Raspberry Pi są m.in. Raspbian (domyślna dystrybucja oparta o Debian) i Ubuntu Mate. W projekcie zostanie użyty system Raspbian, ponieważ jest on uniwersalny i spełnia wszystkie stawiane wymogi -- obsługę wyprowadzeń GPIO, magistrali I2C oraz możliwość działania jako serwer WWW (np. przy użyciu Apache). System Raspbian posiada również interfejs graficzny, co może być przydatną cechą w przypadku, gdyby konieczna była bezpośrednia interwencja administratora systemu z pominięciem stworzonego interfejsu użytkownika.
 
 \subsection{Czujniki warunków środowiskowych}
 Wymogiem technicznym systemu jest również obsługa czujników środowiskowych. Najważniejszymi parametrami, które należy zmierzyć w warunkach domowych są temperatura i wilgotność względna powietrza. Wpływają one na jakość powietrza w pomieszczeniach oraz na poziom zachorowań wśród przebywających w nich. Badania wykazały związek między wilgotnością względną w domu i pracy oraz liczbą dni spędzonych na zwolnieniu lekarskim. Zbyt niska lub zbyt wysoka wilgotność powietrza w pomieszczeniach prowadzi do zwiększenia przypadków zachorowań na choroby układu oddechowego. \cite{zachorowania} 
@@ -179,30 +188,42 @@ Magnetyczne czujniki zbliżeniowe mogą być użyte do określenia pozycji drzwi
 \subsection{Kamery cyfrowe}
 Kamery USB zastosowane w systemie mogą pozwolić na realizację domowego monitoringu niedużym kosztem. Ich uniwersalność pozwala również wykorzystać je w innych domowych zastosowaniach np. jako kamerę do rozmów przez komunikatory internetowe takie jak Skype czy Google Hangouts. W projektowanym systemie zadaniem kamer będzie cykliczne wykonywanie zdjęć. Celem powinno być znalezienie złotego środka między jakością zdjęć wykonywanych przez kamery i ich ceną. Jakość powinna być na tyle dobra, by zdjęcie umożliwiło identyfikację ewentualnego intruza. Koszt jest kategorią bardziej subiektywną, ale kamera USB powinna być konkurencyjna cenowo wobec kamer IP, których koszt zaczyna się od ok. 150 zł.\cite{komputer_świat}
 
-W systemie zastosowałem dwie kamery z różnego przedziału cenowego. Kamera Titanum Onyx posiada matrycę CMOS, która umożliwia wykonywanie zdjęć o rozdzielczości do 5 megapikseli przy zastosowaniu interpolacji. Co ważne kamera jest kompatybilna z UVC (\textit{USB Video Class}) -- sterownikiem wbudowanym w system Linux. Kamera posiada również przełącznik włączający 3 diody LED, które mogą być przydatne w przypadku zdjęć nocnych. Koszt kamery to ok. 50 zł. Drugą kamerą jest Creative VFO 790, która posiada matrycę wykonującą zdjęcia w rozdzielczości HD 720p (1280x720 pikseli). Jest ona również kompatybilna z UVC. Optyka kamery jest w przeciwieństwie do pierwszej stałoogniskowa. Koszt kamery to ok. 110 zł.
+W systemie zastosowałem dwie kamery z różnego przedziału cenowego. Kamera Titanum Onyx posiada matrycę CMOS, która umożliwia wykonywanie zdjęć o rozdzielczości do 5 megapikseli przy zastosowaniu interpolacji. Co ważne kamera jest kompatybilna z UVC (\textit{USB Video Class}) -- sterownikiem wbudowanym w system Linux. Kamera posiada również przełącznik włączający 3 diody LED, które mogą być przydatne w przypadku zdjęć nocnych. Koszt kamery to ok. 50 zł. Drugą kamerą jest Creative VFO 790, która posiada matrycę wykonującą zdjęcia w rozdzielczości HD 720p (1280x720 pikseli). Jest ona również kompatybilna z UVC. Optyka kamery jest stałoogniskowa w przeciwieństwie do kamery Titanum Onyx. Koszt kamery to ok. 110 zł.
 
 \subsection{Projekt części sprzętowej systemu}
 Połączenie między komputerem Raspberry Pi 3B a dołączonymi czujnika zrealizowałem na prototypowej płytce stykowej. Umożliwia ona tworzenie prototypów bez konieczności lutowania połączeń. Połączenie między płytką prototypową a wyprowadzeniami GPIO Raspberry Pi jest wykonane przez ekspander wyprowadzeń ProtoPi Plus.
 
-W systemie zostały zastosowane czujniki zbliżeniowe magnetyczne MC-38. Kontaktron został podłączony do wyprowadzenia GPIO poprzez wbudowany rezystor ściągający do masy (ang. \textit{pull-down}) oraz napięcia zasilania równego 3,3 V. Gdy kontaktron i magnes są zbliżone, obwód jest zamknięty i na wyprowadzeniu pojawia się wysoki stan. W przypadku oddalenia czujników i otwarcia obwodu na wyprowadzeniu pojawia się stan niski poprzez rezystor ściągający do masy.
-
-Wymogiem systemu jest również obsługa wielu kamer i czujników, w tym czujników temperatury i wilgotności poprzez magistralę I2C. Adres I2C wybranych do projektu czujników Si 7021 to 0x70. Nie mają one możliwości programistycznej lub sprzętowej zmiany adresu. Oznacza to, że do jednej magistrali mógłby być podłączony bezpośrednio tylko jeden czujnik. Podłączenie większej liczby czujników o tym samym adresie doprowadziłoby do sytuacji, w której nie można jednoznacznie określić, z którego czujnika został odczytany wynik pomiaru. Raspberry Pi3 B posiada możliwości obsługi dwóch magistral I2C. W założeniach projektowych jest wymaganie obsługi większej liczby czujników temperatury, każdego przypisanego do jednej kamery. Nie jest więc możliwe rozwiązanie polegające na podłączeniu po jednym czujniku do każdej z magistral. Innym rozwiązaniem tego problemu jest zastosowanie multipleksera I2C. Multiplekser zadziała jak przełącznik, który pozwoli na komunikację z jednym czujnikiem naraz. Przykładem takiego urządzenia jest TCA 9548A firmy Adafruit. Pozwala on na podłączenie do 8 urządzeń korzystających z magistrali I2C.
-
-Multiplekser TCA 9548A jest podłączony do 
-
-W zaprojektowanym systemie bezpieczeństwa program obsługujący urządzenia działa niezależnie od programu udostępniającego poprzez serwer WWW dane użytkownikowi. Konieczny jest zatem sposób komunikacji i wymiany danych pomiędzy nimi. Relacyjna baza danych pozwala na przechowywanie danych w tabelach, do których dostęp zagwarantowany jest poprzez odpowiedni interfejs programistyczny.
-
+W systemie zostały zastosowane czujniki zbliżeniowe magnetyczne MC-38. Kontaktron został podłączony do wyprowadzenia GPIO poprzez wbudowany rezystor ściągający do masy (ang. \textit{pull-down}) oraz napięcia zasilania równego 3,3 V. Gdy kontaktron i magnes są zbliżone, obwód jest zamknięty i na wyprowadzeniu pojawia się wysoki stan. W przypadku oddalenia czujników i otwarcia obwodu na wyprowadzeniu pojawia się stan niski poprzez rezystor ściągający do masy. Na rysunku \ref{fig: kontaktron} został przedstawiony schemat podłączenia czujnika stykowego do platformy Raspberry Pi (z pominięciem ekspandera ProtoPi Plus).
 \begin{figure}[h]
-\includegraphics[width=\linewidth]{Architektura.png}
-\caption{Schemat architektury systemu}
-\label{fig: architektura}
+\includegraphics[width=0.5\linewidth]{kontaktron.png}
+\includegraphics[width=0.5\linewidth]{kontaktron_zamkniety.png}
+\caption{Schemat podłączenia czujnika MC-38 w przypadku oddalonego (lewo) i zbliżonego(prawo) magnesu.}
+\label{fig: kontaktron}
 \end{figure}
 
-Rysunek \ref{fig: architektura} przedstawia projekt architektury systemu. System oparty jest o komputer jednopłytkowy (ang. single-board computer) Raspberry Pi 3B. Na komputerze działa dystrybucja Raspbian systemu operacyjnego Linux. Połączenia między czujnikami stykowymi oraz czujnikami I2C są wykonane na płytce prototypowej. Wyprowadzenia GPIO Raspberry Pi są rozszerzone do płytki poprzez moduł ProtoPi Plus. Dzięki temu ułatwione było prototypowanie i testowanie systemu bez konieczności lutowania połączeń. Kamery USB są podłączone do gniazd USB komputera. 
+Wymogiem systemu jest również obsługa wielu kamer i czujników, w tym czujników temperatury i wilgotności poprzez magistralę I2C. Adres I2C wybranych do projektu czujników Si 7021 to 0x40. Nie mają one możliwości programistycznej lub sprzętowej zmiany adresu. Oznacza to, że do jednej magistrali mógłby być podłączony bezpośrednio tylko jeden czujnik. Podłączenie większej liczby czujników o tym samym adresie doprowadziłoby do sytuacji, w której nie można jednoznacznie określić, z którego czujnika został odczytany wynik pomiaru. Raspberry Pi3 B posiada możliwości obsługi dwóch magistral I2C. Oznaczałoby to jednak, że liczba czujników temperatury w systemie byłaby mniejsza niż kamer i czujników stykowych. Innym rozwiązaniem tego problemu jest zastosowanie multipleksera I2C. Multiplekser zadziała jak przełącznik, który pozwoli na komunikację z jednym czujnikiem naraz. Przykładem takiego urządzenia jest TCA 9548A firmy Adafruit. Pozwala on na podłączenie do 8 urządzeń korzystających z magistrali I2C.
+
+Multiplekser TCA 9548A jest podłączony do wyprowadzeń GPIO2 i GPIO 3, które mogą być aktywowane jako odpowiednio linia SDA i SCL magistrali I2C. Ponadto wyprowadzenia GPIO2 i GPIO3 są podłączone przez wbudowane rezystory podciągające do napięcia zasilania 3,3 V\cite{rpi_schematic}, co jest zgodne z zaleceniami podanymi w karcie katalogowej.\cite{multiplekser} Multiplekser jest zasilany z wyprowadzenia 3,3 V platformy Raspberry Pi i podłączony do jej masy. Wyprowadzenia adresowe A2, A1 i A0 są podłączone do masy, co oznacza, że adres multipleksera to 0x70. Nieużywane wyprowadzenie $\overline{\mathsf{RESET}}$ jest z kolei podłączone do zasilania poprzez rezystor podciągajacy, który ogranicza pobór prądu.
+
+Czujniki Si7021 są przyłączone do kanałów SDx i SCx, gdzie x jest numerem kanału od 0 do 7. W karcie katalogowej czujnika podany jest typowy schemat przyłączenia, w którym użyte są rezystory podciągające 10 k\textOmega\hspace{0.2em} linie SDA i SCL do napięcia zasilania. Producent multipleksera TCA 9548A podaje z kolei w karcie katalogowej wzór \ref{pullup} pozwalający na wyznaczenie minimalnej wartości rezystorów podciągających.\cite{multiplekser} Napięcie $\mathsf{V_{DPU}}$ jest napięciem linii sygnałowych, które jest równe napięciu zasilania $\mathsf{V_{CC}}$. Napięcie $\mathsf{V_{OL(max)}}$ to maksymalne napięcie wyjściowe, a prąd $\mathsf{I_{OL}}$ to prąd wyjściowy czujnika. Obie wartości są podane w karcie katalogowej czujnika Si7021.\cite{czujnik_temp}
+
+\begin{equation} \label{pullup}
+R_{p(min)} = \frac{V_{DPU} - V_{OL(max)}}{I_{OL}} = \frac{3,3 V - 0,6 V}{2,5 mA} = 1,08 k\Omega  
+\end{equation} 
+
+Im większa rezystancja rezystora podciągającego tym mniejszy pobór prądu. Rezystor podciągający tworzy wraz z pojemnością magistrali $\mathsf{C_{b}}$ filtr dolnoprzepustowy RC. Jego stała czasowa nie może być na tyle duża, że zbocza zostaną rozciągnięte w czasie tak, że ich czas narastania przekroczy wymagania czasowe magistrali. Pojemność magistrali jest trudna do zmierzenia, więc rezystancja powinna być zbliżona do minimalnej wymaganej. W ramach projektowanego systemu użyte zostały rezystory podciągające 2,2 k\textOmega. Rysunek \ref{fig: i2c_schemat} przedstawia schemat połączeń między komputerem Raspberry Pi a multiplekserem TCA 9548A i dwoma czujnikami Si7021. Przedstawiono dwa czujniki poglądowo -- system może być powiększony o dodatkowe czujniki.
+
+\begin{figure}[h]
+\includegraphics[width=\linewidth]{i2c.png}
+\caption{Schemat podłączenia multipleksera TCA9548A i czujników Si7021.}
+\label{fig: i2c_schemat}
+\end{figure}
+
+Podłączenie większej liczby kamer USB do Raspberry Pi może spowodować chwilowe przekroczenie dopuszczalnego poboru mocy z gniazd USB. Rozwiązaniem tego problemu jest użycie rozgałęziacza (ang. \textit{hub}) USB z zewnętrznym zasilaniem. Zwiększa on jednocześnie zasięg kamer podłączonych przewodowo kamer. Należy uważać jednak, by rozgałęziacz nie zasilał wstecznie (ang. \textit{backfeed}) komputera Raspberry Pi, ponieważ grozi to uszkodzeniem systemu. Z tego powodu w projekcie użyłem dedykowanego rozgałęziacza firmy The Pi Hut.
 
 \newpage
 \section{Obsługa kamer i czujników}
-Do napisania programu obsługującego czujniki i kamery wybrałem język Python, ponieważ umożliwia on poprzez wiele dostępnych modułów wysokopoziomową obsługę wyprowadzeń GPIO, magistrali I2C oraz kamer USB. Ponadto istnieje wiele pakietów pozwalających na łatwą komunikację z bazą danych, która będzie miejscem przechowywania wyników pomiaru. Program w języku Python jest też odpowiedzialny za wysłanie powiadomień email poprzez serwer SMTP Google. Na potrzeby projektu zostało stworzone konto w usłudze Gmail, poprzez które będą wysyłanie powiadomienia. 
+Do napisania programu obsługującego czujniki i kamery wybrałem język Python, ponieważ umożliwia on poprzez wiele dostępnych modułów wysokopoziomową obsługę wyprowadzeń GPIO, magistrali I2C oraz kamer USB. Ponadto istnieje wiele pakietów pozwalających na łatwą komunikację z bazą danych, która będzie miejscem przechowywania wyników pomiaru. Program w języku Python jest też odpowiedzialny za wysłanie powiadomień email poprzez serwer SMTP Google. Na potrzeby projektu zostało stworzone konto w usłudze Gmail, przez które będą wysyłanie powiadomienia. 
 
 Zadaniem programu nadzor.py jest cyklicznie wykonywanie pomiarów, odczytów i zdjęć oraz zapis wyników do bazy danych. Potrzebne jest narzędzie, które pozwoli okresowo wykonywać funkcje w ramach jednego programu. Wewnątrz języka Python istnieją mechanizmy (moduł \texttt{sched}), które umożliwiają wykonywanie zadań po minięciu pewnego czasu lub zaplanowanie ich do wykonania o konkretnej porze. Wykorzystanie tego modułu wymagałoby jednak ponownego zaplanowania zadania po każdym jego wykonaniu. Modułem, który umożliwia dokonanie tego w prostszy sposób, jest biblioteka \texttt{schedule}. Jest ona przeznaczona do planowania cyklicznego wykonywania zadań. Przykładowe wywołanie szeregowania przy użyciu biblioteki \texttt{schedule} przedstawiono poniżej.
 \begin{lstlisting} [language=Python]
@@ -331,11 +352,15 @@ Do przygotowania wiadomości e-mail jest wykorzystany obiekt klasy \texttt{MIMEM
 \subsection{Założenia wstępne}
 Relacyjna baza danych składa się relacji (tabel), które są połączone związkami. W takim modelu organizacji bazy danych łatwo przedstawić rzeczywiste obiekty, których dane ma przedstawiać. Tabela składa się z nagłówka i zawartości. Nagłówek to zbiór atrybutów opisujących zawartość składającą się ze zbioru wierszy. Każda tabela posiada klucz główny, który pozwala jednoznacznie zidentyfikować każdy wiersz. Związki między relacjami są realizowane poprzez obecność w jednej z tabel uczestniczących w związku klucza obcego, który pozwala jednoznacznie zidentyfikować wiersz z drugiej tabeli.
 
-Programistyczny dostęp do baz danych jest możliwy poprzez interfejs do opartego na transakcjach silnik bazy danych. Transakcje to zestaw operacji, które powinny być wykonane w całości lub wcale. Dzięki nim możliwe jest zachowanie integralności danych w sytuacji, gdy kilka klientów (programów) zapisuje dane do bazy danych. W projekcie użyty został wolnodostępny system zarządzania bazą danych MySQL.
-\subsection{Projekt bazy danych}
-Projekt bazy danych należy rozpocząć od zdefiniowania, jakie obiekty mają być przechowywane w bazie. W projektowanym systemie niezbędne są informacje o czujnikach i kamerach podłączonych do Raspberry Pi oraz pomiarach wykonanych przez nie. Wszystkie urządzenia mają nazwę identyfikującą ich położenie lub przeznaczenie np. "'Kamera w kuchni"' lub "'Czujnik - drzwi wejściowe"'. Każdy typ urządzenia różni się jednak specyficznymi dla niego informacjami. Czujnik temperatury dodatkowo potrzebuje informacji o numerze kanału multipleksera, do którego jest podłączona, a czujnik stykowy o numerze wyprowadzenia GPIO, do którego jest podłączony. Ponadto każdy typ urządzenia wykonuje inny typ pomiaru i odczytu i z tego powodu informacje o urządzeniach będą przechowywane w różnych tabelach - osobno kamery, czujniki stykowe i czujniki temperatury.
+Programistyczny dostęp do baz danych jest możliwy poprzez interfejs do opartego na transakcjach silnik bazy danych. Transakcje to zestaw operacji, które powinny być wykonane w całości lub wcale. Dzięki nim możliwe jest zachowanie integralności danych w sytuacji, gdy kilka klientów (programów) zapisuje dane do bazy danych.
+
+Projekt bazy danych należy rozpocząć od zdefiniowania, jakie obiekty mają być przechowywane w bazie. W projektowanym systemie niezbędne są informacje o czujnikach i kamerach podłączonych do Raspberry Pi oraz pomiarach wykonanych przez nie. Wszystkie urządzenia mają nazwę identyfikującą ich położenie lub przeznaczenie np. "Kamera w kuchni" lub "Czujnik - drzwi wejściowe". Każdy typ urządzenia różni się jednak specyficznymi dla niego informacjami. Czujnik temperatury dodatkowo potrzebuje informacji o numerze kanału multipleksera, do którego jest podłączona, a czujnik stykowy o numerze wyprowadzenia GPIO, do którego jest podłączony. Ponadto każdy typ urządzenia wykonuje inny typ pomiaru i odczytu i z tego powodu informacje o urządzeniach będą przechowywane w różnych tabelach - osobno kamery, czujniki stykowe i czujniki temperatury.
 
 Baza danych powinna przechowywać informację o stanie czujnika zbliżeniowego, wartości zmierzonej temperatury i wilgotności oraz wykonanym zdjęciu. W bazie danych nie muszą być przechowywane pliki ze zdjęciami, może być to unikalny identyfikator zdjęcia, który pozwoli zlokalizować je w pamięci urządzenia. Zdjęcia, pomiary temperatury i odczyty czujnika stykowego będą wykonywane z różną częstotliwością. Użytkownik potrzebuje natomiast powiązania, jaki w danej chwili jest stan czujnika, odczyt temperatury i wilgotności oraz zdjęcie nadzorowanego miejsca. Konieczna jest więc tabela, która będzie zbierała dla każdej grupy składającej się z czujnika, czujnika stykowego i kamery informacje o ostatnich wykonanych pomiarach. Wpisy do tej tabeli muszą być wykonywane tak często, jak wpisy do najczęściej wykonywany pomiar. Pozostałe wielkości będą ostatnio zmierzonymi. Pozwala to na jasne dopasowanie zdjęcia oraz zmierzonej temperatury i wilgotności do odczytu stanu.
+
+\subsection{Projekt bazy danych}
+
+Na podstawie powyższych założeń stworzyłem projekt bazy danych, który jest przedstawiony na rysunku \ref{fig: er}. Przedstawiony na nim jest schemat bazy danych na poziomie logicznym. Poziom logiczny to zbiór relacji i związków między nimi, które mogą zostać stworzone w systemie zarządzania bazą danych. 
 
 \begin{figure}[h]
 \includegraphics[width=\linewidth]{er.png}
@@ -343,18 +368,24 @@ Baza danych powinna przechowywać informację o stanie czujnika zbliżeniowego, 
 \label{fig: er}
 \end{figure}
 
-Rysunek \ref{fig: er} przedstawia schemat bazy danych na poziomie logicznym. Poziom logiczny to zbiór relacji i związków między nimi, które mogą zostać stworzone w systemie zarządzania bazą danych.  
+Baza zawiera tabele \texttt{czujniki}, \texttt{kamery} i \texttt{czujniki{\_}temperatury} z informacjami o poszczególnych typach urządzeń dołączonych do systemu. Wszystkie tabele mają podobne pole przechowujące nazwę urządzenia typu VARCHAR(100). Ponadto każde urządzenie przechowuje częstotliwość wywoływania zdjęcia, pomiaru lub odczytu w polu typu FLOAT. Wartości te są wyrażone w sekundach. Ponadto każde urządzenie przechowuje informację pozwalającą zlokalizować je fizycznie w systemie. W przypadku czujników stykowych jest to numer wyprowadzenia GPIO, do którego podłączony jest czujnik. Czujniki temperatury i wilgotności są identyfikowane przez numer kanału multipleksera, do którego są dołączone. Kamery można rozróżnić dzięki polu \texttt{sciezka{\_}urzadzenia} zawierającym ścieżkę pliku wirtualnego węzła urządzenia. Jest to plik, który system Linux używa do identyfikowania dołączonych urządzeń. 
 
-Baza zawiera tabele czujniki, kamery i czujniki{\_}temperatury z informacjami o poszczególnych typach urządzeń: nazwie, częstotliwości wywoływania pomiaru lub zdjęcia i sprzętowej lokalizacji urządzenia (numer wyprowadzenia, kanał multipleksera). Tabele stany, zdjęcia i odczyty zawierają informacje o realizacjach pomiarów wykonane przez te urządzenia. Tabela pomiary przedstawia status systemu w czasie, zawierając klucze aktualnych na ten moment zdjęć, odczytów i stanów. 
+Tabele \texttt{stany}, \texttt{zdjęcia} i \texttt{odczyty} zawierają informacje o realizacjach pomiarów wykonane przez te urządzenia. Tabela \texttt{stany} odpowiada odczytom stanów czujników stykowych. Każdy wpis w tabeli jest jednym odczytem  stanu jednego czujnika. Odczyt stanu jest przechowywany w polu \texttt{stan} typu SMALLINT i może zawierać dwie wartości 0 albo 1. W tabeli \texttt{odczyty} przechowywane są pomiary temperatury i wilgotności względnej z jednego czujnika temperatury. Są one liczbami zmiennoprzecinkowymi i dlatego są zapisywane w polach typu FLOAT. Jeśli pomiar został wykonany błędnie, zostanie dokonany wpis do tabeli \texttt{odczyty} zawierający wartości NULL w polach \texttt{temperatur} i \texttt{rh}. Wpisy w tabeli \texttt{zdjęcia} zawierają nazwę pliku ze zdjęciem wykonanym przez kamerę. Jeśli jednak zdjęcie nie zostanie wykonane prawidłowo, w polu \texttt{nazwa} zostanie wpisana wartość NULL.
 
+Tabela \texttt{pomiary} przedstawia status systemu w czasie, zawierając klucze obce aktualnych w danym momencie zdjęć, odczytów i stanów, pochodzących ze zgrupowanych urządzeń. Do wielu pomiarów może być przypisany jedno zdjęcie i odczyt, ale do jednego pomiaru jest przypisany jeden stan czujnika stykowego. Wynika to z tego, że w programie \texttt{nadzor.py} wpisy do tabeli \texttt{pomiary} są wykonywane po odczycie stanu. Następuje on domyślnie co 0,1 sekundy, aby wykrywać oddalenie czujników. Data jest przechowywana w polu o typie DATETIME. 
+ 
 Poza wspomnianymi wyżej relacjami istnieje również relacja ustawienia, która nie jest w związku z żadną inną. Jest to relacja, która pozwala przechowywać różne ustawienia systemu, które nie dotyczą bezpośrednio urządzeń. Posiada ona dwie kolumny klucz i wartość. Klucz jest opisem ustawienia, a wartość przechowuje informację o nim np. adres e-mail, na który mają być wysyłane powiadomienia. Wartość ta może być zmieniona poprzez interfejs na stronie WWW, ale jest wykorzystywana przez program obsługujący kamery i czujniki. Przechowywanie tych danych w bazie zapewnia ich niezależność od wykonywania poszczególnego programu.
 
-Ponadto kamera, czujnik temperatury i czujnik stykowy, który ma wywoływać zdjęcie kamery zostały zgrupowane w ten sposób, że kamera przechowuje klucze przypisanych do niej czujników. Odpowiada to związkom jeden do wielu między kamerą a czujnikiem (temperatury).
+Ponadto kamera, czujnik temperatury i czujnik stykowy, który ma wywoływać zdjęcie kamery zostały zgrupowane w ten sposób, że kamera przechowuje klucze przypisanych do niej czujników. Odpowiada to związkom jeden do jednego między relacjami \texttt{kamery} i \texttt{czujniki} oraz \texttt{kamery} i \texttt{czujniki{\_}temperatury}.
 
 \subsection{Praktyczna realizacja bazy danych}
-Baza danych została zaimplementowana przy użyciu systemu zarządzania bazą danych MySQL. Do stworzenia tabel został napisany skrypt w języku Python. Wykorzystuje on moduł SQLAlchemy, który umożliwia działanie na relacjach bazy danych jak na obiektach programistycznych. Takie odwzorowanie nazywa się mapowanie obiektowo-relacyjnym (ang. Object-Relational Mapping ORM). Ułatwia ono wprowadzanie kolejnych zmian do struktury bazy danych, relacji i związków między nimi.
+Baza danych została zaimplementowana przy użyciu systemu zarządzania bazą danych \texttt{MySQL}. Do stworzenia tabel został napisany skrypt w języku Python. Wykorzystuje on moduł \texttt{SQLAlchemy}, który umożliwia działanie na relacjach bazy danych jak na obiektach programistycznych. Takie odwzorowanie nazywa się mapowaniem obiektowo-relacyjnym (ang. \textit{Object-Relational Mapping} ORM). Ułatwia ono wprowadzanie kolejnych zmian do struktury bazy danych, relacji i związków między nimi.
 
-Plik zawierający program tworzący tabele w bazie danych nosi nazwę baza.py. W pierwszej kolejność należy stworzyć klasę Base, która zapewnia mapowanie do tabel w bazie danych. Proces tworzenia tabel w bazie polega na stworzeniu klasy odpowiadającej każdej tabeli w bazie, która dziedziczy po klasie Base.
+Bazę danych należy stworzyć, wywołując polecenie w panelu zarządzania bazą danych przy użyciu polecenia:
+\begin{lstlisting} [language=SQL]
+CREATE DATABASE nadzor;
+\end{lstlisting}
+Plik zawierający program tworzący tabele w bazie danych nosi nazwę \texttt{baza.py}. W pierwszej kolejności należy stworzyć klasę Base, która zapewnia mapowanie do tabel w bazie danych. Proces tworzenia tabel w bazie polega na stworzeniu klasy odpowiadającej każdej tabeli w bazie, która dziedziczy po klasie Base.
 \begin{lstlisting} [language=Python]
 class Pomiary(Base):
     __tablename__ = 'pomiary'
@@ -367,13 +398,42 @@ class Pomiary(Base):
     odczyt = relationship(Odczyty)
     zdjecia = relationship(Zdjecia)
 \end{lstlisting}
-Klasa Pomiary posłuży jako przykład tworzenia tabeli w bazie danych. Należy zdefiniować atrybut {\_\_}tablename{\_\_}, który jest unikalną nazwą tabeli. Następnie tworzone są kolumny poprzez wywołanie konstruktora klasy Column. Przyjmuje on argumenty dotyczące typu przechowywanego w kolumnie. Dla kolumny będącej kluczem głównym należy ustawić znacznik primary{\_}key jako True. Do zdefiniowania związku z inną relacją należy podać jako argument obiekt klasy ForeignKey, który przechowuje informację, która kolumna w której tabeli służy jako klucz obcy. Następnie należy zdefiniować związek, wywołując funkcję relationship(). Przyjmuje ona jako argument nazwę klasy. Oznacza to, że klasa ta musi być stworzona wcześniej w kodzie.
 
-Dla wszystkich użytych czujników i kamer należy również stworzyć rekordy w bazie danych, odpowiadające im. Odpowiada za to program insert.py. Proces tworzenia nowego wpisu w tabeli polega na stworzeniu słownika zawierającego nazwy kolumn i wartości, które mają być im przypisane. Następnie wywoływana jest funkcja get{\_}or{\_}create, która najpierw sprawdza, czy istnieje rekord w bazie danych o takich wartościach. Jeśli istnieje już, to zwraca go. Jeśli nie istnieje, to tworzy nowy rekord. Dzięki temu do programu można dodawać tworzenie kolejnych rekordów bez obaw o powstanie duplikatów już stworzonych.
+Klasa Pomiary posłuży jako przykład tworzenia tabeli w bazie danych. Należy zdefiniować atrybut \texttt{{\_\_}tablename{\_\_}}, który jest unikalną nazwą tabeli. Następnie tworzone są kolumny poprzez wywołanie konstruktora klasy Column. Przyjmuje on argumenty dotyczące typu przechowywanego w kolumnie. Dla kolumny będącej kluczem głównym należy ustawić znacznik \texttt{primary{\_}key} jako \texttt{True}. Do zdefiniowania związku z inną relacją należy podać jako argument obiekt klasy \texttt{ForeignKey}, który przechowuje informację, która kolumna w której tabeli służy jako klucz obcy. Następnie należy zdefiniować związek, wywołując funkcję \texttt{relationship()}. Przyjmuje ona jako argument nazwę klasy. Oznacza to, że klasa ta musi być stworzona wcześniej w kodzie.
 
-Wynik odczytu stanu zostaje zapisany do słownika przy kluczu "'stan"' odpowiadającemu kolumnie w tabeli danych. Pozostałym polem w słowniku jest identyfikator czujnika stykowego, dla którego został wykonany odczyt. Następnie wynik zostaje zapisany do bazy danych poprzez funkcję create(). Stan czujnika odczytany w tym wywołaniu funkcji zostaje zapisany w polu stan{\_}poprzedni obiektu klasy Grupa. 
+Dla wszystkich użytych czujników i kamer należy również stworzyć rekordy w bazie danych, odpowiadające im. Odpowiada za to program \texttt{insert.py}. Proces tworzenia nowego wpisu w tabeli polega na stworzeniu słownika zawierającego nazwy kolumn i wartości, które mają być im przypisane. Następnie wywoływana jest funkcja \texttt{get{\_}or{\_}create()}, która najpierw sprawdza, czy istnieje rekord w bazie danych o takich wartościach. Jeśli istnieje już, to zwraca go. Jeśli nie istnieje, to tworzy nowy rekord. Dzięki temu do programu można dopisywać kolejne wywołania, tworzące nowe rekordy w bazie danych i uruchamiać program, który nie stworzy duplikatów już istniejących. Poniżej przedstawiono przykład stworzenia nowego wpisu to tabeli \texttt{kamery} zgodnie z opisaną wyżej procedurą. Argumentami funkcji \texttt{get{\_}or{\_}create()} są obiekt klasy \texttt{Session}, która zarządza transakcjami z bazą danych\cite{sqlalchemy-session}, nazwa klasy odpowiadającej tabeli, dla której ma być stworzony obiekt oraz słownik argumentów kluczowych poprzedzony operatorem \texttt{**}.
+\begin{lstlisting} [language=Python]
+titanum_1_kwargs = {
+    "nazwa_kamery": "Kamera 1 - Titanum",
+    "sciezka_urzadzenia": "/dev/video0",
+    "id_czujnika": kontaktron_1.id_czujnika,
+    "id_czujnika_temp": si7021_zielony.id_czujnika_temp,
+    "czestotliwosc_zdjecia": 10.0
+}
+titanum_1 = get_or_create(session, Kamery, **titanum_1_kwargs)
+\end{lstlisting}
 
-Odczyt czujników stykowych jest najczęściej wykonywanym pomiarem, więc po stworzeniu nowego wpisu w tabeli stany powinien zostać stworzony wpis do tabeli pomiary. Zostaje do niej wpisany rekord zawierający identyfikator właśnie wykonanego odczytu stanu oraz odczytane z atrybutów obiektu identyfikatory ostatnich wykonanych zdjęć oraz pomiarów temperatury. Wraz z nimi zostaje zapisana data wpisu odczytana przy pomocy funkcji datetime.now() zapisana w formacie dzień-miesiąc-rok godzina-minuta-sekunda.
+W podobny sposób dokonywane są zapisy do tabel \texttt{stany}, \texttt{zdjęcia} i \texttt{odczyty}. Wykonywane są one w programie \texttt{nadzor.py} odpowiednio w funkcjach: \linebreak\texttt{sprawdz{\_}kontaktron()}, \texttt{pomiar{\_}temperatury{\_}rh} i \texttt{zrob{\_}zdjecie}. Przykładowo, wyniki pomiarów temperatury i wilgotności zostają zapisane do słownika przy kluczach odpowiadających nazwom odpowiednich kolumn w tabeli. Pozostałym polem w słowniku jest identyfikator czujnika stykowego, dla którego został wykonany odczyt. Następnie wynik zostaje zapisany do bazy danych poprzez funkcję \texttt{create()}. Jej argumenty są takie same jak opisanej wyżej funkcji \texttt{get{\_}or{\_}create()}. Zwrócony obiekt odpowiadający nowemu wpisowi w bazie danych jest zapisywany w odpowiednim polu klasy Grupa.
+\begin{lstlisting} [language=Python]
+odczyt = {
+	"id_czujnika_temp": self.czujnik_temp.id_czujnika_temp,
+    "temperatura": temp,
+    "rh": rh
+}
+self.odczyt_instance = create(self.session, Odczyty, **odczyt)
+\end{lstlisting}
+
+Odczyt czujników stykowych jest najczęściej wykonywanym pomiarem, więc po stworzeniu nowego wpisu w tabeli \texttt{stany} powinien zostać stworzony wpis do tabeli pomiary. Zostaje do niej wpisany rekord zawierający identyfikator właśnie wykonanego odczytu stanu oraz identyfikatory ostatnich wykonanych zdjęć oraz pomiarów temperatury odczytane z pól obiektu klasy Grupa. Wraz z nimi zostaje zapisana data wpisu odczytana przy pomocy funkcji \texttt{datetime.now()} zapisana w formacie \textit{dzień-miesiąc-rok godzina-minuta-sekunda.mikrosekunda}.
+\begin{lstlisting}
+pomiar = {
+	"id_stanu": stan_instance.id_stanu,
+    "id_odczytu": self.odczyt_instance.id_odczytu,
+    "id_zdjecia": self.zdjecie_instance.id_zdjecia,
+    "data": data
+}
+pomiar_instance = create(self.session, Pomiary, **pomiar)
+\end{lstlisting}
+
 \newpage
 
 \section{Strona i serwer WWW}
@@ -430,7 +490,7 @@ Hoperf Electronic, Karta katalogowa czujnika temperatury i wilgotności TH02:
 
 \bibitem{rpi_schematic}
 Raspberry Pi Foundation, Schematy peryferiów Raspberry Pi 3 Model B
-\url{}
+\url{https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3b_1p2_reduced.pdf}
 
 \bibitem{smbus}
 Torvalds L., Opis protokołu SMBus
@@ -463,6 +523,10 @@ Arundel A. V., Sterling E. M., Biggin J. H. i Sterling T. D., Indirect health ef
 \bibitem{komputer_świat}
 Dziedzic K., Kamera IP w sieci. Stwórz prywatny monitoring
 \url{http://www.komputerswiat.pl/poradniki/sprzet/kamery-internetowe/2015/07/kamera-ip-w-sieci.aspx}
+
+\bibitem{sqlalchemy-session}
+Bayer M., Session Basics, Dokumentacja SQLAlchemy
+\url{http://docs.sqlalchemy.org/en/latest/orm/session_basics.html}
 
 \end{thebibliography}
 
