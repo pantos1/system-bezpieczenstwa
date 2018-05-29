@@ -56,13 +56,13 @@
   breaklines=true,                 % sets automatic line breaking
   captionpos=b,                    % sets the caption-position to bottom
   commentstyle=\color{mygreen},    % comment style
-  deletekeywords={...},            % if you want to delete keywords from the given language
+  %deletekeywords={...},            % if you want to delete keywords from the given language
   escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
   extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
   %frame=single,	                   % adds a frame around the code
   keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
   keywordstyle=\color{blue},       % keyword style
-  morekeywords={*,...},            % if you want to add more keywords to the set
+  morekeywords={*,self},            % if you want to add more keywords to the set
   numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
   numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
@@ -350,17 +350,17 @@ Do przygotowania wiadomości e-mail jest wykorzystany obiekt klasy \texttt{MIMEM
 
 \section{Baza danych}
 \subsection{Założenia wstępne}
-Relacyjna baza danych składa się relacji (tabel), które są połączone związkami. W takim modelu organizacji bazy danych łatwo przedstawić rzeczywiste obiekty, których dane ma przedstawiać. Tabela składa się z nagłówka i zawartości. Nagłówek to zbiór atrybutów opisujących zawartość składającą się ze zbioru wierszy. Każda tabela posiada klucz główny, który pozwala jednoznacznie zidentyfikować każdy wiersz. Związki między relacjami są realizowane poprzez obecność w jednej z tabel uczestniczących w związku klucza obcego, który pozwala jednoznacznie zidentyfikować wiersz z drugiej tabeli.
+Relacyjna baza danych składa się relacji (tabel), które są połączone związkami. W takim modelu organizacji bazy danych łatwo przedstawić rzeczywiste obiekty. Tabela składa się z nagłówka i zawartości. Nagłówek to zbiór atrybutów opisujących zawartość składającą się ze zbioru wierszy. Każda tabela posiada klucz główny, który pozwala jednoznacznie zidentyfikować każdy wiersz. Związki między relacjami są realizowane przez obecność w jednej z tabel uczestniczących w związku klucza obcego, który pozwala jednoznacznie zidentyfikować wiersz z drugiej tabeli.
 
-Programistyczny dostęp do baz danych jest możliwy poprzez interfejs do opartego na transakcjach silnik bazy danych. Transakcje to zestaw operacji, które powinny być wykonane w całości lub wcale. Dzięki nim możliwe jest zachowanie integralności danych w sytuacji, gdy kilka klientów (programów) zapisuje dane do bazy danych.
+Programistyczny dostęp do baz danych jest możliwy przez programistyczny interfejs silnika bazy danych opartego na transakcjach. Transakcje to zestaw operacji, które powinny być wykonane w całości albo wcale. Dzięki nim możliwe jest zachowanie integralności danych w sytuacji, gdy wiele klientów (programów) zapisuje dane do bazy danych lub odczytuje z niej.
 
-Projekt bazy danych należy rozpocząć od zdefiniowania, jakie obiekty mają być przechowywane w bazie. W projektowanym systemie niezbędne są informacje o czujnikach i kamerach podłączonych do Raspberry Pi oraz pomiarach wykonanych przez nie. Wszystkie urządzenia mają nazwę identyfikującą ich położenie lub przeznaczenie np. "Kamera w kuchni" lub "Czujnik - drzwi wejściowe". Każdy typ urządzenia różni się jednak specyficznymi dla niego informacjami. Czujnik temperatury dodatkowo potrzebuje informacji o numerze kanału multipleksera, do którego jest podłączona, a czujnik stykowy o numerze wyprowadzenia GPIO, do którego jest podłączony. Ponadto każdy typ urządzenia wykonuje inny typ pomiaru i odczytu i z tego powodu informacje o urządzeniach będą przechowywane w różnych tabelach - osobno kamery, czujniki stykowe i czujniki temperatury.
+Projekt bazy danych należy rozpocząć od zdefiniowania, jakie obiekty mają być przechowywane w bazie. W projektowanym systemie potrzebne są informacje o czujnikach i kamerach podłączonych do Raspberry Pi oraz pomiarach wykonanych przez nie. Wszystkie urządzenia mają nazwę identyfikującą ich położenie lub przeznaczenie np. "Kamera w kuchni" lub "Czujnik - drzwi wejściowe". Każdy typ urządzenia różni się jednak specyficznymi dla niego informacjami. Czujnik temperatury dodatkowo potrzebuje informacji o numerze kanału multipleksera, do którego jest podłączona, a czujnik stykowy o numerze swojego wyprowadzenia GPIO. Ponadto każdy typ urządzenia wykonuje inny typ pomiaru i odczytu i z tego powodu informacje o urządzeniach będą przechowywane w różnych tabelach -- osobno kamery, czujniki stykowe i czujniki temperatury.
 
-Baza danych powinna przechowywać informację o stanie czujnika zbliżeniowego, wartości zmierzonej temperatury i wilgotności oraz wykonanym zdjęciu. W bazie danych nie muszą być przechowywane pliki ze zdjęciami, może być to unikalny identyfikator zdjęcia, który pozwoli zlokalizować je w pamięci urządzenia. Zdjęcia, pomiary temperatury i odczyty czujnika stykowego będą wykonywane z różną częstotliwością. Użytkownik potrzebuje natomiast powiązania, jaki w danej chwili jest stan czujnika, odczyt temperatury i wilgotności oraz zdjęcie nadzorowanego miejsca. Konieczna jest więc tabela, która będzie zbierała dla każdej grupy składającej się z czujnika, czujnika stykowego i kamery informacje o ostatnich wykonanych pomiarach. Wpisy do tej tabeli muszą być wykonywane tak często, jak wpisy do najczęściej wykonywany pomiar. Pozostałe wielkości będą ostatnio zmierzonymi. Pozwala to na jasne dopasowanie zdjęcia oraz zmierzonej temperatury i wilgotności do odczytu stanu.
+Baza danych powinna przechowywać informację o stanie czujnika zbliżeniowego, wartości zmierzonej temperatury i wilgotności oraz wykonanym zdjęciu. W bazie danych nie muszą być przechowywane pliki ze zdjęciami, może być to unikalny identyfikator zdjęcia, który pozwoli zlokalizować je w pamięci urządzenia. Zdjęcia, pomiary temperatury i odczyty czujnika stykowego będą wykonywane z różną częstotliwością. Użytkownik potrzebuje natomiast powiązania, jaki w danej chwili jest stan czujnika, odczyt temperatury i wilgotności oraz zdjęcie nadzorowanego miejsca. Konieczna jest więc tabela, która będzie zbierała dla każdej grupy urządzeń składającej się z czujnika, czujnika stykowego i kamery informacje o ostatnich wykonanych pomiarach. Wpisy do tej tabeli muszą być wykonywane tak często, jak najczęściej wykonywany pomiar. Pozostałe wielkości będą ostatnio zmierzonymi. Pozwala to na jasne dopasowanie zdjęcia oraz zmierzonej temperatury i wilgotności do odczytu stanu.
 
 \subsection{Projekt bazy danych}
 
-Na podstawie powyższych założeń stworzyłem projekt bazy danych, który jest przedstawiony na rysunku \ref{fig: er}. Przedstawiony na nim jest schemat bazy danych na poziomie logicznym. Poziom logiczny to zbiór relacji i związków między nimi, które mogą zostać stworzone w systemie zarządzania bazą danych. 
+Na podstawie powyższych założeń stworzyłem projekt bazy danych, który jest przedstawiony na rysunku \ref{fig: er}. Przedstawiony schemat bazy danych na poziomie logicznym to zbiór relacji i związków między nimi, które mogą zostać stworzone w systemie zarządzania bazą danych. 
 
 \begin{figure}[h]
 \includegraphics[width=\linewidth]{er.png}
@@ -368,24 +368,24 @@ Na podstawie powyższych założeń stworzyłem projekt bazy danych, który jest
 \label{fig: er}
 \end{figure}
 
-Baza zawiera tabele \texttt{czujniki}, \texttt{kamery} i \texttt{czujniki{\_}temperatury} z informacjami o poszczególnych typach urządzeń dołączonych do systemu. Wszystkie tabele mają podobne pole przechowujące nazwę urządzenia typu VARCHAR(100). Ponadto każde urządzenie przechowuje częstotliwość wywoływania zdjęcia, pomiaru lub odczytu w polu typu FLOAT. Wartości te są wyrażone w sekundach. Ponadto każde urządzenie przechowuje informację pozwalającą zlokalizować je fizycznie w systemie. W przypadku czujników stykowych jest to numer wyprowadzenia GPIO, do którego podłączony jest czujnik. Czujniki temperatury i wilgotności są identyfikowane przez numer kanału multipleksera, do którego są dołączone. Kamery można rozróżnić dzięki polu \texttt{sciezka{\_}urzadzenia} zawierającym ścieżkę pliku wirtualnego węzła urządzenia. Jest to plik, który system Linux używa do identyfikowania dołączonych urządzeń. 
+Baza zawiera tabele \texttt{czujniki}, \texttt{kamery} i \texttt{czujniki{\_}temperatury} z informacjami o poszczególnych typach urządzeń dołączonych do systemu. Wszystkie tabele mają podobne pole przechowujące nazwę urządzenia typu VARCHAR(100). Każde urządzenie przechowuje również częstotliwość wywoływania zdjęcia, pomiaru lub odczytu w polu typu FLOAT. Wartości te są wyrażone w sekundach. Ponadto każde urządzenie przechowuje informację pozwalającą zlokalizować je fizycznie w systemie. W przypadku czujników stykowych jest to numer wyprowadzenia GPIO, do którego podłączony jest czujnik. Czujniki temperatury i wilgotności są identyfikowane przez numer kanału multipleksera, do którego są dołączone. Kamery można rozróżnić dzięki polu \texttt{sciezka{\_}urzadzenia} zawierającym ścieżkę pliku wirtualnego węzła urządzenia. Jest to plik, który system Linux używa do identyfikowania dołączonych urządzeń. 
 
-Tabele \texttt{stany}, \texttt{zdjęcia} i \texttt{odczyty} zawierają informacje o realizacjach pomiarów wykonane przez te urządzenia. Tabela \texttt{stany} odpowiada odczytom stanów czujników stykowych. Każdy wpis w tabeli jest jednym odczytem  stanu jednego czujnika. Odczyt stanu jest przechowywany w polu \texttt{stan} typu SMALLINT i może zawierać dwie wartości 0 albo 1. W tabeli \texttt{odczyty} przechowywane są pomiary temperatury i wilgotności względnej z jednego czujnika temperatury. Są one liczbami zmiennoprzecinkowymi i dlatego są zapisywane w polach typu FLOAT. Jeśli pomiar został wykonany błędnie, zostanie dokonany wpis do tabeli \texttt{odczyty} zawierający wartości NULL w polach \texttt{temperatur} i \texttt{rh}. Wpisy w tabeli \texttt{zdjęcia} zawierają nazwę pliku ze zdjęciem wykonanym przez kamerę. Jeśli jednak zdjęcie nie zostanie wykonane prawidłowo, w polu \texttt{nazwa} zostanie wpisana wartość NULL.
+Tabele \texttt{stany}, \texttt{zdjęcia} i \texttt{odczyty} zawierają informacje o realizacjach pomiarów wykonanych przez te urządzenia. Relacja \texttt{stany} odpowiada odczytom stanów czujników stykowych. Każdy wpis w tabeli jest jednym odczytem  stanu jednego czujnika. Odczyt stanu jest przechowywany w polu \texttt{stan} typu SMALLINT, ponieważ jest zaprojektowany do przechowywania tylko wartości 0 albo 1. W tabeli \texttt{odczyty} przechowywane są pomiary temperatury i wilgotności względnej z jednego czujnika temperatury. Są one liczbami zmiennoprzecinkowymi i dlatego są zapisywane w polach typu FLOAT. Jeśli pomiar został wykonany błędnie, zostanie dokonany wpis do tabeli \texttt{odczyty} zawierający wartości NULL w polach \texttt{temperatur} i \texttt{rh}. Wpisy w tabeli \texttt{zdjęcia} zawierają nazwę pliku ze zdjęciem wykonanym przez kamerę. Jeśli jednak zdjęcie nie zostanie wykonane prawidłowo, w polu \texttt{nazwa} zostanie wpisana wartość NULL.
 
-Tabela \texttt{pomiary} przedstawia status systemu w czasie, zawierając klucze obce aktualnych w danym momencie zdjęć, odczytów i stanów, pochodzących ze zgrupowanych urządzeń. Do wielu pomiarów może być przypisany jedno zdjęcie i odczyt, ale do jednego pomiaru jest przypisany jeden stan czujnika stykowego. Wynika to z tego, że w programie \texttt{nadzor.py} wpisy do tabeli \texttt{pomiary} są wykonywane po odczycie stanu. Następuje on domyślnie co 0,1 sekundy, aby wykrywać oddalenie czujników. Data jest przechowywana w polu o typie DATETIME. 
+Tabela \texttt{pomiary} przedstawia status części systemu w czasie, zawierając klucze obce aktualnych w danym momencie zdjęć, odczytów i stanów, pochodzących ze zgrupowanych urządzeń. Jedno zdjęcie lub odczyt temperatury i wilgotności może być przypisane do wielu pomiarów, ale do jednego pomiaru jest przypisany tylko jeden stan czujnika stykowego. Wynika to z tego, że w programie \texttt{nadzor.py} wpisy do tabeli \texttt{pomiary} są wykonywane po odczycie stanu. Następuje on domyślnie co 0,1 sekundy, aby wykrywać oddalenie czujników. Data jest przechowywana w polu o typie DATETIME. 
  
-Poza wspomnianymi wyżej relacjami istnieje również relacja ustawienia, która nie jest w związku z żadną inną. Jest to relacja, która pozwala przechowywać różne ustawienia systemu, które nie dotyczą bezpośrednio urządzeń. Posiada ona dwie kolumny klucz i wartość. Klucz jest opisem ustawienia, a wartość przechowuje informację o nim np. adres e-mail, na który mają być wysyłane powiadomienia. Wartość ta może być zmieniona poprzez interfejs na stronie WWW, ale jest wykorzystywana przez program obsługujący kamery i czujniki. Przechowywanie tych danych w bazie zapewnia ich niezależność od wykonywania poszczególnego programu.
+Poza wspomnianymi wyżej relacjami istnieje również relacja \texttt{ustawienia}, która nie jest w związku z żadną inną. Jest to tabela przechowująca różne ustawienia systemu, które nie dotyczą bezpośrednio urządzeń. Posiada ona dwie kolumny: \texttt{klucz} i \texttt{wartosc}. Kolumna \texttt{klucz} jest opisem ustawienia, a \texttt{wartosc} przechowuje informację o nim np. adres e-mail, na który mają być wysyłane powiadomienia. 
 
-Ponadto kamera, czujnik temperatury i czujnik stykowy, który ma wywoływać zdjęcie kamery zostały zgrupowane w ten sposób, że kamera przechowuje klucze przypisanych do niej czujników. Odpowiada to związkom jeden do jednego między relacjami \texttt{kamery} i \texttt{czujniki} oraz \texttt{kamery} i \texttt{czujniki{\_}temperatury}.
+Ponadto kamera, czujnik temperatury i czujnik stykowy, który ma wywoływać zdjęcie zostały zgrupowane. Każda kamera przechowuje klucze przypisanych do niej czujników. Odpowiada to związkom jeden do jednego między relacjami \texttt{kamery} i \texttt{czujniki} oraz \texttt{kamery} i \texttt{czujniki{\_}temperatury}.
 
 \subsection{Praktyczna realizacja bazy danych}
-Baza danych została zaimplementowana przy użyciu systemu zarządzania bazą danych \texttt{MySQL}. Do stworzenia tabel został napisany skrypt w języku Python. Wykorzystuje on moduł \texttt{SQLAlchemy}, który umożliwia działanie na relacjach bazy danych jak na obiektach programistycznych. Takie odwzorowanie nazywa się mapowaniem obiektowo-relacyjnym (ang. \textit{Object-Relational Mapping} ORM). Ułatwia ono wprowadzanie kolejnych zmian do struktury bazy danych, relacji i związków między nimi.
+Baza danych została zaimplementowana przy użyciu systemu zarządzania bazą danych MySQL. Do stworzenia tabel został napisany skrypt w języku Python. Wykorzystuje on moduł \texttt{SQLAlchemy}, który umożliwia działanie na relacjach bazy danych jak na obiektach programistycznych. Takie odwzorowanie nazywa się mapowaniem obiektowo-relacyjnym (ang. \textit{Object-Relational Mapping} ORM). Ułatwia ono wprowadzanie kolejnych zmian do struktury bazy danych, relacji i związków między nimi.
 
 Bazę danych należy stworzyć, wywołując polecenie w panelu zarządzania bazą danych przy użyciu polecenia:
 \begin{lstlisting} [language=SQL]
 CREATE DATABASE nadzor;
 \end{lstlisting}
-Plik zawierający program tworzący tabele w bazie danych nosi nazwę \texttt{baza.py}. W pierwszej kolejności należy stworzyć klasę Base, która zapewnia mapowanie do tabel w bazie danych. Proces tworzenia tabel w bazie polega na stworzeniu klasy odpowiadającej każdej tabeli w bazie, która dziedziczy po klasie Base.
+Plik zawierający program tworzący tabele w bazie danych nosi nazwę \texttt{baza.py}. W pierwszej kolejności należy stworzyć klasę \texttt{Base}, która zapewnia mapowanie do tabel w bazie danych. Proces tworzenia tabel w bazie polega na stworzeniu klasy odpowiadającej każdej tabeli w bazie, która dziedziczy po klasie \texttt{Base}.\cite{sqlalchemy-base}
 \begin{lstlisting} [language=Python]
 class Pomiary(Base):
     __tablename__ = 'pomiary'
@@ -399,9 +399,14 @@ class Pomiary(Base):
     zdjecia = relationship(Zdjecia)
 \end{lstlisting}
 
-Klasa Pomiary posłuży jako przykład tworzenia tabeli w bazie danych. Należy zdefiniować atrybut \texttt{{\_\_}tablename{\_\_}}, który jest unikalną nazwą tabeli. Następnie tworzone są kolumny poprzez wywołanie konstruktora klasy Column. Przyjmuje on argumenty dotyczące typu przechowywanego w kolumnie. Dla kolumny będącej kluczem głównym należy ustawić znacznik \texttt{primary{\_}key} jako \texttt{True}. Do zdefiniowania związku z inną relacją należy podać jako argument obiekt klasy \texttt{ForeignKey}, który przechowuje informację, która kolumna w której tabeli służy jako klucz obcy. Następnie należy zdefiniować związek, wywołując funkcję \texttt{relationship()}. Przyjmuje ona jako argument nazwę klasy. Oznacza to, że klasa ta musi być stworzona wcześniej w kodzie.
+Klasa Pomiary posłuży jako przykład tworzenia tabeli w bazie danych. Należy zdefiniować atrybut \texttt{{\_\_}tablename{\_\_}}, który jest unikalną nazwą tabeli. Następnie tworzone są kolumny przez wywołanie konstruktora klasy Column. W konstruktorze należy przekazać argument będący typem danych przechowywanych w kolumnie. Dla kolumny będącej kluczem głównym należy ustawić znacznik \texttt{primary{\_}key} jako \texttt{True}. Do zdefiniowania związku z inną relacją należy podać jako argument obiekt klasy \texttt{ForeignKey} z informacją, która kolumna w danej tabeli służy jako klucz obcy. Następnie należy zdefiniować związek, wywołując funkcję \texttt{relationship()}. Przyjmuje ona jako argument nazwę klasy. Oznacza to, że definicja tej klasy musi być stworzona wcześniej w kodzie programu.
 
-Dla wszystkich użytych czujników i kamer należy również stworzyć rekordy w bazie danych, odpowiadające im. Odpowiada za to program \texttt{insert.py}. Proces tworzenia nowego wpisu w tabeli polega na stworzeniu słownika zawierającego nazwy kolumn i wartości, które mają być im przypisane. Następnie wywoływana jest funkcja \texttt{get{\_}or{\_}create()}, która najpierw sprawdza, czy istnieje rekord w bazie danych o takich wartościach. Jeśli istnieje już, to zwraca go. Jeśli nie istnieje, to tworzy nowy rekord. Dzięki temu do programu można dopisywać kolejne wywołania, tworzące nowe rekordy w bazie danych i uruchamiać program, który nie stworzy duplikatów już istniejących. Poniżej przedstawiono przykład stworzenia nowego wpisu to tabeli \texttt{kamery} zgodnie z opisaną wyżej procedurą. Argumentami funkcji \texttt{get{\_}or{\_}create()} są obiekt klasy \texttt{Session}, która zarządza transakcjami z bazą danych\cite{sqlalchemy-session}, nazwa klasy odpowiadającej tabeli, dla której ma być stworzony obiekt oraz słownik argumentów kluczowych poprzedzony operatorem \texttt{**}.
+Dla wszystkich użytych czujników i kamer należy również stworzyć rekordy w bazie danych, odpowiadające im. Odpowiada za to program \texttt{insert.py}. Proces tworzenia nowego wpisu w tabeli polega na stworzeniu słownika zawierającego nazwy kolumn i wartości, które mają być im przypisane. Następnie wywoływana jest funkcja \texttt{get{\_}or{\_}create()}, która najpierw sprawdza, czy istnieje rekord w bazie danych o takich wartościach. Jeśli już istnieje, to zwraca go. Jeśli nie istnieje, to tworzy nowy rekord. Dzięki temu do programu można dopisywać kolejne wywołania, tworzące nowe rekordy w bazie danych i uruchamiać program, który nie stworzy duplikatów już istniejących rekordów. Poniżej przedstawiono przykład stworzenia nowego wpisu w tabeli \texttt{kamery} zgodnie z opisaną wyżej procedurą. Argumentami funkcji \texttt{get{\_}or{\_}create()} są:
+\begin{itemize}
+\item obiekt klasy \texttt{Session}, która zarządza transakcjami z bazą danych\cite{sqlalchemy-session},
+\item nazwa klasy odpowiadającej tabeli, dla której ma być stworzony obiekt,
+\item słownik argumentów kluczowych poprzedzony operatorem \texttt{**}.
+\end{itemize}
 \begin{lstlisting} [language=Python]
 titanum_1_kwargs = {
     "nazwa_kamery": "Kamera 1 - Titanum",
@@ -417,8 +422,8 @@ W podobny sposób dokonywane są zapisy do tabel \texttt{stany}, \texttt{zdjęci
 \begin{lstlisting} [language=Python]
 odczyt = {
 	"id_czujnika_temp": self.czujnik_temp.id_czujnika_temp,
-    "temperatura": temp,
-    "rh": rh
+	"temperatura": temp,
+	"rh": rh
 }
 self.odczyt_instance = create(self.session, Odczyty, **odczyt)
 \end{lstlisting}
@@ -427,9 +432,9 @@ Odczyt czujników stykowych jest najczęściej wykonywanym pomiarem, więc po st
 \begin{lstlisting}
 pomiar = {
 	"id_stanu": stan_instance.id_stanu,
-    "id_odczytu": self.odczyt_instance.id_odczytu,
-    "id_zdjecia": self.zdjecie_instance.id_zdjecia,
-    "data": data
+	"id_odczytu": self.odczyt_instance.id_odczytu,
+	"id_zdjecia": self.zdjecie_instance.id_zdjecia,
+	"data": data
 }
 pomiar_instance = create(self.session, Pomiary, **pomiar)
 \end{lstlisting}
@@ -460,45 +465,25 @@ Wymogiem systemu jest umożliwienie użytkownikowi dostępu do zebranych danych 
 \section{Bibliografia}
 \begin{thebibliography}{9}
 
-\bibitem{rpi}
-Raspberry Pi Foundation, Specyfikacja Raspberry Pi 3 Model B
-\url{https://www.raspberrypi.org/products/raspberry-pi-3-model-b/}
+\bibitem{zachorowania}
+Arundel A. V., Sterling E. M., Biggin J. H. i Sterling T. D., Indirect health effects of relative humidity in indoor environments, \textit{Environmental Health Perspectives} 1986;65:351-361
+\url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1474709/}
+
+\bibitem{sqlalchemy-session}
+Bayer M., Session Basics, Dokumentacja SQLAlchemy
+\url{http://docs.sqlalchemy.org/en/latest/orm/session_basics.html}
+
+\bibitem{sqlalchemy-base}
+Bayer M., Declarative API, Dokumentacja SQLAlchemy
+\url{http://docs.sqlalchemy.org/en/latest/orm/extensions/declarative/api.html}
 
 \bibitem{bb_black}
 BeagleBoard.org Foundation, Specyfikacja BeagleBone Black
 \url{https://elinux.org/Beagleboard:BeagleBoneBlack}
 
-\bibitem{porownanie_wiki}
-Porównanie komputerów jednopłytkowych (ang.)
-\url{https://en.wikipedia.org/wiki/Comparison_of_single-board_computers}
-
-\bibitem{multiplekser}
-Texas Instruments Inc., Karta katalogowa multipleksera TCA9548A:
-\url{http://www.ti.com/lit/ds/symlink/tca9548a.pdf}
-
-\bibitem{czujnik_temp}
-Silicon Labs, Karta katalogowa czujnika temperatury i wilgotności Si7021:
-\url{https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf}
-
-\bibitem{sht31}
-Mouser Electronics, Karta katalogowa czujnika temperatury i wilgotności SHT31D:
-\url{http://www.mouser.com/ds/2/682/Sensirion_Humidity_Sensors_SHT3x_Datasheet_digital-971521.pdf}
-
-\bibitem{th02}
-Hoperf Electronic, Karta katalogowa czujnika temperatury i wilgotności TH02:
-\url{http://www.hoperf.com/upload/sensor/TH02_V1.1.pdf}
-
-\bibitem{rpi_schematic}
-Raspberry Pi Foundation, Schematy peryferiów Raspberry Pi 3 Model B
-\url{https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3b_1p2_reduced.pdf}
-
-\bibitem{smbus}
-Torvalds L., Opis protokołu SMBus
-\url{https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/plain/Documentation/i2c/smbus-protocol}
-
-\bibitem{i2c_read_device}
-joan2937, Dokumentacja funkcji \texttt{i2c{\_}read{\_}device()}
-\url{http://abyz.me.uk/rpi/pigpio/python.html#i2c_read_device}
+\bibitem{komputer_świat}
+Dziedzic K., Kamera IP w sieci. Stwórz prywatny monitoring
+\url{http://www.komputerswiat.pl/poradniki/sprzet/kamery-internetowe/2015/07/kamera-ip-w-sieci.aspx}
 
 \bibitem{mime1}
 Freed N., Borenstein N., Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies, RFC 2045, IETF, listopad 1996, DOI: 10.17487/RFC2045.
@@ -508,25 +493,49 @@ Freed N., Borenstein N., Multipurpose Internet Mail Extensions (MIME) Part One: 
 Freed N., Borenstein N., Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types, RFC 2046, IETF, listopad 1996, DOI: 10.17487/RFC2046.
 \url{https://tools.ietf.org/html/rfc2046}
 
-\bibitem{content-disposition}
-Reschke J. Use of the Content-Disposition Header Field in the Hypertext Transfer Protocol (HTTP), RFC 6266, IETF, czerwiec 2011, DOI: 10.17487/RFC6266.
-\url{https://tools.ietf.org/html/rfc6266}
+\bibitem{th02}
+Hoperf Electronic, Karta katalogowa czujnika temperatury i wilgotności TH02:
+\url{http://www.hoperf.com/upload/sensor/TH02_V1.1.pdf}
+
+\bibitem{i2c_read_device}
+joan2937, Dokumentacja funkcji \texttt{i2c{\_}read{\_}device()}
+\url{http://abyz.me.uk/rpi/pigpio/python.html#i2c_read_device}
+
+\bibitem{sht31}
+Mouser Electronics, Karta katalogowa czujnika temperatury i wilgotności SHT31D:
+\url{http://www.mouser.com/ds/2/682/Sensirion_Humidity_Sensors_SHT3x_Datasheet_digital-971521.pdf}
+
+\bibitem{porownanie_wiki}
+Porównanie komputerów jednopłytkowych (ang.)
+\url{https://en.wikipedia.org/wiki/Comparison_of_single-board_computers}
 
 \bibitem{python-mime}
 Python Software Foundation, Dokumentacja modułu Python email.mime
 \url{https://docs.python.org/3/library/email.mime.html}
 
-\bibitem{zachorowania}
-Arundel A. V., Sterling E. M., Biggin J. H. i Sterling T. D., Indirect health effects of relative humidity in indoor environments, \textit{Environmental Health Perspectives} 1986;65:351-361
-\url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1474709/}
+\bibitem{rpi_schematic}
+Raspberry Pi Foundation, Schematy peryferiów Raspberry Pi 3 Model B
+\url{https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3b_1p2_reduced.pdf}
 
-\bibitem{komputer_świat}
-Dziedzic K., Kamera IP w sieci. Stwórz prywatny monitoring
-\url{http://www.komputerswiat.pl/poradniki/sprzet/kamery-internetowe/2015/07/kamera-ip-w-sieci.aspx}
+\bibitem{rpi}
+Raspberry Pi Foundation, Specyfikacja Raspberry Pi 3 Model B
+\url{https://www.raspberrypi.org/products/raspberry-pi-3-model-b/}
 
-\bibitem{sqlalchemy-session}
-Bayer M., Session Basics, Dokumentacja SQLAlchemy
-\url{http://docs.sqlalchemy.org/en/latest/orm/session_basics.html}
+\bibitem{content-disposition}
+Reschke J. Use of the Content-Disposition Header Field in the Hypertext Transfer Protocol (HTTP), RFC 6266, IETF, czerwiec 2011, DOI: 10.17487/RFC6266.
+\url{https://tools.ietf.org/html/rfc6266}
+
+\bibitem{czujnik_temp}
+Silicon Labs, Karta katalogowa czujnika temperatury i wilgotności Si7021:
+\url{https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf}
+
+\bibitem{multiplekser}
+Texas Instruments Inc., Karta katalogowa multipleksera TCA9548A:
+\url{http://www.ti.com/lit/ds/symlink/tca9548a.pdf}
+
+\bibitem{smbus}
+Torvalds L., Opis protokołu SMBus
+\url{https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/plain/Documentation/i2c/smbus-protocol}
 
 \end{thebibliography}
 
