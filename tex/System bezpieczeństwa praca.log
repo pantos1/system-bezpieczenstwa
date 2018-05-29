@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  29 MAY 2018 15:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  29 MAY 2018 18:17
 entering extended mode
 **"./System bezpieczeÅ„stwa praca.tex"
 ("System bezpieczeÅ„stwa praca.tex"
@@ -1149,14 +1149,20 @@ Package pdftex.def Info: title.pdf , page1 used on input line 81.
  <./title.pdf>]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 83.
-
-
-Package hyperref Warning: old toc file detected, not used; run LaTeX again.
-
+ ("System bezpieczeÅ„stwa praca.toc"
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 1.
+)
 \tf@toc=\write4
 \openout4 = `"System bezpieczeÅ„stwa praca.toc"'.
 
-[2{C:/Users/Piotr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+ [2{C:/Users/Piotr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 89.
  [3]
@@ -1177,47 +1183,11 @@ z wy-pro-wa-dze-nia GPIO,
  []
 
 [4]
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 128.
-
-
-LaTeX Warning: Reference `fig: architektura' on page 5 undefined on input line 
-128.
-
-<architektura.png, id=157, 1065.9825pt x 272.01625pt>
+<architektura.png, id=196, 1065.9825pt x 272.01625pt>
 File: architektura.png Graphic file (type png)
 <use architektura.png>
 Package pdftex.def Info: architektura.png  used on input line 130.
 (pdftex.def)             Requested size: 455.24408pt x 116.16779pt.
-
-LaTeX Warning: Reference `por\IeC {\'o}wnanieSBC' on page 5 undefined on input 
-line 137.
-
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 140.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 140.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 140.
-
-LaTeX Warning: Citation `rpi' on page 5 undefined on input line 155.
-
-
-LaTeX Warning: Citation `bb_black' on page 5 undefined on input line 155.
-
-
-LaTeX Warning: Citation `porownanie_wiki' on page 5 undefined on input line 155
-.
-
-
-LaTeX Warning: Citation `rpi' on page 5 undefined on input line 155.
-
-
-LaTeX Warning: Citation `bb_black' on page 5 undefined on input line 155.
-
-
-LaTeX Warning: Citation `porownanie_wiki' on page 5 undefined on input line 155
-.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1229,46 +1199,16 @@ has been already used, duplicate ignored
                                                   \fi \fi 
 l.160 
        <./architektura.png>]
-
-LaTeX Warning: Citation `zachorowania' on page 6 undefined on input line 164.
-
-
-LaTeX Warning: Reference `czujniki_temp' on page 6 undefined on input line 166.
-
-
-
 Overfull \hbox (17.18054pt too wide) in paragraph at lines 170--179
  [][] 
  []
-
-
-LaTeX Warning: Citation `czujnik_temp' on page 6 undefined on input line 179.
-
-
-LaTeX Warning: Citation `sht31' on page 6 undefined on input line 179.
-
-
-LaTeX Warning: Citation `th02' on page 6 undefined on input line 179.
 
 LaTeX Font Info:    Try loading font information for T1+pcr on input line 179.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1pcr.fd"
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
 
-LaTeX Warning: Citation `czujnik_temp' on page 6 undefined on input line 179.
-
-
-LaTeX Warning: Citation `sht31' on page 6 undefined on input line 179.
-
-
-LaTeX Warning: Citation `th02' on page 6 undefined on input line 179.
-
-
 LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: Reference `czujniki_temp' on page 6 undefined on input line 183.
-
 
 [6pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
 as been already used, duplicate ignored
@@ -1277,11 +1217,6 @@ as been already used, duplicate ignored
                                                   \fi \fi 
 l.184 
       ]
-
-LaTeX Warning: Citation `komputer_±wiat' on page 7 undefined on input line 189.
-
-
-
 Underfull \vbox (badness 1178) has occurred while \output is active []
 
  [7pdfTeX warning (ext4): destination with the same identifier (name{table.2}) 
@@ -1291,16 +1226,12 @@ has been already used, duplicate ignored
                                                   \fi \fi 
 l.195 
       ]
-
-LaTeX Warning: Reference `fig: kontaktron' on page 8 undefined on input line 19
-6.
-
-<kontaktron.png, id=180, 510.90875pt x 302.12875pt>
+<kontaktron.png, id=245, 510.90875pt x 302.12875pt>
 File: kontaktron.png Graphic file (type png)
 <use kontaktron.png>
 Package pdftex.def Info: kontaktron.png  used on input line 198.
 (pdftex.def)             Requested size: 227.62204pt x 134.6013pt.
-<kontaktron_zamkniety.png, id=181, 510.90875pt x 318.18875pt>
+<kontaktron_zamkniety.png, id=246, 510.90875pt x 318.18875pt>
 File: kontaktron_zamkniety.png Graphic file (type png)
 <use kontaktron_zamkniety.png>
 Package pdftex.def Info: kontaktron_zamkniety.png  used on input line 199.
@@ -1309,12 +1240,6 @@ Package pdftex.def Info: kontaktron_zamkniety.png  used on input line 199.
 Overfull \hbox (2.54399pt too wide) in paragraph at lines 198--200
 [][] []
  []
-
-
-LaTeX Warning: Citation `rpi_schematic' on page 8 undefined on input line 206.
-
-
-LaTeX Warning: Citation `multiplekser' on page 8 undefined on input line 206.
 
 [8pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) 
 has been already used, duplicate ignored
@@ -1328,26 +1253,13 @@ LaTeX Font Info:    Try loading font information for U+psy on input line 208.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\upsy.fd"
 File: upsy.fd 2001/06/04 font definitions for U/psy.
 )
-
-LaTeX Warning: Reference `pullup' on page 9 undefined on input line 208.
-
-
-LaTeX Warning: Citation `multiplekser' on page 9 undefined on input line 208.
-
-
-LaTeX Warning: Citation `czujnik_temp' on page 9 undefined on input line 208.
-
-
-LaTeX Warning: Reference `fig: i2c_schemat' on page 9 undefined on input line 2
-14.
-
-<i2c.png, id=189, 399.4122pt x 159.7167pt>
+<i2c.png, id=262, 399.4122pt x 159.7167pt>
 File: i2c.png Graphic file (type png)
 <use i2c.png>
 Package pdftex.def Info: i2c.png  used on input line 217.
 (pdftex.def)             Requested size: 455.24408pt x 182.0448pt.
-[9pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) 
-has been already used, duplicate ignored
+ [9pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
+ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
@@ -1356,7 +1268,7 @@ l.224 \newpage
 ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-<Grupa.png, id=204, 417.56pt x 645.41125pt>
+<Grupa.png, id=277, 417.56pt x 645.41125pt>
 File: Grupa.png Graphic file (type png)
 <use Grupa.png>
 Package pdftex.def Info: Grupa.png  used on input line 236.
@@ -1365,9 +1277,6 @@ Package pdftex.def Info: Grupa.png  used on input line 236.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [10]
-
-LaTeX Warning: Reference `fig: Grupa' on page 11 undefined on input line 242.
-
 [11pdfTeX warning (ext4): destination with the same identifier (name{figure.4})
  has been already used, duplicate ignored
 
@@ -1379,41 +1288,19 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 252.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 252.
-
-
-LaTeX Warning: Reference `command_byte' on page 12 undefined on input line 269.
-
-
-
-LaTeX Warning: Citation `multiplekser' on page 12 undefined on input line 285.
-
-[12]
-
-LaTeX Warning: Reference `fig: metody_pomiaru' on page 13 undefined on input li
-ne 290.
-
-<Si7021_pomiar.png, id=223, 462.528pt x 475.7775pt>
+ [12]
+<Si7021_pomiar.png, id=299, 462.528pt x 475.7775pt>
 File: Si7021_pomiar.png Graphic file (type png)
 <use Si7021_pomiar.png>
 Package pdftex.def Info: Si7021_pomiar.png  used on input line 294.
 (pdftex.def)             Requested size: 364.19664pt x 374.6477pt.
-
-LaTeX Warning: Citation `czujnik_temp' on page 13 undefined on input line 295.
-
-
-LaTeX Warning: Citation `czujnik_temp' on page 13 undefined on input line 295.
-
-[13pdfTeX warning (ext4): destination with the same identifier (name{table.3}) 
-has been already used, duplicate ignored
+ [13pdfTeX warning (ext4): destination with the same identifier (name{table.3})
+ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
 l.299 
       ]
-
-LaTeX Warning: Citation `smbus' on page 14 undefined on input line 300.
-
-
 Overfull \hbox (9.48409pt too wide) in paragraph at lines 300--301
 []\T1/phv/m/n/12 Do pro-gra-mo-wej ko-mu-ni-ka-cji przez I2C po-trzeb-na by-ªa 
 od-po-wied-nia bi-blio-te-ka. Pierw-
@@ -1432,30 +1319,10 @@ rd_data()
                                                   \fi \fi 
 l.303 
        <./Si7021_pomiar.png>]
-
-LaTeX Warning: Citation `czujnik_temp' on page 15 undefined on input line 306.
-
-
-LaTeX Warning: Citation `i2c_read_device' on page 15 undefined on input line 30
-6.
-
-
-LaTeX Warning: Reference `RH' on page 15 undefined on input line 306.
-
-
-LaTeX Warning: Citation `czujnik_temp' on page 15 undefined on input line 306.
-
-
 Overfull \hbox (22.34967pt too wide) in paragraph at lines 306--307
 []\T1/phv/m/n/12 Nast¦pnie pro-gram jest usy-pia-ny na czas 0.05s przy po-mo-cy
  ko-men-dy \T1/pcr/m/n/12 time.sleep()\T1/phv/m/n/12 .
  []
-
-
-LaTeX Warning: Reference `Temperatura' on page 15 undefined on input line 311.
-
-
-LaTeX Warning: Citation `czujnik_temp' on page 15 undefined on input line 311.
 
 [15]
 Overfull \hbox (13.30511pt too wide) in paragraph at lines 330--331
@@ -1471,20 +1338,6 @@ Overfull \hbox (13.00084pt too wide) in paragraph at lines 337--338
  []
 
 [16]
-
-LaTeX Warning: Citation `mime1' on page 17 undefined on input line 348.
-
-
-LaTeX Warning: Citation `mime2' on page 17 undefined on input line 348.
-
-
-LaTeX Warning: Citation `python-mime' on page 17 undefined on input line 348.
-
-
-LaTeX Warning: Citation `content-disposition' on page 17 undefined on input lin
-e 348.
-
-
 Overfull \hbox (16.96191pt too wide) in paragraph at lines 348--349
 []\T1/phv/m/n/12 Do przy-go-to-wa-nia wia-do-mo-±ci e-mail jest wy-ko-rzy-sta-n
 y obiekt kla-sy \T1/pcr/m/n/12 MIMEMultipart\T1/phv/m/n/12 .
@@ -1497,14 +1350,12 @@ Overfull \hbox (0.88339pt too wide) in paragraph at lines 348--349
  []
 
 [17]
-
-LaTeX Warning: Reference `fig: er' on page 18 undefined on input line 363.
-
-<er.png, id=260, 831.105pt x 690.58pt>
+<er.png, id=355, 831.105pt x 690.58pt>
 File: er.png Graphic file (type png)
 <use er.png>
 Package pdftex.def Info: er.png  used on input line 366.
 (pdftex.def)             Requested size: 455.24408pt x 378.27118pt.
+
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -1517,16 +1368,7 @@ l.374
        <./er.png>] ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.st
 y"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
-)
-
-LaTeX Warning: Citation `sqlalchemy-base' on page 20 undefined on input line 38
-8.
-
-[20]
-
-LaTeX Warning: Citation `sqlalchemy-session' on page 21 undefined on input line
- 406.
-
+) [20]
 LaTeX Font Info:    Font shape `OMS/phv/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 418.
 
@@ -1536,119 +1378,115 @@ Underfull \hbox (badness 7851) in paragraph at lines 421--422
  []
 
 [21] [22] [23] [24] [25]
-Underfull \hbox (badness 2401) in paragraph at lines 469--471
+Underfull \hbox (badness 2401) in paragraph at lines 473--475
 \T1/phv/m/sl/12 ti-ves \T1/phv/m/n/12 1986;65:351-361 []$\T1/pcr/m/n/12 https :
  / / www . ncbi . nlm . nih . gov / pmc / articles /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 473--475
+Underfull \hbox (badness 10000) in paragraph at lines 477--479
 []\T1/phv/m/n/12 Bayer M., Ses-sion Ba-sics, Do-ku-men-ta-cja SQLAl-che-my []$\
 T1/pcr/m/n/12 http : / / docs .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 477--479
+Underfull \hbox (badness 10000) in paragraph at lines 481--483
 []\T1/phv/m/n/12 Bayer M., Dec-la-ra-ti-ve API, Do-ku-men-ta-cja SQLAl-che-my [
 ]$\T1/pcr/m/n/12 http : / / docs .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 485--487
+Underfull \hbox (badness 10000) in paragraph at lines 489--491
 []\T1/phv/m/n/12 Dziedzic K., Ka-me-ra IP w sie-ci. Stwórz pry-wat-ny mo-ni-to-
 ring []$\T1/pcr/m/n/12 http :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 485--487
+Underfull \hbox (badness 10000) in paragraph at lines 489--491
 \T1/pcr/m/n/12 / / www . komputerswiat . pl / poradniki / sprzet / kamery-[]int
 ernetowe /
  []
 
 
-Underfull \hbox (badness 6608) in paragraph at lines 505--507
+Underfull \hbox (badness 6608) in paragraph at lines 513--515
 []\T1/phv/m/n/12 Mouser Elec-tro-nics, Kar-ta ka-ta-lo-go-wa czuj-ni-ka tem-pe-
 ra-tu-ry i wil-got-no-
  []
 
 
-Underfull \hbox (badness 1147) in paragraph at lines 509--511
+Underfull \hbox (badness 1147) in paragraph at lines 517--519
 []\T1/phv/m/n/12 Porównanie kom-pu-te-rów jed-no-pªyt-ko-wych (ang.) []$\T1/pcr
 /m/n/12 https : / / en . wikipedia .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 517--519
+Underfull \hbox (badness 10000) in paragraph at lines 525--527
 []\T1/phv/m/n/12 Raspberry Pi Fo-un-da-tion, Sche-ma-ty pe-ry-fe-riów Ra-sp-ber
 -ry Pi 3 Mo-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 517--519
+Underfull \hbox (badness 10000) in paragraph at lines 525--527
 \T1/phv/m/n/12 del B []$\T1/pcr/m/n/12 https : / / www . raspberrypi . org / do
 cumentation / hardware /
  []
 
 [26]
-Underfull \hbox (badness 10000) in paragraph at lines 529--531
+Underfull \hbox (badness 10000) in paragraph at lines 537--539
 []\T1/phv/m/n/12 Silicon Labs, Kar-ta ka-ta-lo-go-wa czuj-ni-ka tem-pe-ra-tu-ry
  i wil-got-no-±ci
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 529--531
+Underfull \hbox (badness 10000) in paragraph at lines 537--539
 \T1/phv/m/n/12 Si7021: []$\T1/pcr/m/n/12 https : / / www . silabs . com / docum
 ents / public / data-[]sheets /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 537--539
+Underfull \hbox (badness 10000) in paragraph at lines 553--555
 \T1/pcr/m/n/12 linux / kernel / git / torvalds / linux . git / plain / Document
 ation / i2c /
  []
 
 [27]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 546.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 562.
  [28]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 546.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 562.
  ("System bezpieczeÅ„stwa praca.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 546.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 546.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 562.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 562.
 Package rerunfilecheck Info: File `"System bezpieczeÅ„stwa praca".out' has not 
 changed.
 (rerunfilecheck)             Checksum: 70788CB8A791AC891A6EA920E9A137FF;2010.
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 546.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 562.
  ) 
 Here is how much of TeX's memory you used:
- 10431 strings out of 493305
- 148424 string characters out of 3138874
- 290551 words of memory out of 3000000
- 13672 multiletter control sequences out of 15000+200000
+ 10440 strings out of 493305
+ 148671 string characters out of 3138874
+ 292214 words of memory out of 3000000
+ 13675 multiletter control sequences out of 15000+200000
  30361 words of font info for 47 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,18n,43p,1639b,1884s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9
-/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts
-/cm/cmss12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss
-8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C
-:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program
- Files/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2
-.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/
-uhvro8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/symbol/usyr.pfb>
-Output written on "System bezpieczeÅ„stwa praca.pdf" (28 pages, 483704 bytes).
+ 38i,18n,43p,1640b,1884s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): name{cite.komputer_\261wiat} has been referenced but d
+oes not exist, replaced by a fixed one
+
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
+amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmss12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss8.
+pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/u
+rw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uh
+vro8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/symbol/usyr.pfb>
+Output written on "System bezpieczeÅ„stwa praca.pdf" (28 pages, 501581 bytes).
 PDF statistics:
- 476 PDF objects out of 1000 (max. 8388607)
- 144 named destinations out of 1000 (max. 500000)
+ 568 PDF objects out of 1000 (max. 8388607)
+ 148 named destinations out of 1000 (max. 500000)
  280 words of extra memory for PDF output out of 10000 (max. 10000000)
 

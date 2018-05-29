@@ -444,7 +444,11 @@ pomiar_instance = create(self.session, Pomiary, **pomiar)
 \section{Strona i serwer WWW}
 
 \subsection{Serwer WWW}
-Wymogiem systemu jest umożliwienie użytkownikowi dostępu do zebranych danych poprzez stronę WWW. Konieczny jest zatem serwer HTTP, na którym będzie umieszczona strona. Jednym z najbardziej środowisk do prowadzenia serwerów WWW jest Apache. Jest on dostępny w wersji dla systemu Raspbian, który działa na Raspberry Pi. Umieszczona na serwerze strona będzie komunikowała się z serwerem poprzez żądania HTTP. Szkielet strony w postaci pliku HTML będzie wypełniony danymi zebranymi przez kamery i czujniku po zrealizowaniu żądań wysyłanych asynchronicznie (technika AJAX) do serwera. Za obsługę żądań po stronie serwerowej będą odpowiedzialne mikroserwisy w postaci skryptów w języku PHP. Skrypty łączą się z bazą danych, w której są przechowywane dane zebrane z kamer i czujników. Następnie zwracają dane w odpowiedzi na żądania klienta. Język PHP jest dobrze zintegrowany z serwerem Apache i jest jedną z najbardziej popularnych technologii na serwerach WWW. 
+Wymogiem systemu jest umożliwienie użytkownikowi dostępu do zebranych danych poprzez stronę WWW. Konieczny jest zatem serwer HTTP, na którym będzie umieszczona strona. Jednym z najbardziej środowisk do prowadzenia serwerów WWW jest Apache. Jest on dostępny w wersji dla systemu Raspbian, który działa na Raspberry Pi. Umieszczona na serwerze strona będzie komunikowała się z serwerem poprzez żądania HTTP. Szkielet strony w postaci pliku HTML będzie wypełniony danymi zebranymi przez kamery i czujniku po zrealizowaniu żądań wysyłanych asynchronicznie (technika AJAX) do serwera. Za obsługę żądań po stronie serwerowej będą odpowiedzialne mikroserwisy w postaci skryptów w języku PHP. Skrypty łączą się z bazą danych, w której są przechowywane dane zebrane z kamer i czujników. Następnie zwracają dane w odpowiedzi na żądania klienta. Język PHP jest dobrze zintegrowany z serwerem Apache i jest jedną z najbardziej popularnych technologii na serwerach WWW.
+
+Dostęp do danych prezentowanych w interfejsie powinien być zabezpieczony. Autoryzacja użytkownika na stronie została wykonana w formie uwierzytelnienia prostego (ang. \textit{basic authentication}). Wymaga ono jedynie stworzenia na serwerze pliku z hasłem przy użyciu narzędzia \texttt{htpasswd} będącego częścią pakietu Apache. Plik z hasłem jest przechowywany poza folderem, w którym są przechowywane pliki strony internetowej. Hasło przechowywane jest w formie 128-bitowego skrótu (ang. \textit{hash}) stworzonego przy pomocy funkcji skrótu MD5.\cite{apache-password} Dzięki temu hasło nie jest przechowywane w formie prostego tekstu, który mogłyby od razu odczytany w wypadku zdobycia dostępu do komputera Raspberry Pi przez niepożądaną osobę. Komunikacja między serwerem a klientem odbywa się w formie nieszyfrowanej HTTP, przez co klient wysyła swoje hasło i login niezaszyfrowane w nagłówku żądania HTTP.\cite{http-auth} Tym samym osoba podsłuchująca komunikację mogłaby poznać dane logowania. Jest to słabość zabezpieczeń systemu w obecnej postaci, którą należałoby w przyszłości wyeliminować, używając szyfrowania SSL w komunikacji przy użyciu protokołu HTTP.
+
+ 
 \subsection{Żądania HTTP i ich obsługa -- technika AJAX}
 
 \subsubsection{Strona główna i archiwum}
@@ -454,8 +458,8 @@ Wymogiem systemu jest umożliwienie użytkownikowi dostępu do zebranych danych 
 \subsubsection{Ustawienia}
 
 \subsection{Interfejs użytkownika}
-\newpage
 
+\newpage
 \section{Testy systemu}
 
 \newpage
@@ -484,6 +488,10 @@ BeagleBoard.org Foundation, Specyfikacja BeagleBone Black
 \bibitem{komputer_świat}
 Dziedzic K., Kamera IP w sieci. Stwórz prywatny monitoring
 \url{http://www.komputerswiat.pl/poradniki/sprzet/kamery-internetowe/2015/07/kamera-ip-w-sieci.aspx}
+
+\bibitem{http-auth}
+Fielding R., Reschke J., Hypertext Transfer Protocol (HTTP/1.1): Authentication, RFC 7235, IETF, czerwiec 2014, DOI: 10.17487/RFC7235.
+\url{https://tools.ietf.org/html/rfc7235}
 
 \bibitem{mime1}
 Freed N., Borenstein N., Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies, RFC 2045, IETF, listopad 1996, DOI: 10.17487/RFC2045.
@@ -532,6 +540,14 @@ Silicon Labs, Karta katalogowa czujnika temperatury i wilgotności Si7021:
 \bibitem{multiplekser}
 Texas Instruments Inc., Karta katalogowa multipleksera TCA9548A:
 \url{http://www.ti.com/lit/ds/symlink/tca9548a.pdf}
+
+\bibitem{apache-auth}
+The Apache Software Foundation, Authentication and Authorization, Dokumentacja serwera HTTP Apache
+\url{https://httpd.apache.org/docs/2.4/howto/auth.html}
+
+\bibitem{apache-password}
+The Apache Software Foundation, htpasswd - Manage user files for basic authentication, Dokumentacja serwera HTTP Apache
+\url{https://httpd.apache.org/docs/2.4/programs/htpasswd.html}
 
 \bibitem{smbus}
 Torvalds L., Opis protokołu SMBus
