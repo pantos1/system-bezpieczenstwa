@@ -135,7 +135,7 @@ class Grupa():
             "stan": self.stan_czujnika
         }
         stan_instance = create(self.session, Stany, **stan)
-        data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
         pomiar = {
             "id_stanu": stan_instance.id_stanu,
             "id_odczytu": self.odczyt_instance.id_odczytu,
