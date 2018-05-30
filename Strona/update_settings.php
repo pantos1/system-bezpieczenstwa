@@ -11,10 +11,10 @@ try {
 		$wartosc = $object->value;
 		$klucz = $object->name;
 		$sql = "UPDATE ustawienia 
-		  SET wartosc='$wartosc'
-		  WHERE klucz='$klucz'";
+		  SET wartosc=:wartosc
+		  WHERE :klucz";
 		$stmt = $conn->prepare($sql);
-		$stmt->execute();
+		$stmt->execute(array(":wartosc" => $wartosc, ":klucz" => $klucz));
 		$stmt->closeCursor();
 	}
 } catch (PDOException $e) {

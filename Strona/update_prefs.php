@@ -12,13 +12,18 @@ try {
       UPDATE 
       kamery NATURAL JOIN czujniki NATURAL JOIN czujniki_temperatury 
       SET 
-      kamery.czestotliwosc_zdjecia = '$input->czestotliwosc_zdjecia', 
-      czujniki.czestotliwosc_odczytu_stanu = '$input->czestotliwosc_odczytu_stanu',
-      czujniki_temperatury.czestotliwosc_pomiaru_temp = '$input->czestotliwosc_pomiaru_temp'
+      kamery.czestotliwosc_zdjecia = :czestotliwosc_zdjecia, 
+      czujniki.czestotliwosc_odczytu_stanu = :czestotliwosc_odczytu_stanu,
+      czujniki_temperatury.czestotliwosc_pomiaru_temp = :czestotliwosc_pomiaru_temp
       WHERE 
-      id_kamery = '$input->id_kamery'
+      id_kamery = :id_kamery
       ";
     $stmt = $conn->prepare($sql);
+    $stmt->execute(array(":czestotliwosc_zdjecia" => $input->czestotliwosc_zdjecia,
+        ":czestotliwosc_odczytu_stanu" => $input->czestotliwosc_odczytu_stanu,
+        ":czestotliwosc_pomiaru_temp" => $input->czestotliwosc_pomiaru_temp,
+        ":id_kamery" => $input->id_kamery
+    ));
     $stmt->closeCursor();
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();

@@ -75,6 +75,14 @@
   tabsize=2,	                   % sets default tabsize to 2 spaces
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
+\lstdefinelanguage{JavaScript}{
+  keywords={async, await, break, case, catch, const, continue, debugger, default, delete, do, else, finally, for, function, if, in, instanceof, let, new, return, switch, this, throw, try, typeof, var, void, while, with},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  sensitive=true
+}
 
 \begin{document}
 
@@ -444,14 +452,63 @@ pomiar_instance = create(self.session, Pomiary, **pomiar)
 \section{Strona i serwer WWW}
 
 \subsection{Serwer WWW}
-Wymogiem systemu jest umożliwienie użytkownikowi dostępu do zebranych danych poprzez stronę WWW. Konieczny jest zatem serwer HTTP, na którym będzie umieszczona strona. Jednym z najbardziej środowisk do prowadzenia serwerów WWW jest Apache. Jest on dostępny w wersji dla systemu Raspbian, który działa na Raspberry Pi. Umieszczona na serwerze strona będzie komunikowała się z serwerem poprzez żądania HTTP. Szkielet strony w postaci pliku HTML będzie wypełniony danymi zebranymi przez kamery i czujniku po zrealizowaniu żądań wysyłanych asynchronicznie (technika AJAX) do serwera. Za obsługę żądań po stronie serwerowej będą odpowiedzialne mikroserwisy w postaci skryptów w języku PHP. Skrypty łączą się z bazą danych, w której są przechowywane dane zebrane z kamer i czujników. Następnie zwracają dane w odpowiedzi na żądania klienta. Język PHP jest dobrze zintegrowany z serwerem Apache i jest jedną z najbardziej popularnych technologii na serwerach WWW.
+Wymogiem systemu jest umożliwienie użytkownikowi dostępu do zebranych danych przez stronę WWW. Konieczny jest zatem serwer HTTP, na którym będzie umieszczona strona. Jednym z najpopularniejszych środowisk do prowadzenia serwerów WWW jest Apache. Jest on dostępny w wersji dla systemu Raspbian, który działa na Raspberry Pi. Umieszczona na serwerze strona będzie komunikowała się z serwerem poprzez żądania HTTP. Szkielet strony w postaci pliku HTML będzie wypełniony danymi zebranymi przez kamery i czujniku po zrealizowaniu żądań wysyłanych asynchronicznie (przy użyciu techniki AJAX) do serwera. Za obsługę żądań po stronie serwerowej będą odpowiedzialne mikrousługi w postaci skryptów w języku PHP. Skrypty łączą się z bazą danych, w której są przechowywane dane zebrane z kamer i czujników. Następnie zwracają dane w odpowiedzi na żądania klienta. Język PHP jest dobrze zintegrowany z serwerem Apache i jest jedną z najbardziej popularnych technologii na serwerach WWW.
 
-Dostęp do danych prezentowanych w interfejsie powinien być zabezpieczony. Autoryzacja użytkownika na stronie została wykonana w formie uwierzytelnienia prostego (ang. \textit{basic authentication}). Wymaga ono jedynie stworzenia na serwerze pliku z hasłem przy użyciu narzędzia \texttt{htpasswd} będącego częścią pakietu Apache. Plik z hasłem jest przechowywany poza folderem, w którym są przechowywane pliki strony internetowej. Hasło przechowywane jest w formie 128-bitowego skrótu (ang. \textit{hash}) stworzonego przy pomocy funkcji skrótu MD5.\cite{apache-password} Dzięki temu hasło nie jest przechowywane w formie prostego tekstu, który mogłyby od razu odczytany w wypadku zdobycia dostępu do komputera Raspberry Pi przez niepożądaną osobę. Komunikacja między serwerem a klientem odbywa się w formie nieszyfrowanej HTTP, przez co klient wysyła swoje hasło i login niezaszyfrowane w nagłówku żądania HTTP.\cite{http-auth} Tym samym osoba podsłuchująca komunikację mogłaby poznać dane logowania. Jest to słabość zabezpieczeń systemu w obecnej postaci, którą należałoby w przyszłości wyeliminować, używając szyfrowania SSL w komunikacji przy użyciu protokołu HTTP.
-
+Dostęp do danych prezentowanych w interfejsie powinien być zabezpieczony. Autoryzacja użytkownika na stronie została wykonana w formie uwierzytelnienia prostego (ang. \textit{basic authentication}). Wymaga ono jedynie stworzenia na serwerze pliku z hasłem przy użyciu narzędzia \texttt{htpasswd} będącego częścią pakietu Apache. Plik z hasłem jest przechowywany poza folderem, w którym są przechowywane pliki strony internetowej. Hasło przechowywane jest w formie 128-bitowego skrótu (ang. \textit{hash}) stworzonego przy pomocy funkcji skrótu MD5.\cite{apache-password} Dzięki temu hasło nie jest przechowywane w formie prostego tekstu, który mogłyby od razu odczytany w wypadku zdobycia dostępu do komputera Raspberry Pi przez niepożądaną osobę. Z przesłanego przez użytkownika hasła również tworzony jest skrót, który jest porównywany ze skrótem hasła przechowywanym w pliku. Jeśli skróty są równe, oznacza to, że przesłane hasło jest poprawne. Komunikacja między serwerem a klientem odbywa się w formie nieszyfrowanej HTTP, przez co klient wysyła swoje hasło i login niezaszyfrowane w nagłówku żądania HTTP.\cite{http-auth} Tym samym osoba podsłuchująca komunikację mogłaby poznać dane logowania. Jest to słabość zabezpieczeń systemu w obecnej postaci, którą należałoby w przyszłości wyeliminować, używając szyfrowania SSL w komunikacji przy użyciu protokołu HTTP. Dodatkowym usprawnieniem byłoby użycie funkcji skrótu z rodziny SHA-2 lub SHA-3 do wygenerowania skrótu haseł przechowywanych na serwerze. Są one w tej chwili uważane za niemożliwe do złamania.
  
 \subsection{Żądania HTTP i ich obsługa -- technika AJAX}
+Po pozytywnym uwierzytelnieniu użytkownika w systemie jest mu udostępniony plik \texttt{index.html} oraz cały folder ze skryptami, arkuszami stylów i plikami ze zdjęciami. Zawiera on szkielet strony oraz dołączony skrypt JavaScript \texttt{main.js}, który zawiera funkcje realizujące żądania HTTP. Służą one do pobierania danych z systemu oraz wprowadzania ustawień dokonanych przez użytkownika. Są one wykonane w technice AJAX (ang. \textit{Asynchronous JavaScript and XML}). Jest to technika tworzenia aplikacji internetowych, w której żądania są wykonywane asynchronicznie. Technika ta jest oparta o architekturę serwer-klient, w której rolę klienta pełni przeglądarka. Po wysłaniu żądania przeglądarka kontynuuje działanie, a po odebraniu danych przetwarza je. Dzięki temu dane mogą być odświeżane na stronie bez konieczności jej przeładowania. To bardzo przydatna cecha, która pozwala odświeżać dane w tle tak, żeby użytkownikowi zawsze prezentować aktualny stan systemu.
+
+Do przygotowania żądań wykorzystywana jest funkcja \texttt{\$.ajax()} z biblioteki jQuery. Przygotowuje ona obiekt \texttt{XMLHTTPRequest}, który reprezentuje żądanie HTTP. Funkcja pozwala określić adres URL, do którego ma być skierowane żądanie, typ żądania (GET, POST, DELETE itp.), dane dołączone do żądania oraz pozostałe pola odpowiadające nagłówkom protokołu HTTP. Żądania te będą kierowane do dedykowanych programów w języku PHP działających na serwerze WWW. Wykonują one zapytania do bazy danych i zwracają ich wyniki lub dokonują wpisów do niej. Działanie poszczególnych skryptów zostanie omówione w poniższych podrozdziałach.
 
 \subsubsection{Strona główna i archiwum}
+Podstawowym żądaniem wywoływanym przez funkcję \texttt{main.js} jest żądanie pobrania aktualnego stanu systemu. Jest ono wywoływane w funkcji w funkcji \texttt{main()} w formie funkcji \texttt{getData()}:
+\begin{lstlisting} [language=JavaScript]
+function getData() {
+    return $.ajax({
+        url: "get_data.php?q=",
+        type: "GET",
+        contentType: "text/plain"
+    })
+}
+\end{lstlisting}
+Funkcja przygotowuje żądanie typu GET do mikrousługi \texttt{get{\_}data.php} z pustym parametrem \texttt{q}. Informuje on o tym, że mają być przesłane tylko dane o aktualnym stanie systemu. Funkcja zwraca obiekt typu \texttt{Promise} (ang.\textit{obietnica}), który reprezentuje ostateczne zakończenie lub niepowodzenie operacji asynchronicznej.\cite{promise} 
+
+Po otrzymaniu żądania program \texttt{get{\_}data.php} nawiązuje połączenie z bazą danych przy pomocy biblioteki PDO:
+\begin{lstlisting} [language=PHP]
+$conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
+\end{lstlisting}
+Zmienna \texttt{\$conn} reprezentująca połączenie z bazą danych jest użyta do wykonania zapytania o wszystkie wpisy z tabeli \texttt{kamery}. Następnie dla każdej kamery jest wykonywane zapytanie do tabeli \texttt{pomiary} o zbiór ostatnich wykonanych pomiarów wykonanych dla niej:
+\begin{lstlisting} [language=PHP]
+$stmt = $conn->query("
+SELECT *
+FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
+WHERE zdjecia.id_kamery = $id_kamery 
+GROUP BY pomiary.id_pomiaru 
+ORDER BY pomiary.id_pomiaru DESC LIMIT 1
+");
+\end{lstlisting}
+Wynik tego zapytania jest zapisywany w tablicy pod indeksem równym unikalnemu identyfikatorowi kamery. Po dokonaniu zapytań dla wszystkich kamer istniejących w systemie, program zwraca odpowiedź w formie JSON (ang. \textit{JavaScript Object Notation}). Jest to jeden z powszechnie stosowanych formatów tekstowej wymiany danych. Do zwrócenia odpowiedzi w tej postaci należy w nagłówku podać typ MIME danych odpowiedzi\cite{mime2} -- \texttt{Content-Type: application/json}. Następnie dane są zakodowane do postaci JSON przy użyciu funkcji \texttt{json{\_}encode} i zwrócone przy pomocy funkcji \texttt{echo}.
+
+Zwrócone dane można obsłużyć po stronie klienta (przeglądarki) na kilka sposobów. Jednym z najnowszych dostępnych w wersji języka JavaScript ECMAScript 2017 jest składania \texttt{async/await}. Jest ona obsługiwana przez większość współczesnych przeglądarek w najnowszej wersji.\cite{async} Pozwala ona na wykonywanie asynchronicznego kodu w sposób przypominający tradycyjne, sekwencyjne działanie. Poprawia to czytelność kodu. 
+
+Definicja funkcji działającej w sposób asynchroniczny musi być poprzedzona słowem kluczowym \texttt{async}. W ciele funkcji można wówczas wywoływać funkcje zwracające obiekty Promise ze słowem kluczowym \texttt{await}. Powoduje to wstrzymanie działania funkcji do momentu rozwiązania obietnicy:
+\begin{lstlisting} [language=JavaScript]
+async function main() {
+    try {
+        const result = await getData();
+        displayHomeContent(result);
+        (...)
+    } catch (e) {
+        console.log(e.responseText);
+        (...)
+    }
+	(...)
+}
+\end{lstlisting}
+Funkcja \texttt{getData()} jest wywoływana w bloku \texttt{try/catch} pozwalającym na obsługę wyjątków w przypadku niepowodzenia asynchronicznego żądania HTTP. W przypadku pozytywnego zakończenia żądania dane zwrócone w odpowiedzi są zapisywane do zmiennej i mogą być użyte przez funkcję \texttt{displayHomeContent} wyświetlającą dane na stronie głównej.
+
+Procedura pobierania danych o archiwalnych stanach systemu jest podobna. Wywołanie żądania obsługuje funkcja \texttt{getAllData()}. Wywołuje ona żądanie typu GET do mikrousługi \texttt{get{\_}data.php} z atrybutem \texttt{q} równym \texttt{archiwum}. 
 
 \subsubsection{Eksport zdarzeń}
 
@@ -468,6 +525,14 @@ Dostęp do danych prezentowanych w interfejsie powinien być zabezpieczony. Auto
 \newpage
 \section{Bibliografia}
 \begin{thebibliography}{9}
+
+\bibitem{apache-auth}
+Apache Software Foundation, Authentication and Authorization, Dokumentacja serwera HTTP Apache
+\url{https://httpd.apache.org/docs/2.4/howto/auth.html}
+
+\bibitem{apache-password}
+Apache Software Foundation, htpasswd - Manage user files for basic authentication, Dokumentacja serwera HTTP Apache
+\url{https://httpd.apache.org/docs/2.4/programs/htpasswd.html}
 
 \bibitem{zachorowania}
 Arundel A. V., Sterling E. M., Biggin J. H. i Sterling T. D., Indirect health effects of relative humidity in indoor environments, \textit{Environmental Health Perspectives} 1986;65:351-361
@@ -513,6 +578,14 @@ joan2937, Dokumentacja funkcji \texttt{i2c{\_}read{\_}device()}
 Mouser Electronics, Karta katalogowa czujnika temperatury i wilgotności SHT31D:
 \url{http://www.mouser.com/ds/2/682/Sensirion_Humidity_Sensors_SHT3x_Datasheet_digital-971521.pdf}
 
+\bibitem{promise}
+Mozilla Developer Network, szopenkrk, Promise.
+\url{https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Promise}
+
+\bibitem{async}
+Mozilla Developer Network, Bab64, doubleOrt, freezy, hirokiky, jswisher, spygi i in., async function.
+\url{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function}
+
 \bibitem{porownanie_wiki}
 Porównanie komputerów jednopłytkowych (ang.)
 \url{https://en.wikipedia.org/wiki/Comparison_of_single-board_computers}
@@ -540,14 +613,6 @@ Silicon Labs, Karta katalogowa czujnika temperatury i wilgotności Si7021:
 \bibitem{multiplekser}
 Texas Instruments Inc., Karta katalogowa multipleksera TCA9548A:
 \url{http://www.ti.com/lit/ds/symlink/tca9548a.pdf}
-
-\bibitem{apache-auth}
-The Apache Software Foundation, Authentication and Authorization, Dokumentacja serwera HTTP Apache
-\url{https://httpd.apache.org/docs/2.4/howto/auth.html}
-
-\bibitem{apache-password}
-The Apache Software Foundation, htpasswd - Manage user files for basic authentication, Dokumentacja serwera HTTP Apache
-\url{https://httpd.apache.org/docs/2.4/programs/htpasswd.html}
 
 \bibitem{smbus}
 Torvalds L., Opis protokołu SMBus
