@@ -508,7 +508,14 @@ async function main() {
 \end{lstlisting}
 Funkcja \texttt{getData()} jest wywoływana w bloku \texttt{try/catch} pozwalającym na obsługę wyjątków w przypadku niepowodzenia asynchronicznego żądania HTTP. W przypadku pozytywnego zakończenia żądania dane zwrócone w odpowiedzi są zapisywane do zmiennej i mogą być użyte przez funkcję \texttt{displayHomeContent} wyświetlającą dane na stronie głównej.
 
-Procedura pobierania danych o archiwalnych stanach systemu jest podobna. Wywołanie żądania obsługuje funkcja \texttt{getAllData()}. Wywołuje ona żądanie typu GET do mikrousługi \texttt{get{\_}data.php} z atrybutem \texttt{q} równym \texttt{archiwum}. 
+Procedura pobierania danych o archiwalnych stanach systemu jest podobna. Wywołanie żądania obsługuje funkcja \texttt{getAllData()}. Wywołuje ona żądanie typu GET do mikrousługi \texttt{get{\_}data.php} z atrybutem \texttt{q} równym \texttt{archiwum}. Po stronie serwerowej żądanie obsługiwane jest podobnie do żądania z pustym atrybutem \texttt{q}. Dla każdej kamery w systemie zwracana jest cała historia jej zdjęć przy użyciu poniższego zapytania do bazy danych:
+\begin{lstlisting} [language=PHP]
+$stmt = $conn->query("
+SELECT *
+FROM zdjecia NATURAL JOIN pomiary NATURAL JOIN stany NATURAL JOIN odczyty
+WHERE zdjecia.id_kamery = $id_kamery
+");
+\end{lstlisting}
 
 \subsubsection{Eksport zdarzeń}
 
