@@ -474,11 +474,11 @@ function getData() {
 \end{lstlisting}
 Funkcja przygotowuje żądanie typu GET do mikrousługi \texttt{get{\_}data.php} z pustym parametrem \texttt{q}. Informuje on o tym, że mają być przesłane tylko dane o aktualnym stanie systemu. Funkcja zwraca obiekt typu \texttt{Promise} (ang.\textit{obietnica}), który reprezentuje ostateczne zakończenie lub niepowodzenie operacji asynchronicznej.\cite{promise} 
 
-Po otrzymaniu żądania program \texttt{get{\_}data.php} nawiązuje połączenie z bazą danych przy pomocy biblioteki PDO:
+Po otrzymaniu żądania program \texttt{get{\_}data.php} odczytywana jest ze zmiennej \texttt{{\$\_}GET} wartość parametru \texttt{q}. Posłuży on do określenia, jakie zapytania maja być wysłane do bazy danych. Następnie nawiązywane jest połączenie z bazą danych przy pomocy biblioteki PDO:
 \begin{lstlisting} [language=PHP]
 $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
 \end{lstlisting}
-Zmienna \texttt{\$conn} reprezentująca połączenie z bazą danych jest użyta do wykonania zapytania o wszystkie wpisy z tabeli \texttt{kamery}. Następnie dla każdej kamery jest wykonywane zapytanie do tabeli \texttt{pomiary} o zbiór ostatnich wykonanych pomiarów wykonanych dla niej:
+Zmienna \texttt{\$conn} reprezentująca połączenie z bazą danych jest użyta do wykonania zapytania o wszystkie wpisy z tabeli \texttt{kamery}. Jeśli parametr \texttt{q} jest pusty, to dla każdej kamery jest wykonywane zapytanie do tabeli \texttt{pomiary} o zbiór ostatnich wykonanych pomiarów wykonanych dla niej:
 \begin{lstlisting} [language=PHP]
 $stmt = $conn->query("
 SELECT *
@@ -490,7 +490,7 @@ ORDER BY pomiary.id_pomiaru DESC LIMIT 1
 \end{lstlisting}
 Wynik tego zapytania jest zapisywany w tablicy pod indeksem równym unikalnemu identyfikatorowi kamery. Po dokonaniu zapytań dla wszystkich kamer istniejących w systemie, program zwraca odpowiedź w formie JSON (ang. \textit{JavaScript Object Notation}). Jest to jeden z powszechnie stosowanych formatów tekstowej wymiany danych. Do zwrócenia odpowiedzi w tej postaci należy w nagłówku podać typ MIME danych odpowiedzi\cite{mime2} -- \texttt{Content-Type: application/json}. Następnie dane są zakodowane do postaci JSON przy użyciu funkcji \texttt{json{\_}encode} i zwrócone przy pomocy funkcji \texttt{echo}.
 
-Zwrócone dane można obsłużyć po stronie klienta (przeglądarki) na kilka sposobów. Jednym z najnowszych dostępnych w wersji języka JavaScript ECMAScript 2017 jest składania \texttt{async/await}. Jest ona obsługiwana przez większość współczesnych przeglądarek w najnowszej wersji.\cite{async} Pozwala ona na wykonywanie asynchronicznego kodu w sposób przypominający tradycyjne, sekwencyjne działanie. Poprawia to czytelność kodu. 
+Zwrócone dane można obsłużyć po stronie klienta (przeglądarki) na kilka sposobów. Jednym z najnowszych dostępnych w wersji języka JavaScript ECMAScript 2017 jest składania \texttt{async/await}. Jest ona obsługiwana przez większość współczesnych przeglądarek w najnowszej wersji.\cite{async} Pozwala ona na wykonywanie asynchronicznego kodu w sposób przypominający tradycyjne, sekwencyjne działanie. Zaletą takiego przedstawienia jest poprawienie czytelności kodu. 
 
 Definicja funkcji działającej w sposób asynchroniczny musi być poprzedzona słowem kluczowym \texttt{async}. W ciele funkcji można wówczas wywoływać funkcje zwracające obiekty Promise ze słowem kluczowym \texttt{await}. Powoduje to wstrzymanie działania funkcji do momentu rozwiązania obietnicy:
 \begin{lstlisting} [language=JavaScript]
@@ -508,7 +508,7 @@ async function main() {
 \end{lstlisting}
 Funkcja \texttt{getData()} jest wywoływana w bloku \texttt{try/catch} pozwalającym na obsługę wyjątków w przypadku niepowodzenia asynchronicznego żądania HTTP. W przypadku pozytywnego zakończenia żądania dane zwrócone w odpowiedzi są zapisywane do zmiennej i mogą być użyte przez funkcję \texttt{displayHomeContent} wyświetlającą dane na stronie głównej.
 
-Procedura pobierania danych o archiwalnych stanach systemu jest podobna. Wywołanie żądania obsługuje funkcja \texttt{getAllData()}. Wywołuje ona żądanie typu GET do mikrousługi \texttt{get{\_}data.php} z atrybutem \texttt{q} równym \texttt{archiwum}. Po stronie serwerowej żądanie obsługiwane jest podobnie do żądania z pustym atrybutem \texttt{q}. Dla każdej kamery w systemie zwracana jest cała historia jej zdjęć przy użyciu poniższego zapytania do bazy danych:
+Procedura pobierania danych o archiwalnych stanach systemu jest podobna. Przesłanie żądania do serwera wykonuje funkcja \texttt{getAllData()}. Wywołuje ona żądanie typu GET do mikrousługi \texttt{get{\_}data.php} z atrybutem \texttt{q} równym \texttt{archiwum}. Po stronie serwerowej żądanie obsługiwane jest podobnie do żądania z pustym atrybutem \texttt{q}. Różnica polega na tym, że dla każdej kamery w systemie zwracana jest cała historia jej zdjęć przy użyciu poniższego zapytania do bazy danych:
 \begin{lstlisting} [language=PHP]
 $stmt = $conn->query("
 SELECT *
@@ -516,10 +516,14 @@ FROM zdjecia NATURAL JOIN pomiary NATURAL JOIN stany NATURAL JOIN odczyty
 WHERE zdjecia.id_kamery = $id_kamery
 ");
 \end{lstlisting}
-
-\subsubsection{Eksport zdarzeń}
+Następnie dane są zapisywane w formie JSON i zwracane do klienta przez funkcję \texttt{echo}. Po stronie przeglądarki obiekt \texttt{Promise} zwracany przez funkcję \texttt{getAllData()} również jest obsługiwany przy pomocy składni \texttt{await/async}. 
 
 \subsubsection{Ustawienia}
+
+\subsection{Eksport zdarzeń}
+Wymagania systemu mówią również o możliwości eksportu listy zdarzeń -- stanów systemu do pliku w formacie \texttt{csv}. Pobranie pliku jest realizowanie inaczej niż opisane wyżej żądania HTTP w technice AJAX. Zostaje otwarte nowe okno przeglądarki, którego adres URL jest ustawiony jako \texttt{export{\_}events.php?start=<Data początku>{\&}end=<Data końca>}. Użytkownik może wybrać w interfejsie przedział dat, dla których mają być wyeksportowane zdarzenia. Są one umieszczane jako wartości parametrów \texttt{start} i \texttt{end}. Okno to jest puste i służy jedynie do wymuszenia otwarcia okna dialogowego do zapisu pliku, o który prosi użytkownik.
+
+Otwarcie nowego okna w przeglądarce powoduje 
 
 \subsection{Interfejs użytkownika}
 

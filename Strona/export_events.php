@@ -37,12 +37,12 @@ try {
 			  NATURAL JOIN zdjecia NATURAL JOIN kamery
               NATURAL JOIN stany NATURAL JOIN czujniki
               NATURAL JOIN odczyty NATURAL JOIN czujniki_temperatury
-              WHERE data BETWEEN '$first_date' AND '$last_date'
+              WHERE data BETWEEN :first_date AND :last_date
               ";
         $stmt = $conn->prepare($sql);
         $rows = array();
         $headers_present = false;
-        if($stmt->execute()){
+        if($stmt->execute(array(":first_date" => $first_date, ":last_date" => $last_date))){
 			while($result = $stmt -> fetch(PDO::FETCH_ASSOC)) {
 				if(!$headers_present) {
 					fputcsv($filestream, array_keys($result));
