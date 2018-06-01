@@ -1,6 +1,6 @@
 <?php
 header("Content-Description: File Transfer");
-header("Content-Type: text/csv");
+header("Content-Type: application/octet-stream");
 $servername = "localhost";
 $username = "root";
 $password = "raspberry";
