@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt,twoside]{article}
+\documentclass[a4paper,11pt,twoside]{article}
 \renewcommand{\familydefault}{\sfdefault}
 \addtolength{\hoffset}{-1.54cm}
 \setlength{\oddsidemargin}{2cm}
@@ -24,7 +24,10 @@
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{textgreek}
+\usepackage[font={small}]{caption}
 \renewcommand*{\tablename}{Tabela}
+\renewcommand*{\figurename}{Rys.} 
+\renewcommand{\baselinestretch}{1.15} 
 
 \usepackage{fancyhdr}
 \fancypagestyle{plain}{
@@ -462,7 +465,7 @@ Po pozytywnym uwierzytelnieniu użytkownika w systemie udostępniony jest plik \
 Do przygotowania żądań wykorzystywana jest funkcja \texttt{\$.ajax()} z biblioteki jQuery. Przygotowuje ona obiekt \texttt{XMLHTTPRequest}, który reprezentuje żądanie HTTP. Funkcja pozwala określić adres URL, do którego ma być skierowane żądanie, typ żądania (GET, POST, DELETE itp.), dane dołączone do żądania oraz pozostałe pola odpowiadające nagłówkom protokołu HTTP. Żądania te będą kierowane do dedykowanych programów w języku PHP działających na serwerze WWW. Wykonują one zapytania do bazy danych i zwracają ich wyniki lub dokonują wpisów do niej. Działanie poszczególnych skryptów zostanie omówione w poniższych podrozdziałach.
 
 \subsubsection{Strona główna i archiwum}
-Podstawowym żądaniem wywoływanym przez funkcję \texttt{main.js} jest żądanie pobrania aktualnego stanu systemu. Jest ono wywoływane w funkcji w funkcji \texttt{main()} w formie funkcji \texttt{getData()}:
+Podstawowym żądaniem wywoływanym przez funkcję \texttt{main.js} jest żądanie pobrania aktualnego stanu systemu. Jest ono wywoływane w funkcji \texttt{main()} przez funkcję \texttt{getData()}:
 \begin{lstlisting} [language=JavaScript]
 function getData() {
     return $.ajax({
@@ -519,6 +522,47 @@ WHERE zdjecia.id_kamery = $id_kamery
 Następnie dane są zapisywane w formie JSON i zwracane do klienta przez funkcję \texttt{echo}. Po stronie przeglądarki obiekt \texttt{Promise} zwracany przez funkcję \texttt{getAllData()} również jest obsługiwany przy pomocy składni \texttt{await/async}. 
 
 \subsubsection{Ustawienia}
+Przez stronę WWW użytkownik ma również dostęp do panelu administracyjnego pozwalającego na zmianę ustawień. Dostępne ustawienia to:
+\begin{itemize}
+\item włączenie powiadomień e-mail i podanie adresu e-mail odbiorcy powiadomień,
+\item zmiana nazwy urządzeń podłączonych do systemu,
+\item zmiana częstotliwości wykonywania zdjęć i pomiarów.
+\end{itemize}
+
+Po dokonaniu zmian w formularzu i zapisaniu zmian skrypt \texttt{main.js} zapisuje dane ze wszystkich elementów typu \texttt{form}. Wykorzystywana jest przy tym funkcja \texttt{serializeArray()} z biblioteki jQuery. Zapisuje ona dane z formularza do tablicy obiektów o postaci: \texttt{\{name: <Nazwa ustawienia>, value: <Wartość ustawienia>\}}. W przypadku formularzy z danymi dotyczącymi ustawień nazw urządzeń i częstotliwości pomiarów obiekty te zostaną przekształcone do postaci: \texttt{\{<Nazwa ustawienia>: <Wartość ustawienia>\}}. Jest ona łatwiejsza do parsowania po stronie serwerowej, ponieważ od razu łączy nazwę kolumny z wartością, która ma być dla niej ustawiona. Wykorzystana do tego zostanie wbudowana funkcja obiektu \texttt{Array} -- \texttt{reduce}:
+\begin{lstlisting}[language=JavaScript]
+const data = $(element).serializeArray().reduce((a, x) => {
+	a[x.name] = x.value;
+	return a;
+}, {});
+\end{lstlisting}
+Pierwszym argumentem funkcji \texttt{reduce()} jest anonimowa funkcja wywołana przy pomocy wyrażenia funkcji strzałkowej (\texttt{=>}), która jest wywołana dla każdego elementu tablicy. Wykorzystuje ona dwa argumenty: tablicę, która ma być spłaszczona oraz aktualną jej wartość. Wartość ustawienia jest zapisywana przy kluczu ją opisującym, a wynik zapisywany jest w nowym obiekcie podanym jako drugi argument funkcji -- \texttt{\{\}}. W ten sposób dane są zapisane w formie JSON, a następnie zamienione w ciąg znaków (\texttt{string}).
+
+Każde z wymienionych wyżej ustawień posiada osobną funkcję przygotowującą żądanie typu POST do serwera. Jest to typ żądania HTTP używany do przesyłania danych z formularzy.\cite{http} Wynika to z tego, że każde z tych danych jest inaczej przetwarzanie po stronie serwera. Dla ustawień e-mail jest to funkcja \texttt{updateSettings()}. Wysyła ona żądanie typu POST do mikrousługi \texttt{update{\_}settings.php}. Program ten zaczyna od zdekodowania przesłanych danych w formie JSON do tablicy:
+\begin{lstlisting}[language=PHP]
+$input = json_decode(file_get_contents('php://input'))
+\end{lstlisting}
+Następnie dla każdego ustawienia (pary klucz/wartość) wykonywane jest zapytanie typu UPDATE do bazy danych o następującej treści:
+\begin{lstlisting}[language=SQL]
+UPDATE ustawienia 
+SET wartosc=:wartosc
+WHERE :klucz
+\end{lstlisting}
+, gdzie \texttt{:wartosc} oraz \texttt{:klucz} zostaną uzupełnione odpowiednimi danymi w momencie wykonywania zapytania przez funkcję \texttt{execute()}. Użycie parametryzowanych zapytań zabezpiecza system przed atakami typu \textit{SQL Injection}. Polegają one na umieszczeniu np. w treści formularza innego zapytania języka SQL, które umieszczone bezpośrednio w treści zapytania mogłoby narazić bazę danych np. na usunięcie którejś z tabel.\cite{sql-injection}
+
+Informacje o zmianie nazw urządzeń są przesyłane w postaci żądania HTTP typu POST przez funkcję \texttt{updateNames()} do mikrousługi \texttt{update{\_}names.php}. Są one wysyłane w osobnych żądaniach, w których oprócz nazw znajduje się identyfikator kamery, do której są przypisane. Program \texttt{update{\_}names.php} po zdekodowaniu przesłanych danych wykonuje zapytanie do bazy danych o identyfikatory urządzeń, które są przypisane do kamery o przesłanym identyfikatorze. Następnie dla każdego urządzenia następuje aktualizacja nazw, jeśli przesłany ciąg znaków nie jest pusty. W tym przypadku również użyto parametryzowanych zapytań.
+
+Zmiana preferencji wykonywania pomiarów i zdjęć jest przekazywana do serwera przy użyciu funkcji \texttt{updatePrefs()}. Przekazuje ona zebrane z formularza dane do mikrousługi \texttt{update{\_}prefs.php}, załączając je do żądania typu POST. Dane te również są wysyłane osobno dla każdej grupy urządzeń z identyfikowanych kluczem głównym obiektu typu kamera. W tym wypadku dane są zmieniane w zbiorczym zapytaniu do bazy danych:
+\begin{lstlisting}[language=SQL]
+UPDATE 
+kamery NATURAL JOIN czujniki NATURAL JOIN czujniki_temperatury 
+SET 
+kamery.czestotliwosc_zdjecia = :czestotliwosc_zdjecia, 
+czujniki.czestotliwosc_odczytu_stanu = :czestotliwosc_odczytu_stanu,
+czujniki_temperatury.czestotliwosc_pomiaru_temp = :czestotliwosc_pomiaru_temp
+WHERE 
+id_kamery = :id_kamery
+\end{lstlisting}
 
 \subsubsection{Eksport zdarzeń}
 Wymagania systemu mówią również o możliwości eksportu listy zdarzeń -- stanów systemu do pliku w formacie \texttt{csv}. Wysłanie żądania pobrania pliku jest realizowanie inaczej niż w opisanej wyżej technice AJAX. Zostaje otwarte nowe okno przeglądarki, którego adres URL jest ustawiony jako \texttt{export{\_}events.php?start=<Data początku>{\&}end=<Data końca>}. Użytkownik może wybrać w interfejsie przedział dat, dla których mają być wyeksportowane zdarzenia. Są one umieszczane jako wartości parametrów \texttt{start} i \texttt{end}. Okno to jest puste i służy jedynie do wymuszenia otwarcia okna dialogowego do zapisu pliku, o który prosi użytkownik.
@@ -526,21 +570,46 @@ Wymagania systemu mówią również o możliwości eksportu listy zdarzeń -- st
 Otwarcie nowego okna w przeglądarce z adresem URL programu \texttt{export{\_}events.php} powoduje wywołanie jego działania po stronie serwerowej. Program pobiera wartości parametrów \texttt{start} i \texttt{end}, a następnie wykonuje zapytanie do bazy danych o pierwszy i ostatni rekord z tabeli \texttt{pomiary}. Jeśli użytkownik nie wybrał daty początku lub końca zakresu, dla którego mają być eksportowane zdarzenia, zostaną one domyślnie ustawione odpowiednio jako data pierwszego lub ostatniego wpisu w bazie danych. Takie podejście pozwala na eksport wszystkich zdarzeń poprzez pozostawienie wartości parametrów \texttt{start} i \texttt{end} pustych.
 
 Następnie wykonywane jest zapytanie do bazy danych o wszystkie wpisy do tabeli \texttt{pomiary} wraz z odpowiadającym im odczytom urządzeń i informacjami o urządzeniach:
-\begin{lstlisting}[language=PHP]
-$sql = "
+\begin{lstlisting}[language=SQL]
 SELECT *
 FROM pomiary 
 NATURAL JOIN zdjecia NATURAL JOIN kamery
 NATURAL JOIN stany NATURAL JOIN czujniki
 NATURAL JOIN odczyty NATURAL JOIN czujniki_temperatury
 WHERE data BETWEEN :first_date AND :last_date
-";
 \end{lstlisting}
 Dane zwrócone przez zapytanie są zapisywane do pliku w formacie \texttt{csv} o nazwie informującej o wybranym przedziale dat. W pliku wynikowym zapisywane są również nagłówki kolumn, dzięki czemu użytkownik otrzyma informację o tym, co przedstawiają dane. Po zakończeniu zapisu do pliku, jego zawartość jest zwrócona użytkownikowi przy pomocy funkcji \texttt{readfile}. Sam plik jest przechowywane na serwerze w folderze \texttt{log}. Dzięki temu kolejne zapytania o zdarzenie z tego samego zakresu dat nie wymagają przeprowadzenia zapytania do bazy danych. Przed przeprowadzeniem zapytania program sprawdza, czy istnieje już plik o nazwie odpowiadającej żądanemu przedziałowi dat. Jeśli tak, plik zostaje odczytany i zwrócony do klienta.
 
-Aby zwrócone dane były potraktowane jako plik do zapisu jako załącznik, konieczne jest właściwe ustawienie nagłówków odpowiedzi. Dla plików w formacie \texttt{csv} przewidziany jest typ MIME \texttt{text/csv}.\cite{mime2}
+Aby zwrócone dane były potraktowane jako plik do zapisu jako załącznik, konieczne jest właściwe ustawienie nagłówków odpowiedzi:
+\begin{lstlisting}[language=PHP]
+header("Content-Description: File Transfer");
+header("Content-Type: application/octet-stream");
+header('Content-Disposition: attachment; filename="'.basename($file).'"');
+\end{lstlisting}
+Odpowiadają one za przekazanie informacji klientowi, że następuje transfer pliku (\texttt{File Transfer}) typu binarnego (\texttt{application/octet-stream}), który ma zostać zapisany po otwarciu okna dialogowego do zapisu plików (\texttt{Content-Disposition: attachment}).\cite{content-disposition}\cite{mime2}
 
 \subsection{Interfejs użytkownika}
+Interfejs użytkownika stanowi strona WWW typu \textit{single-page application}(SPA), której szkielet jest opisany w pliku \texttt{index.html}. Idea SPA polega na stworzeniu strony WWW, która nie wymaga przeładowywania, a wszystkie dane mogą być udostępniane przez jeden plik HTML. Odświeżanie zawartości strony następuje w tle dzięki komunikacji z serwerem WWW. W projektowanym systemie komunikacja ta została wykonana zgodnie z techniką AJAX opisaną powyżej. W projektowaniu interfejsu użytkownika posłużyłem się biblioteką \textit{UIKit}, która dostarcza gotowe rozwiązania takich elementów jak np. okna modalne czy elementy nawigacyjne.
+
+Na stronie głównej przedstawionej na rysunku \ref{fig: homepage} domyślnie wyświetlane są ostatnie zdjęcia ze wszystkich kamer w systemie. Na karcie kamery znajdują się: nazwa kamery, ostatnie zdjęcie nią wykonane oraz dane z czujnika temperatury i czujnika stykowego przypisanego do kamery. Dane te są odświeżane domyślnie co 8 sekund (częściej niż wykonywane zdjęcia), aby stale prezentować użytkownikowi aktualny stan systemu. 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=\linewidth]{ekran_glowny.png}
+\caption{Strona główna interfejsu użytkownika}
+\label{fig: homepage}
+\end{center}
+\end{figure}
+
+Pasek nawigacyjny u góry ekranu pozwala przejść do \textit{Archiwum} prezentującego przeszłe zdjęcia podzielone według kamer, które je wykonały. Po kliknięciu na miniaturę zdjęcie powiększa się ono, zajmując cały ekran. Wówczas zdjęcia można również przeglądać w trybie galerii zdjęć.
+
+Wybór linku \textit{Zapisz} otwiera okno modalne z dwoma polami do wyboru dat. Na rysunku \ref{fig: eksport} widać stan okna w przypadku wybrania początkowej daty. Wówczas w drugim kalendarzu do wyboru dat dostępny jest wyłącznie zakres dat następujący po wybranej dacie początku. Implementację kalendarza do wyboru dat dostarcza biblioteka \textit{Pikaday}. Pozwala ona przypisane funkcji do zdarzenia wyboru daty. Wybór daty np. w pierwszym polu powoduje ustawienie jej jako minimalnej daty w drugim oknie, dzięki czemu data początku jest zawsze mniejsza niż data końca.
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=\linewidth]{eksport_zdarzen.png}
+\caption{Okno modalne do eksportu listy zdarzeń}
+\label{fig: eksport}
+\end{center}
+\end{figure}
 
 \newpage
 \section{Testy systemu}
@@ -576,9 +645,16 @@ Bayer M., Declarative API, Dokumentacja SQLAlchemy
 BeagleBoard.org Foundation, Specyfikacja BeagleBone Black
 \url{https://elinux.org/Beagleboard:BeagleBoneBlack}
 
+\bibitem{sql-injection}
+Clarke J., SQL Injection Attacks and Defense, wyd. 2, Syngress, 2012, ISBN 978-1-59749-963-7  
+
 \bibitem{komputer_świat}
 Dziedzic K., Kamera IP w sieci. Stwórz prywatny monitoring
 \url{http://www.komputerswiat.pl/poradniki/sprzet/kamery-internetowe/2015/07/kamera-ip-w-sieci.aspx}
+
+\bibitem{http}
+Fielding R., Reschke J., Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content, RFC7231, IETF, czerwiec 2014, DOI: 10.17487/RFC7231
+\url{https://tools.ietf.org/html/rfc7231}
 
 \bibitem{http-auth}
 Fielding R., Reschke J., Hypertext Transfer Protocol (HTTP/1.1): Authentication, RFC 7235, IETF, czerwiec 2014, DOI: 10.17487/RFC7235.
