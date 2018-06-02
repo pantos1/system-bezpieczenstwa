@@ -107,13 +107,13 @@
 \section{Architektura systemu}
 
 \subsection{Wymagania techniczne i funkcjonalne}
-System bezpieczeństwa powinien łączyć funkcję monitoringu z możliwością kontroli otwarcia drzwi i okien oraz pomiaru warunków środowiskowych. Monitoring powinien być zrealizowany poprzez kamery USB ze względu na ich cenę i dostępność. System powinien być skalowalny i umożliwiać rozbudowę o dodatkowe kamery, co odpowiada np. rozszerzeniu monitoringu o dodatkowe pomieszczenia. Dane zebrane przez system należy udostępnić przez graficzny interfejs użytkownika w postaci strony WWW. Podłączenie systemu do sieci domowej LAN (ang. \textit{Local Area Network}) i wykonanie odpowiednich ustawień w panelu administracyjnym rutera umożliwi dostęp do strony WWW z dowolnego miejsca przez Internet.
+Projektowany system bezpieczeństwa powinien łączyć funkcję monitoringu wizyjnego z możliwością kontroli otwarcia drzwi i okien oraz pomiaru warunków środowiskowych. Monitoring powinien być zrealizowany poprzez kamery USB ze względu na ich atrakcyjną cenę i dostępność. System powinien być skalowalny i umożliwiać rozbudowę o dodatkowe kamery, co odpowiada np. rozszerzeniu monitorowanego obszaru o dodatkowe pomieszczenia. Dane zebrane przez system należy udostępniać przez graficzny interfejs użytkownika w postaci strony WWW. Dołączenie systemu do sieci domowej LAN (ang. \textit{Local Area Network}) i wprowadzenie odpowiednich ustawień w panelu administracyjnym rutera (udostępnianie portów, NAT) umożliwi dostęp do strony WWW systemu z dowolnego miejsca przez Internet.
 
-System powinien być zrealizowany w postaci komputera jednopłytkowego z systemem Linux, na którym będzie działał serwer WWW. Odpowiada on za dostęp do strony WWW i danych zebranych przez system. Kontrolę otwarcia drzwi i okien można zrealizować poprzez czujniki stykowe, które należy podłączyć do wyprowadzeń GPIO. Dostępne na rynku zintegrowane czujniki warunków środowiskowych (np. temperatury i wilgotności) wymagają obsługi magistral (np. I2C czy OneWire). Komputer powinien być wyposażony w gniazda USB, do których będą podłączone kamery. Monitoring przy pomocy kamer nie musi być prowadzony w postaci ciągłego nagrania, które wymaga sporej ilości miejsca w pamięci. Wystarczające będzie okresowe wykonywanie zdjęć oraz dodatkowo wyzwalanie zdjęcia w przypadku otwarcia drzwi lub okna -- otwarcia czujnika stykowego przypisanego do kamery. 
+System powinien być zrealizowany w postaci komputera jednopłytkowego z systemem Linux, na którym będzie działał serwer WWW. Odpowiada on za dostęp do strony WWW i zebranych danych. Kontrolę otwarcia drzwi i okien można zrealizować poprzez czujniki stykowe, które należy podłączyć do wyprowadzeń GPIO komputera. Jako czujniki stykowe będzie można również wykorzystać specjalizowane czujniki dla systemów alarmowych np. czujniki ruchu, zalania wodą, detektory dymu i gazu. Dostępne na rynku zintegrowane czujniki warunków środowiskowych (np. temperatury i wilgotności) wymagają obsługi magistrali (np. I2C czy OneWire). Komputer powinien być wyposażony w gniazda USB, do których będą podłączone kamery. Monitoring przy pomocy kamer nie musi być prowadzony w postaci ciągłego nagrania, które wymaga bardzo dużej pojemności pamięci. Wystarczające będzie okresowe wykonywanie zdjęć oraz dodatkowo wyzwalanie zdjęcia w przypadku otwarcia drzwi lub okna -- zadziałania czujnika stykowego przypisanego do odpowiedniej kamery. Większość funkcji systemu możliwa jest do zrealizowania na prostszej platformie (np. Arduino), jednak jak pokazały ostatnie badania,\cite{arduino-wlamania} jest ona podatna na włamania i ataki sieciowe. Zastosowanie systemu Linux umożliwi osiągnięcie większego bezpieczeństwa i skalowalności systemu. 
 
-Interfejs użytkownika musi prezentować aktualny stan systemu w postaci dostępu do ostatnich wykonanych zdjęć, odczytów czujników środowiskowych oraz stanu czujników stykowych (otwarty/zamknięty). Ponadto użytkownik powinien mieć dostęp do przeszłych zdjęć i pomiarów w postaci archiwum. Historia odczytów systemu powinna być również dostępna w formie eksportowanej listy np. w formacie \textit{csv}. Użytkownik powinien mieć również możliwość dokonania zmian ustawień systemu przez panel administracyjny. Może on umożliwiać np. włączenie wysyłania powiadomień e-mail w przypadku otwarcia czujnika.
+Interfejs użytkownika musi prezentować aktualny stan systemu i umożliwiać dostęp do ostatnio wykonanych zdjęć, odczytów z czujników środowiskowych oraz stanu czujników stykowych (otwarty/zamknięty). Ponadto użytkownik powinien mieć dostęp do przeszłych zdjęć i pomiarów zebranych w archiwum. Historia pomiarów z systemu powinna być również dostępna w formie eksportowanej listy np. w formacie \textit{csv}. Użytkownik powinien mieć również możliwość dokonania zmian ustawień systemu przez panel administracyjny. Może on umożliwiać np. włączenie wysyłania powiadomień e-mail w przypadku otwarcia czujnika.
 
-Dane zebrane przez system z kamer i czujników powinny być więc zapisane w systemie tak, by umożliwić do nich dostęp serwerowi WWW, na którym będzie działać strona WWW. Pomiary wykonywane przez system powinny być zapisywane wraz z datą i godziną ich wykonania. Dostęp do tych danych powinien być niezależny od programu zapisującego wyniki pomiarów i prowadzącego monitoring.
+Dane zebrane w systemie z kamer i czujników powinny być więc zapisane w systemie tak, by umożliwić do nich dostęp dla serwera WWW, na którym będzie działać strona WWW. Pomiary wykonywane przez system powinny być zapisywane wraz z datą i godziną ich wykonania. Dostęp do tych danych powinien być niezależny od programu zapisującego wyniki pomiarów i prowadzącego monitoring.
 
 Podsumowując, wymagania techniczne stojące przed systemem to:
 \begin{itemize}
@@ -123,7 +123,7 @@ Podsumowując, wymagania techniczne stojące przed systemem to:
 \item obsługa wielu kamer USB,
 \item obsługa wielu dwustanowych czujników stykowych poprzez wyprowadzenia GPIO,
 \item obsługa wielu czujników środowiskowych korzystających np. z I2C lub OneWire,
-\item możliwość połączenia z Internetem poprzez Ethernet lub Wi-Fi.
+\item możliwość połączenia z Internetem poprzez sieć Ethernet lub Wi-Fi.
 \end{itemize}
 
 Wymagania funkcjonalne systemu to:
@@ -136,7 +136,7 @@ Wymagania funkcjonalne systemu to:
 \item wywoływanie zdjęcia po otwarciu czujnika.
 \end{itemize}
 
-Na podstawie powyższych wymagań opracowana została architektura systemu, którą jest przedstawiona na rysunku \ref{fig: architektura} i zostanie omówiona w poniższych podrozdziałach.
+Na podstawie powyższych wymagań opracowana została architektura systemu, którą przedstawiono na rysunku \ref{fig: architektura}. Zostanie ona omówiona w dalszych podrozdziałach.
 \begin{figure}[h]
 \includegraphics[width=\linewidth]{architektura.png}
 \caption{Architektura systemu bezpieczeństwa.}
@@ -145,7 +145,7 @@ Na podstawie powyższych wymagań opracowana została architektura systemu, któ
 
 
 \subsection{Przegląd dostępnych platform}
-Jednymi z najbardziej popularnych komputerów jednopłytkowych jest Raspberry Pi rozwijany przez Raspberry Pi Foundation jako narzędzie edukacyjne do nauczania programowania i elektroniki. Wokół tego projektu powstała duża grupa amatorów i entuzjastów dzielących się swoimi projektami. Jednym z konkurentów Raspberry Pi jest BeagleBone rozwijany przez Texas Instruments również zgodnie z filozofią \textit{open-hardware} -- sprzętu o otwartym dostępie do źródła i projektów. Oba komputery oparte są o procesory ARM Cortex w formie \textit{System On Chip} -- układu scalonego zawierającego procesor wraz z układami pamięci, peryferiami i przetwornikami analogowo-cyfrowymi i cyfrowo-analogowymi. Oba komputery umożliwiają zainstalowanie na nich dystrybucji systemu Linux. Najnowszymi modelami w momencie rozpoczęcia projektu (w marcu 2017 roku) były Raspberry Pi Model 3B oraz BeagleBone Black. Porównanie obu komputerów przedstawiono w tabeli \ref{porównanieSBC}.
+Jednym z najbardziej popularnych komputerów jednopłytkowych jest platforma Raspberry Pi rozwijana przez Raspberry Pi Foundation jako narzędzie edukacyjne do nauczania programowania i elektroniki. Wokół tego projektu zebrała się duża grupa amatorów i entuzjastów dzielących się swoimi projektami. Jednym z konkurentów platformy Raspberry Pi jest komputer jednopłytkowy BeagleBone rozwijany przez firmę Texas Instruments, również zgodnie z filozofią \textit{open-hardware} -- sprzętu o otwartym dostępie do źródła i projektów. Oba komputery oparte są o procesory ARM Cortex w formie \textit{System On Chip} -- układu scalonego zawierającego w jednej obudowie procesor wraz z układami pamięci, peryferiami i przetwornikami analogowo-cyfrowymi i cyfrowo-analogowymi. Oba komputery umożliwiają zainstalowanie na nich dystrybucji systemu Linux. Najnowszymi modelami w momencie rozpoczęcia projektu (w marcu 2017 roku) były Raspberry Pi Model 3B oraz BeagleBone Black. Porównanie obu komputerów przedstawiono w tabeli \ref{porównanieSBC}.
 \begin{table}[h]
 \centering
 \begin{tabular}{lll}
@@ -167,12 +167,12 @@ Maksymalny pobór mocy 	 & 3 W             & 2,3 W            \\ \hline
 \label{porównanieSBC}
 \end{table}
 
-Przewagą komputera Raspberry Pi 3B jest szybszy procesor o większej liczbie rdzeni, co pozwala na równoległe wykonywanie większej liczby procesów, oraz większa pojemność pamięci RAM. Ponadto ma on możliwość podłączenia zarówno do sieci przewodowej (Ethernet) jak i bezprzewodowej (WLAN). Może być to przewaga w przypadku, gdyby system miał być zainstalowany z daleka od rutera. Komputer BeagleBone Black ma niższą wartość poboru mocy oraz więcej wyprowadzeń GPIO. Na każdy czujnik stykowy będzie jednak potrzebne jedno wyprowadzenie GPIO oraz podłączenie do masy, zatem 40 wyprowadzeń Raspberry Pi 3B z pewnością będzie wystarczające. Z tych powodów wybrałem platformę Raspberry Pi 3B do projektowanego systemu.
+Przewagą komputera Raspberry Pi 3B jest szybszy procesor o większej liczbie rdzeni, co pozwala na równoległe wykonywanie większej liczby wątków, oraz większa pojemność pamięci RAM. Ponadto ma on możliwość podłączenia zarówno do sieci przewodowej (Ethernet) jak i bezprzewodowej (WLAN). Może być to przewagą w przypadku, gdy system miałby być zainstalowany z daleka od rutera. Komputer BeagleBone Black ma niższą wartość poboru mocy oraz więcej wyprowadzeń GPIO. Na każdy czujnik stykowy będzie jednak potrzebne jedno wyprowadzenie GPIO oraz podłączenie do masy, zatem 40 wyprowadzeń Raspberry Pi 3B z pewnością będzie wystarczające. Z tych powodów o projektowanego systemu wybrano platformę Raspberry Pi 3B.
 
-Wśród dostępnych dystrybucji systemu Linux na Raspberry Pi są m.in. Raspbian (domyślna dystrybucja oparta o Debian) i Ubuntu Mate. W projekcie zostanie użyty system Raspbian, ponieważ jest on uniwersalny i spełnia wszystkie stawiane wymogi -- obsługę wyprowadzeń GPIO, magistrali I2C oraz możliwość działania jako serwer WWW (np. przy użyciu Apache). System Raspbian posiada również interfejs graficzny, co może być przydatną cechą w przypadku, gdyby konieczna była bezpośrednia interwencja administratora systemu z pominięciem stworzonego interfejsu użytkownika.
+Wśród dostępnych dystrybucji systemu Linux na Raspberry Pi są m.in. Raspbian (domyślna dystrybucja oparta o Debian) i Ubuntu Mate. W projekcie zostanie użyty system Raspbian, ponieważ jest on uniwersalny i spełnia wszystkie stawiane wymogi -- obsługę wyprowadzeń GPIO, magistrali I2C oraz możliwość działania jako serwer WWW (np. przy użyciu Apache). System Raspbian posiada również interfejs graficzny, co może być przydatną cechą w przypadku, gdyby konieczna była bezpośrednia interwencja administratora systemu z pominięciem bazującego na stronie WWW interfejsu użytkownika.
 
 \subsection{Czujniki warunków środowiskowych}
-Wymogiem technicznym systemu jest również obsługa czujników środowiskowych. Najważniejszymi parametrami, które należy zmierzyć w warunkach domowych są temperatura i wilgotność względna powietrza. Wpływają one na jakość powietrza w pomieszczeniach oraz na poziom zachorowań wśród przebywających w nich. Badania wykazały związek między wilgotnością względną w domu i pracy oraz liczbą dni spędzonych na zwolnieniu lekarskim. Zbyt niska lub zbyt wysoka wilgotność powietrza w pomieszczeniach prowadzi do zwiększenia przypadków zachorowań na choroby układu oddechowego. \cite{zachorowania} 
+Wymogiem technicznym wobec systemu jest również obsługa czujników warunków środowiskowych. Najważniejszymi parametrami, które należy zmierzyć w warunkach domowych są temperatura i wilgotność względna powietrza. Wpływają one na jakość powietrza w pomieszczeniach, odczuwalny poziom komfortu oraz na poziom zachorowań wśród domowników. Badania wykazały związek między wilgotnością względną w domu i pracy oraz liczbą dni spędzonych na zwolnieniu lekarskim. Zbyt niska lub zbyt wysoka wilgotność powietrza w pomieszczeniach prowadzi do zwiększenia przypadków zachorowań na choroby układu oddechowego\cite{zachorowania}\cite{klimat}. 
 
 Przykładowymi czujnikami temperatury i wilgotności dostępnymi na rynku są Adafruit SHT31, Adafruit Si7021 oraz Grove TH02. Są to czujniki umieszczone na płytkach \textit{breakout-board}, które posiadają wyprowadzenia linii I2C, masy oraz zasilania. Porównanie specyfikacji czujników znajduje się w tabeli \ref{czujniki_temp}.
 
@@ -191,38 +191,38 @@ TH02   & $-$40 -- 85 $^\circ$C         & $\pm$ 0,5 $^\circ$C    & 0 -- 80\% RH  
 \label{czujniki_temp}
 \end{table}
 
-Na podstawie danych przedstawionych w tabeli \ref{czujniki_temp} wybrałem czujnik Si7021 jako użyty w projekcie czujnik środowiskowy. Zapewnia on pomiar temperatury i wilgotności względnej w zakresie wartości panujących w warunkach pokojowych oraz ma najniższą cenę. Przewagą czujnika SHT31 była możliwość zmiany adresu I2C poprzez podłączenie wyprowadzenia do stanu wysokiego lub niskiego. Byłoby to jednak rozwiązanie możliwe do zastosowania przy użyciu tylko dwóch czujnikach w systemie. 
+Na podstawie danych przedstawionych w tabeli \ref{czujniki_temp} wybrano czujnik Si7021 jako użyty w projekcie czujnik środowiskowy. Zapewnia on pomiar temperatury i wilgotności względnej w zakresie wartości panujących w warunkach pokojowych oraz ma najniższą cenę. Przewagą czujnika SHT31 była możliwość zmiany adresu I2C przez podłączenie wyprowadzenia adresowego do stanu wysokiego lub niskiego. Byłoby to jednak rozwiązanie możliwe do zastosowania przy użyciu tylko dwóch czujnikach w systemie. 
 
 \subsection{Czujniki stykowe}
-Magnetyczne czujniki zbliżeniowe mogą być użyte do określenia pozycji drzwi lub okien i tym samym realizować nadzór nad ich stanem. Czujniki te posiadają dwa stany -- zamknięty i otwarty. W systemie zostały użyte czujniki zbliżeniowe MC-38 składające się z kontaktronu i magnesu. Obwód kontaktronu jest domyślnie rozwarty, a po zbliżeniu magnesu następuje jego zamknięcie i przepływ prądu. Wybrałem ten czujnik ze względu na łatwość ewentualnego montażu -- czujnik posiada taśmę samoprzylepną i otwory na śruby montażowe.
+Magnetyczne czujniki zbliżeniowe mogą być użyte do określenia pozycji drzwi lub okien i tym samym realizować nad nimi nadzór. Czujniki te posiadają dwa stany -- zamknięty i otwarty. W systemie zostały użyte czujniki zbliżeniowe MC-38 składające się z kontaktronu i magnesu. Obwód kontaktronu jest domyślnie otwarty, a po zbliżeniu magnesu następuje jego zamknięcie i przepływ prądu. Do realizacji pracy wybrano ten czujnik ze względu na łatwość montażu -- czujnik posiada taśmę samoprzylepną i otwory na śruby montażowe. Zamiast kontaktronów możliwe będzie również dołączenie innych czujników dwustanowych stosowanych w systemach alarmowych np. czujniki ruchu, zalania wodą, detektory dymu i gazu.
 
 \subsection{Kamery cyfrowe}
-Kamery USB zastosowane w systemie mogą pozwolić na realizację domowego monitoringu niedużym kosztem. Ich uniwersalność pozwala również wykorzystać je w innych domowych zastosowaniach np. jako kamerę do rozmów przez komunikatory internetowe takie jak Skype czy Google Hangouts. W projektowanym systemie zadaniem kamer będzie cykliczne wykonywanie zdjęć. Celem powinno być znalezienie złotego środka między jakością zdjęć wykonywanych przez kamery i ich ceną. Jakość powinna być na tyle dobra, by zdjęcie umożliwiło identyfikację ewentualnego intruza. Koszt jest kategorią bardziej subiektywną, ale kamera USB powinna być konkurencyjna cenowo wobec kamer IP, których koszt zaczyna się od ok. 150 zł.\cite{komputer_świat}
+Kamery USB zastosowane w systemie mają pozwolić na realizację domowego monitoringu wizyjnego niedużym kosztem. Ich uniwersalność pozwala również wykorzystać je w innych domowych zastosowaniach np. jako kamerę do rozmów przez komunikatory internetowe takie jak Skype czy Google Hangouts. W projektowanym systemie zadaniem kamer będzie cykliczne wykonywanie zdjęć. Celem powinno być znalezienie złotego środka między jakością zdjęć wykonywanych przez kamery i ich ceną. Jakość powinna być na tyle dobra, by zdjęcie umożliwiło identyfikację ewentualnego intruza. Koszt jest kategorią bardziej subiektywną, ale kamera USB powinna być konkurencyjna cenowo wobec kamer IP. Koszt typowej kamery IP wynosi ok. 400 zł.\cite{komputer_świat}
 
-W systemie zastosowałem dwie kamery z różnego przedziału cenowego. Kamera Titanum Onyx posiada matrycę CMOS, która umożliwia wykonywanie zdjęć o rozdzielczości do 5 megapikseli przy zastosowaniu interpolacji. Co ważne kamera jest kompatybilna z UVC (\textit{USB Video Class}) -- sterownikiem wbudowanym w system Linux. Kamera posiada również przełącznik włączający 3 diody LED, które mogą być przydatne w przypadku zdjęć nocnych. Koszt kamery to ok. 50 zł. Drugą kamerą jest Creative VFO 790, która posiada matrycę wykonującą zdjęcia w rozdzielczości HD 720p (1280x720 pikseli). Jest ona również kompatybilna z UVC. Optyka kamery jest stałoogniskowa w przeciwieństwie do kamery Titanum Onyx. Koszt kamery to ok. 110 zł.
+W systemie zastosowano dwie kamery z różnego przedziału cenowego. Kamera Titanum Onyx posiada matrycę CMOS, która umożliwia wykonywanie zdjęć o rozdzielczości do 5 megapikseli przy zastosowaniu interpolacji. Co ważne, kamera ta jest kompatybilna z UVC (\textit{USB Video Class}) -- sterownikiem wbudowanym w system Linux. Kamera posiada również przełącznik włączający 3 diody LED, które mogą być przydatne w przypadku wykonywania zdjęć nocnych. Koszt tej kamery to ok. 50 zł. Drugą zastosowaną kamerą jest Creative VFO 790, która posiada matrycę wykonującą zdjęcia w rozdzielczości HD 720p (1280x720 pikseli). Jest ona również kompatybilna z UVC. Optyka kamery jest stałoogniskowa w przeciwieństwie do kamery Titanum Onyx. Koszt tej kamery to ok. 110 zł.
 
 \subsection{Projekt części sprzętowej systemu}
-Połączenie między komputerem Raspberry Pi 3B a dołączonymi czujnika zrealizowałem na prototypowej płytce stykowej. Umożliwia ona tworzenie prototypów bez konieczności lutowania połączeń. Połączenie między płytką prototypową a wyprowadzeniami GPIO Raspberry Pi jest wykonane przez ekspander wyprowadzeń ProtoPi Plus.
+Połączenie między komputerem Raspberry Pi 3B a dołączonymi czujnika zrealizowano na prototypowej płytce stykowej. Umożliwia ona tworzenie prostych układów bez konieczności lutowania połączeń. Połączenia między płytką prototypową a wyprowadzeniami GPIO Raspberry Pi są wykonane przez ekspander wyprowadzeń ProtoPi Plus.
 
-W systemie zostały zastosowane czujniki zbliżeniowe magnetyczne MC-38. Kontaktron został podłączony do wyprowadzenia GPIO poprzez wbudowany rezystor ściągający do masy (ang. \textit{pull-down}) oraz napięcia zasilania równego 3,3 V. Gdy kontaktron i magnes są zbliżone, obwód jest zamknięty i na wyprowadzeniu pojawia się wysoki stan. W przypadku oddalenia czujników i otwarcia obwodu na wyprowadzeniu pojawia się stan niski poprzez rezystor ściągający do masy. Na rysunku \ref{fig: kontaktron} został przedstawiony schemat podłączenia czujnika stykowego do platformy Raspberry Pi (z pominięciem ekspandera ProtoPi Plus).
+W systemie zostały zastosowane magnetyczne czujniki zbliżeniowe MC-38. Kontaktron został podłączony do wyprowadzenia GPIO poprzez z użyciem wbudowanego rezystora ściągającego do masy (ang. \textit{pull-down}) oraz napięcia zasilania (3,3 V). Gdy kontaktron i magnes są zbliżone, obwód jest zamknięty i na wyprowadzeniu pojawia się wysoki stan. W przypadku oddalenia czujników i otwarcia obwodu na wyprowadzeniu pojawia się stan niski poprzez rezystor ściągający do masy. Na rysunku \ref{fig: kontaktron} został przedstawiony schemat podłączenia czujnika stykowego do platformy Raspberry Pi (z pominięciem ekspandera ProtoPi Plus).
 \begin{figure}[h]
 \includegraphics[width=0.5\linewidth]{kontaktron.png}
 \includegraphics[width=0.5\linewidth]{kontaktron_zamkniety.png}
-\caption{Schemat podłączenia czujnika MC-38 w przypadku oddalonego (lewo) i zbliżonego(prawo) magnesu.}
+\caption{Schemat podłączenia czujnika MC-38 w przypadku oddalonego (a) i zbliżonego (b) magnesu.}
 \label{fig: kontaktron}
 \end{figure}
 
-Wymogiem systemu jest również obsługa wielu kamer i czujników, w tym czujników temperatury i wilgotności poprzez magistralę I2C. Adres I2C wybranych do projektu czujników Si 7021 to 0x40. Nie mają one możliwości programistycznej lub sprzętowej zmiany adresu. Oznacza to, że do jednej magistrali mógłby być podłączony bezpośrednio tylko jeden czujnik. Podłączenie większej liczby czujników o tym samym adresie doprowadziłoby do sytuacji, w której nie można jednoznacznie określić, z którego czujnika został odczytany wynik pomiaru. Raspberry Pi3 B posiada możliwości obsługi dwóch magistral I2C. Oznaczałoby to jednak, że liczba czujników temperatury w systemie byłaby mniejsza niż kamer i czujników stykowych. Innym rozwiązaniem tego problemu jest zastosowanie multipleksera I2C. Multiplekser zadziała jak przełącznik, który pozwoli na komunikację z jednym czujnikiem naraz. Przykładem takiego urządzenia jest TCA 9548A firmy Adafruit. Pozwala on na podłączenie do 8 urządzeń korzystających z magistrali I2C.
+Wymogiem wobec systemu jest również obsługa wielu kamer i czujników, w tym czujników temperatury i wilgotności poprzez magistralę I2C. Adres I2C wybranych do projektu czujników Si 7021 jest stały i wynosi 0x40. Nie mają one możliwości programowej lub sprzętowej zmiany adresu. Oznacza to, że do jednej magistrali mógłby być podłączony bezpośrednio tylko jeden czujnik. Podłączenie większej liczby czujników o tym samym adresie doprowadziłoby do kolizji i sytuacji, w której nie można jednoznacznie określić, z którego czujnika został odczytany wynik pomiaru. Raspberry Pi3 B posiada możliwości obsługi dwóch magistral I2C. Oznaczałoby to jednak, że liczba czujników temperatury w systemie byłaby mniejsza niż kamer i czujników stykowych. Innym rozwiązaniem tego problemu jest zastosowanie multipleksera I2C. Multiplekser zadziała jak przełącznik, który pozwoli na komunikację z jednym czujnikiem wybranym w danej chwili. Przykładem takiego układu jest TCA 9548A firmy Adafruit. Pozwala on na podłączenie do 8 urządzeń korzystających ze wspólnej magistrali I2C.
 
-Multiplekser TCA 9548A jest podłączony do wyprowadzeń GPIO2 i GPIO 3, które mogą być aktywowane jako odpowiednio linia SDA i SCL magistrali I2C. Ponadto wyprowadzenia GPIO2 i GPIO3 są podłączone przez wbudowane rezystory podciągające do napięcia zasilania 3,3 V\cite{rpi_schematic}, co jest zgodne z zaleceniami podanymi w karcie katalogowej.\cite{multiplekser} Multiplekser jest zasilany z wyprowadzenia 3,3 V platformy Raspberry Pi i podłączony do jej masy. Wyprowadzenia adresowe A2, A1 i A0 są podłączone do masy, co oznacza, że adres multipleksera to 0x70. Nieużywane wyprowadzenie $\overline{\mathsf{RESET}}$ jest z kolei podłączone do zasilania poprzez rezystor podciągajacy, który ogranicza pobór prądu.
+Multiplekser TCA 9548A jest podłączony do wyprowadzeń GPIO2 i GPIO 3 w Raspberry Pi, które mogą być aktywowane jako odpowiednio: linia SDA i SCL magistrali I2C. Ponadto wyprowadzenia GPIO2 i GPIO3 są podłączone przez wbudowane rezystory podciągające do napięcia zasilania 3,3 V\cite{rpi_schematic}, co jest zgodne z zaleceniami podanymi w karcie katalogowej multipleksera.\cite{multiplekser} Multiplekser jest zasilany z wyprowadzenia 3,3 V platformy Raspberry Pi i podłączony do jej masy. Wyprowadzenia adresowe A2, A1 i A0 są podłączone do masy, co oznacza, że adres I2C multipleksera to 0x70. Nieużywane wyprowadzenie $\overline{\mathsf{RESET}}$ jest z kolei podłączone do zasilania poprzez rezystor podciągajacy, który ogranicza pobór prądu.
 
-Czujniki Si7021 są przyłączone do kanałów SDx i SCx, gdzie x jest numerem kanału od 0 do 7. W karcie katalogowej czujnika podany jest typowy schemat przyłączenia, w którym użyte są rezystory podciągające 10 k\textOmega\hspace{0.2em} linie SDA i SCL do napięcia zasilania. Producent multipleksera TCA 9548A podaje z kolei w karcie katalogowej wzór \ref{pullup} pozwalający na wyznaczenie minimalnej wartości rezystorów podciągających.\cite{multiplekser} Napięcie $\mathsf{V_{DPU}}$ jest napięciem linii sygnałowych, które jest równe napięciu zasilania $\mathsf{V_{CC}}$. Napięcie $\mathsf{V_{OL(max)}}$ to maksymalne napięcie wyjściowe, a prąd $\mathsf{I_{OL}}$ to prąd wyjściowy czujnika. Obie wartości są podane w karcie katalogowej czujnika Si7021.\cite{czujnik_temp}
+Czujniki Si7021 są przyłączone do kanałów SDx i SCx, gdzie x jest numerem kanału od 0 do 7. W karcie katalogowej czujnika podany jest typowy schemat przyłączenia, w którym użyte są rezystory 10 k\textOmega\hspace{0.2em} podciągające  linie SDA i SCL do napięcia zasilania. Producent multipleksera TCA 9548A podaje z kolei w karcie katalogowej wzór \ref{pullup} pozwalający na wyznaczenie minimalnej wartości rezystorów podciągających.\cite{multiplekser} Napięcie $\mathsf{V_{DPU}}$ jest napięciem linii sygnałowych, które jest równe napięciu zasilania $\mathsf{V_{CC}}$. Napięcie $\mathsf{V_{OL(max)}}$ to maksymalne napięcie wyjściowe, a prąd $\mathsf{I_{OL}}$ to prąd wyjściowy czujnika. Obie wartości są podane w karcie katalogowej czujnika Si7021.\cite{czujnik_temp}
 
 \begin{equation} \label{pullup}
 R_{p(min)} = \frac{V_{DPU} - V_{OL(max)}}{I_{OL}} = \frac{3,3 V - 0,6 V}{2,5 mA} = 1,08 k\Omega  
 \end{equation} 
 
-Im większa rezystancja rezystora podciągającego tym mniejszy pobór prądu. Rezystor podciągający tworzy wraz z pojemnością magistrali $\mathsf{C_{b}}$ filtr dolnoprzepustowy RC. Jego stała czasowa nie może być na tyle duża, że zbocza zostaną rozciągnięte w czasie tak, że ich czas narastania przekroczy wymagania czasowe magistrali. Pojemność magistrali jest trudna do zmierzenia, więc rezystancja powinna być zbliżona do minimalnej wymaganej. W ramach projektowanego systemu użyte zostały rezystory podciągające 2,2 k\textOmega. Rysunek \ref{fig: i2c_schemat} przedstawia schemat połączeń między komputerem Raspberry Pi a multiplekserem TCA 9548A i dwoma czujnikami Si7021. Przedstawiono dwa czujniki poglądowo -- system może być powiększony o dodatkowe czujniki.
+Im większa rezystancja rezystora podciągającego tym mniejszy pobór prądu. Rezystor podciągający tworzy jednak wraz z pojemnością magistrali $\mathsf{C_{b}}$ filtr dolnoprzepustowy RC. W przypadku długich przewodów połączeniowych jego stała czasowa nie może być na tyle duża, że zbocza zostaną rozciągnięte w czasie tak, że ich czas narastania przekroczy wymagania czasowe magistrali. Pojemność magistrali jest trudna do przewidzenia, więc rezystancja powinna być zbliżona do minimalnej wymaganej. W ramach projektowanego systemu użyte zostały rezystory podciągające 2,2 k\textOmega. Rysunek \ref{fig: i2c_schemat} przedstawia schemat połączeń między komputerem Raspberry Pi a multiplekserem TCA 9548A i dwoma czujnikami Si7021. Przedstawiono poglądowo tylko dwa czujniki, ale system może być rozbudowany o dodatkowe czujniki. Przetestowano działanie systemu przy maksymalnie 4 czujnikach, jednak multiplekser posiada w sumie 8 kanałów, do których można dołączyć urządzenia komunikujące się przy użyciu magistrali I2C.
 
 \begin{figure}[h]
 \includegraphics[width=\linewidth]{i2c.png}
@@ -230,7 +230,7 @@ Im większa rezystancja rezystora podciągającego tym mniejszy pobór prądu. R
 \label{fig: i2c_schemat}
 \end{figure}
 
-Podłączenie większej liczby kamer USB do Raspberry Pi może spowodować chwilowe przekroczenie dopuszczalnego poboru mocy z gniazd USB. Rozwiązaniem tego problemu jest użycie rozgałęziacza (ang. \textit{hub}) USB z zewnętrznym zasilaniem. Zwiększa on jednocześnie zasięg kamer podłączonych przewodowo kamer. Należy uważać jednak, by rozgałęziacz nie zasilał wstecznie (ang. \textit{backfeed}) komputera Raspberry Pi, ponieważ grozi to uszkodzeniem systemu. Z tego powodu w projekcie użyłem dedykowanego rozgałęziacza firmy The Pi Hut.
+Podłączenie większej liczby kamer USB do portów Raspberry Pi może spowodować chwilowe przekroczenie dopuszczalnego poboru mocy z gniazd USB. Rozwiązaniem tego problemu jest użycie aktywnego rozgałęziacza (ang. \textit{hub}) USB z zewnętrznym zasilaniem. Zwiększa on jednocześnie zasięg podłączonych przewodowo kamer. Należy uważać jednak, by rozgałęziacz nie zasilał wstecznie (ang. \textit{backfeed}) komputera Raspberry Pi, ponieważ grozi to uszkodzeniem układu. Z tego powodu w projekcie użyto dedykowanego rozgałęziacza firmy The Pi Hut.
 
 \newpage
 \section{Obsługa kamer i czujników}
@@ -455,14 +455,14 @@ pomiar_instance = create(self.session, Pomiary, **pomiar)
 \section{Strona i serwer WWW}
 
 \subsection{Serwer WWW}
-Wymogiem systemu jest umożliwienie użytkownikowi dostępu do zebranych danych przez stronę WWW. Konieczny jest zatem serwer HTTP, na którym będzie umieszczona strona. Jednym z najpopularniejszych środowisk do prowadzenia serwerów WWW jest Apache. Jest on dostępny w wersji dla systemu Raspbian, który działa na Raspberry Pi. Umieszczona na serwerze strona będzie komunikowała się z serwerem poprzez żądania HTTP. Szkielet strony w postaci pliku HTML będzie wypełniony danymi zebranymi przez kamery i czujniki po zrealizowaniu żądań wysyłanych asynchronicznie (przy użyciu techniki AJAX) do serwera. Za obsługę żądań po stronie serwerowej będą odpowiedzialne mikrousługi w postaci skryptów w języku PHP. Skrypty łączą się z bazą danych, w której są przechowywane dane zebrane z kamer i czujników. Następnie zwracają dane w odpowiedzi na żądania klienta. Język PHP został wybrany do obsługi żądań po stronie serwerowej, ponieważ jest dobrze zintegrowany z serwerem Apache i jest jedną z najbardziej popularnych technologii na serwerach WWW.
+Wymogiem wobec systemu jest umożliwienie użytkownikowi dostępu do zebranych danych przez stronę WWW. Konieczny jest zatem serwer HTTP, na którym będzie umieszczona strona. Jednym z najpopularniejszych środowisk do prowadzenia serwerów WWW jest Apache. Jest on dostępny w wersji dla systemu Raspbian, który działa na platformie Raspberry Pi w zaprojektowanym systemie. Umieszczona na serwerze strona będzie komunikowała się z serwerem przez żądania HTTP. Szkielet strony w postaci pliku HTML będzie wypełniony danymi zebranymi przez kamery i czujniki po zrealizowaniu żądań wysyłanych asynchronicznie (przy użyciu techniki AJAX) do serwera. Za obsługę żądań po stronie serwerowej będą odpowiedzialne mikrousługi w postaci skryptów w języku PHP. Skrypty te łączą się z bazą danych, w której są przechowywane dane zebrane z kamer i czujników. Następnie zwracają wyniki zapytań do bazy w odpowiedzi na żądanie klienta. Język PHP został wybrany do obsługi żądań po stronie serwerowej, ponieważ jest dobrze zintegrowany z serwerem Apache i jest jedną z najbardziej popularnych technologii na serwerach WWW.
 
-Dostęp do danych prezentowanych w interfejsie powinien być zabezpieczony. Autoryzacja użytkownika na stronie została wykonana w formie uwierzytelnienia prostego (ang. \textit{basic authentication}). Wymaga ono jedynie stworzenia na serwerze pliku z hasłem przy użyciu narzędzia \texttt{htpasswd} będącego częścią pakietu Apache. Plik z hasłem jest przechowywany poza folderem, w którym są przechowywane pliki strony internetowej, dzięki czemu jest poza zasięgiem ewentualnego ataku. Hasło przechowywane jest w formie 128-bitowego skrótu (ang. \textit{hash}) stworzonego przy pomocy funkcji skrótu MD5.\cite{apache-password} Dzięki temu hasło nie jest przechowywane w formie prostego tekstu, który mogłyby od razu odczytany w wypadku zdobycia dostępu do komputera Raspberry Pi przez niepożądaną osobę. Z przesłanego przez użytkownika hasła również tworzony jest skrót, który jest porównywany ze skrótem hasła przechowywanym w pliku. Jeśli skróty są równe, oznacza to, że przesłane hasło jest poprawne. Komunikacja między serwerem a klientem odbywa się w formie nieszyfrowanej HTTP, przez co klient wysyła swoje hasło i login niezaszyfrowane w nagłówku żądania HTTP.\cite{http-auth} Tym samym osoba podsłuchująca komunikację mogłaby poznać dane logowania. Jest to słabość zabezpieczeń systemu w obecnej postaci, którą należałoby w przyszłości wyeliminować, używając szyfrowania SSL w komunikacji przy użyciu protokołu HTTP. Dodatkowym usprawnieniem byłoby użycie funkcji skrótu z rodziny SHA-2 lub SHA-3 do wygenerowania skrótów haseł przechowywanych na serwerze. Są one w tej chwili uważane za niemożliwe do złamania.
+Dostęp do prezentowanych danych powinien być zabezpieczony. Autoryzacja użytkownika na stronie została wykonana w formie uwierzytelnienia prostego (ang. \textit{basic authentication}). Wymaga ono jedynie stworzenia na serwerze pliku z hasłem przy użyciu narzędzia \texttt{htpasswd} będącego częścią pakietu Apache. Plik z hasłem jest przechowywany poza folderem, w którym są przechowywane pliki strony internetowej, dzięki czemu jest poza zasięgiem ewentualnego ataku. Hasło przechowywane jest w formie 128-bitowego skrótu (ang. \textit{hash}) stworzonego przy pomocy funkcji skrótu MD5.\cite{apache-password} Dzięki temu hasło nie jest przechowywane w formie prostego tekstu, który mogłyby od razu odczytany w wypadku zdobycia dostępu do pliku przez niepożądaną osobę. Z przesłanego przez użytkownika hasła również tworzony jest skrót, który jest porównywany ze skrótem hasła przechowywanym w pliku. Jeśli skróty są równe, oznacza to, że przesłane hasło jest poprawne. Komunikacja między serwerem a klientem odbywa się w formie nieszyfrowanej HTTP, przez co klient wysyła swoje hasło i login niezaszyfrowane w nagłówku żądania HTTP.\cite{http-auth} Tym samym osoba podsłuchująca komunikację mogłaby poznać dane logowania. Jest to słabość zabezpieczeń systemu w obecnej postaci, którą należałoby w przyszłości wyeliminować, używając szyfrowania SSL w komunikacji przy użyciu protokołu HTTP. Innym usprawnieniem byłoby użycie funkcji skrótu z rodziny SHA-2 lub SHA-3 do generowania skrótów haseł przechowywanych na serwerze. Są one w tej chwili uważane za niemożliwe do złamania.
  
 \subsection{Żądania HTTP i ich obsługa -- technika AJAX}
-Po pozytywnym uwierzytelnieniu użytkownika w systemie udostępniony jest plik \texttt{index.html} Zawiera on szkielet strony oraz dołączone skrypty JavaScript w tym skrypt \texttt{main.js}, który zawiera funkcje realizujące żądania HTTP. Służą one do pobierania danych z systemu oraz wprowadzania ustawień dokonanych przez użytkownika. Wykorzystania została do tego technika AJAX (ang. \textit{Asynchronous JavaScript and XML}). Jest to technika tworzenia aplikacji internetowych, w której żądania są wykonywane asynchronicznie. Technika ta jest oparta o architekturę serwer-klient, w której rolę klienta pełni przeglądarka. Po wysłaniu żądania przeglądarka kontynuuje działanie, a po odebraniu danych przetwarza je. Dzięki temu dane mogą być odświeżane na stronie bez konieczności jej przeładowania. To bardzo przydatna cecha, która pozwala odświeżać dane w tle tak, że użytkownik zawsze obserwuje aktualny stan systemu.
+Po pozytywnym uwierzytelnieniu użytkownika w systemie udostępniony jest plik \texttt{index.html}. Zawiera on szkielet strony oraz dołączone skrypty JavaScript w tym skrypt \texttt{main.js}, który zawiera funkcje realizujące żądania HTTP. Służą one do pobierania danych z systemu oraz wprowadzania ustawień dokonanych przez użytkownika. Wykorzystania została do tego technika AJAX (ang. \textit{Asynchronous JavaScript and XML}). Jest to technika tworzenia aplikacji internetowych, w której żądania są wykonywane asynchronicznie. Technika ta jest oparta o architekturę serwer-klient, w której rolę klienta pełni przeglądarka. Po wysłaniu żądania przeglądarka kontynuuje działanie, a w tym czasie serwer realizuje żądanie. Po zakończeniu obsługi żądania serwer wysyła odpowiedź do przeglądarki, która odbiera dane i przetwarza je. Dzięki temu treść strony może być odświeżana bez konieczności jej przeładowywania. Jest to przydatne do odświeżania danych w tle tak, by użytkownik obserwował aktualny stan systemu.
 
-Do przygotowania żądań wykorzystywana jest funkcja \texttt{\$.ajax()} z biblioteki jQuery. Przygotowuje ona obiekt \texttt{XMLHTTPRequest}, który reprezentuje żądanie HTTP. Funkcja pozwala określić adres URL, do którego ma być skierowane żądanie, typ żądania (GET, POST, DELETE itp.), dołączone dane oraz pozostałe pola odpowiadające nagłówkom protokołu HTTP. Żądania te będą kierowane do dedykowanych programów w języku PHP działających na serwerze WWW. Wykonują one zapytania do bazy danych i zwracają ich wyniki lub dokonują wpisów do niej. Działanie poszczególnych skryptów zostanie omówione w poniższych podrozdziałach.
+Do przygotowania żądań HTTP wykorzystywana jest funkcja \texttt{\$.ajax()} z biblioteki jQuery. Przygotowuje ona obiekt \texttt{XMLHTTPRequest}, reprezentujący żądanie HTTP. Funkcja pozwala również określić adres URL, do którego ma być skierowane żądanie, typ żądania (GET, POST, DELETE itp.), dołączone dane oraz pozostałe pola odpowiadające nagłówkom protokołu HTTP. Żądania te będą kierowane do dedykowanych programów w języku PHP działających na serwerze WWW. Wykonują one zapytania do bazy danych i zwracają ich wyniki lub dokonują wpisów do niej. Działanie poszczególnych skryptów zostanie omówione w dalszych podrozdziałach.
 
 \subsubsection{Strona główna i archiwum}
 Podstawowym żądaniem wywoływanym przez funkcję \texttt{main.js} jest żądanie pobrania aktualnego stanu systemu. Jest ono wywoływane w funkcji \texttt{main()} przez funkcję \texttt{getData()}:
@@ -481,7 +481,7 @@ Po otrzymaniu żądania program \texttt{get{\_}data.php} odczytuje ze zmiennej \
 \begin{lstlisting} [language=PHP]
 $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
 \end{lstlisting}
-Zmienna \texttt{\$conn} reprezentująca połączenie z bazą danych jest użyta do wykonania zapytania o wszystkie wpisy z tabeli \texttt{kamery}. Jeśli parametr \texttt{q} jest pusty, to dla każdej kamery jest wykonywane zapytanie do tabeli \texttt{pomiary} o zbiór ostatnich wykonanych pomiarów:
+Zmienna \texttt{\$conn} reprezentująca połączenie z bazą danych jest użyta do wykonania zapytania o wszystkie wpisy z tabeli \texttt{kamery}. Jeśli parametr \texttt{q} jest pusty, to dla każdej kamery jest wykonywane zapytanie do tabeli \texttt{pomiary} o ostatnio wykonany wpis:
 \begin{lstlisting} [language=PHP]
 $stmt = $conn->query("
 SELECT *
@@ -491,9 +491,9 @@ GROUP BY pomiary.id_pomiaru
 ORDER BY pomiary.id_pomiaru DESC LIMIT 1
 ");
 \end{lstlisting}
-Wynik tego zapytania jest zapisywany w tablicy pod indeksem równym unikalnemu identyfikatorowi kamery. Po dokonaniu zapytań dla wszystkich kamer istniejących w systemie, program zwraca odpowiedź w formie JSON (ang. \textit{JavaScript Object Notation}). Jest to jeden z powszechnie stosowanych formatów tekstowej wymiany danych. W nagłówku odpowiedzi należy przekazać informację o typie MIME przekazywanych danych\cite{mime2} -- \texttt{Content-Type: application/json}. Następnie dane są zakodowane do postaci JSON przy użyciu funkcji \texttt{json{\_}encode} i zwrócone przy pomocy funkcji \texttt{echo}.
+Wynik tego zapytania jest zapisywany w tablicy pod indeksem równym unikalnemu identyfikatorowi kamery. Po dokonaniu zapytań dla wszystkich kamer istniejących w systemie, program zwraca odpowiedź w formie JSON (ang. \textit{JavaScript Object Notation}). Jest to jeden z powszechnie stosowanych formatów tekstowej wymiany danych. W nagłówku odpowiedzi należy przekazać informację o typie MIME przekazywanych danych\cite{mime2} -- \texttt{Content-Type: \linebreak application/json}. Następnie dane są kodowane do postaci JSON przy użyciu funkcji \linebreak\texttt{json{\_}encode} i zwrócone przez funkcję \texttt{echo}.
 
-Zwrócone dane można obsłużyć po stronie klienta (przeglądarki) na kilka sposobów. Jednym z najnowszych sposobów dostępnych w wersji języka JavaScript ECMAScript 2017 jest składnia \texttt{async/await}. Jest ona obsługiwana przez większość współczesnych przeglądarek w najnowszej wersji.\cite{async} Pozwala ona na wykonywanie asynchronicznego kodu w sposób przypominający tradycyjne, sekwencyjne działanie. Zaletą takiego rozwiązania jest poprawienie czytelności kodu. 
+Zwrócone dane można obsłużyć po stronie klienta (przeglądarki) na kilka sposobów. Jedną z najnowszych metod dostępnych w wersji języka JavaScript ECMAScript 2017 jest składnia \texttt{async/await}. Jest ona obsługiwana przez większość współczesnych przeglądarek w najnowszej wersji.\cite{async} Pozwala ona na zapis asynchronicznego kodu w sposób przypominający tradycyjny, sekwencyjny. Zaletą takiego rozwiązania jest poprawienie czytelności kodu. 
 
 Definicja funkcji działającej w sposób asynchroniczny musi być poprzedzona słowem kluczowym \texttt{async}. W ciele funkcji można wówczas wywoływać funkcje zwracające obiekty Promise ze słowem kluczowym \texttt{await}. Powoduje to wstrzymanie działania funkcji do momentu rozwiązania obietnicy:
 \begin{lstlisting} [language=JavaScript]
@@ -519,7 +519,7 @@ FROM zdjecia NATURAL JOIN pomiary NATURAL JOIN stany NATURAL JOIN odczyty
 WHERE zdjecia.id_kamery = $id_kamery
 ");
 \end{lstlisting}
-Następnie dane są zapisywane w formie JSON i zwracane do klienta przez funkcję \texttt{echo}. Po stronie przeglądarki obiekt \texttt{Promise} zwracany przez funkcję \texttt{getAllData()} również jest obsługiwany przy pomocy składni \texttt{await/async}. Po pozytywnym zakończeniu pobierania danych, tworzony jest widok archiwum.
+Następnie dane są zapisywane w formie JSON i zwracane do klienta przez funkcję \texttt{echo}. Po stronie przeglądarki obiekt \texttt{Promise} zwracany przez funkcję \texttt{getAllData()} również jest obsługiwany przy pomocy składni \texttt{await/async}. Po pozytywnym zakończeniu pobierania danych tworzony jest widok archiwum.
 
 \subsubsection{Ustawienia}
 Przez stronę WWW użytkownik ma również dostęp do panelu administracyjnego pozwalającego na zmianę ustawień. Dostępne ustawienia to:
@@ -529,14 +529,14 @@ Przez stronę WWW użytkownik ma również dostęp do panelu administracyjnego p
 \item zmiana częstotliwości wykonywania zdjęć i pomiarów.
 \end{itemize}
 
-Po dokonaniu zmian w formularzu i zapisaniu zmian skrypt \texttt{main.js} zapisuje dane ze wszystkich elementów typu \texttt{form}. Wykorzystywana jest przy tym funkcja \texttt{serializeArray()} z biblioteki jQuery. Zapisuje ona dane z formularza do tablicy obiektów o postaci: \texttt{\{name: <Nazwa ustawienia>, value: <Wartość ustawienia>\}}. W przypadku formularzy z danymi dotyczącymi ustawień nazw urządzeń i częstotliwości pomiarów obiekty te zostaną przekształcone do postaci: \texttt{\{<Nazwa ustawienia>: <Wartość ustawienia>\}}. Jest ona łatwiejsza do parsowania po stronie serwerowej, ponieważ od razu łączy nazwę kolumny z wartością, która ma być dla niej ustawiona. Wykorzystana do tego zostanie wbudowana funkcja obiektu \texttt{Array} -- \texttt{reduce()}:
+Po dokonaniu zmian w formularzu i zapisaniu zmian skrypt \texttt{main.js} zapisuje dane ze wszystkich elementów HTML typu \texttt{form}. Wykorzystywana jest przy tym funkcja \linebreak \texttt{serializeArray()} z biblioteki jQuery. Zapisuje ona dane z formularza do tablicy obiektów o postaci: \texttt{\{name: <Nazwa ustawienia>, value: <Wartość ustawienia>\}}. W przypadku formularzy z danymi dotyczącymi ustawień nazw urządzeń i częstotliwości pomiarów obiekty te zostaną przekształcone do postaci: \texttt{\{<Nazwa ustawienia>: <Wartość ustawienia>\}}. Jest ona łatwiejsza do parsowania po stronie serwerowej, ponieważ bezpośrednio łączy nazwę kolumny z wartością, która ma być dla niej ustawiona. Wykorzystana do tego zostanie wbudowana funkcja obiektu \texttt{Array} -- \texttt{reduce()}:
 \begin{lstlisting}[language=JavaScript]
 const data = $(element).serializeArray().reduce((a, x) => {
 	a[x.name] = x.value;
 	return a;
 }, {});
 \end{lstlisting}
-Pierwszym argumentem funkcji \texttt{reduce()} jest anonimowa funkcja wywołana przy pomocy wyrażenia funkcji strzałkowej (\texttt{=>}), która jest wywołana dla każdego elementu tablicy. Wykorzystuje ona dwa argumenty: tablicę, która ma być spłaszczona oraz aktualną jej wartość. Wartość ustawienia jest zapisywana przy kluczu ją opisującym, a wynik zapisywany jest w nowym obiekcie podanym jako drugi argument funkcji -- \texttt{\{\}}. W ten sposób dane są zapisane w formie JSON, a następnie zamienione w ciąg znaków (\texttt{string}).
+Pierwszym argumentem funkcji \texttt{reduce()} jest anonimowa funkcja wywołana przy pomocy wyrażenia funkcji strzałkowej (\texttt{=>}). Jest ona wywoływana dla każdego elementu tablicy i wykorzystuje dwa argumenty: tablicę, która ma być spłaszczona (\texttt{a}) oraz aktualny element tablicy (\texttt{x}). Wartość ustawienia jest zapisywana przy kluczu ją opisującym, a wynik działania funkcji zapisywany jest w nowym obiekcie podanym jako drugi argument funkcji -- \texttt{\{\}}. W ten sposób dane są zapisane w formie JSON. Przed dołączeniem do ciała funkcji muszą one być zmienione z obiektu do postaci ciągu znaków (\texttt{string}).
 
 Każde z wymienionych wyżej ustawień posiada osobną funkcję przygotowującą żądanie typu POST do serwera. Jest to typ żądania HTTP używany do przesyłania danych z formularzy.\cite{http} Wynika to z tego, że każde z tych danych jest inaczej przetwarzane po stronie serwera. Dla ustawień e-mail jest to funkcja \texttt{updateSettings()}. Wysyła ona żądanie typu POST do mikrousługi \texttt{update{\_}settings.php}. Program ten zaczyna od zdekodowania przesłanych danych w formie JSON do tablicy:
 \begin{lstlisting}[language=PHP]
@@ -548,7 +548,7 @@ UPDATE ustawienia
 SET wartosc=:wartosc
 WHERE klucz=:klucz
 \end{lstlisting}
-, gdzie \texttt{:wartosc} oraz \texttt{:klucz} zostaną uzupełnione odpowiednimi danymi w momencie wykonywania zapytania przez funkcję \texttt{execute()}. Użycie parametryzowanych zapytań zabezpiecza system przed atakami typu \textit{SQL Injection}. Polegają one na umieszczeniu np. w treści formularza innego zapytania języka SQL, które umieszczone bezpośrednio w treści zapytania mogłoby narazić bazę danych np. na usunięcie którejś z tabel.\cite{sql-injection}
+gdzie \texttt{:wartosc} oraz \texttt{:klucz} zostaną uzupełnione odpowiednimi danymi w momencie wykonywania zapytania przez funkcję \texttt{execute()}. Zastosowanie tej techniki -- parametryzowanych zapytań -- zabezpiecza system przed atakami typu \textit{SQL Injection}. Polegają one na umieszczeniu np. w treści formularza zapytania języka SQL, które umieszczone bezpośrednio w treści zapytania mogłoby narazić bazę danych np. na usunięcie którejś z tabel.\cite{sql-injection}
 
 Informacje o zmianie nazw urządzeń są przesyłane w postaci żądania HTTP typu POST przez funkcję \texttt{updateNames()} do mikrousługi \texttt{update{\_}names.php}. Dla każdej kamery i przypisanych do niej czujników jest wysyłane osobne żądanie zawierające wprowadzone nazwy oraz identyfikator kamery. Program \texttt{update{\_}names.php} po zdekodowaniu przesłanych danych wykonuje zapytanie do bazy danych o identyfikatory czujników, które są przypisane do kamery o przesłanym identyfikatorze. Następnie dla każdego urządzenia następuje aktualizacja nazw, jeśli przesłany ciąg znaków nie jest pusty. W tym przypadku również użyto parametryzowanych zapytań.
 
@@ -564,10 +564,19 @@ WHERE
 id_kamery = :id_kamery
 \end{lstlisting}
 
-\subsubsection{Eksport zdarzeń}
-Wymagania systemu mówią również o możliwości eksportu listy zdarzeń -- stanów systemu do pliku w formacie \texttt{csv}. Wysłanie żądania pobrania pliku jest realizowanie inaczej niż w opisanej wyżej technice AJAX. Zostaje otwarte nowe okno przeglądarki, którego adres URL jest ustawiony jako \texttt{export{\_}events.php?start=<Data początku>{\&}end=<Data końca>}. Użytkownik może wybrać w interfejsie przedział dat, dla których mają być wyeksportowane zdarzenia. Są one umieszczane jako wartości parametrów \texttt{start} i \texttt{end}. Okno to jest puste i służy jedynie do wymuszenia otwarcia okna dialogowego do zapisu pliku, o który prosi użytkownik.
+Każde z wykonywanych żądań zwraca obiekt \texttt{Promise}, który jest umieszczany na liście. Po umieszczeniu wszystkich obiektów liście wywoływana jest metoda \texttt{Promise.all()}. Czeka ona na rozwiązanie wszystkich obiektów \texttt{Promise}. Jeśli wszystkie zakończą się powodzeniem, wykonywana jest przekazana w pierwszym argumencie funkcja. Wyświetla ona powiadomienie o sukcesie aktualizacji ustawień. Jeśli jednak przynajmniej jedno żądanie zakończy się niepowodzeniem, wykonywana jest funkcja wyświetlająca powiadomienie o błędzie.
 
-Otwarcie nowego okna w przeglądarce z adresem URL programu \texttt{export{\_}events.php} powoduje wywołanie jego działania po stronie serwerowej. Program pobiera wartości parametrów \texttt{start} i \texttt{end}, a następnie wykonuje zapytanie do bazy danych o pierwszy i ostatni rekord z tabeli \texttt{pomiary}. Jeśli użytkownik nie wybrał daty początku lub końca zakresu, dla którego mają być eksportowane zdarzenia, zostaną one domyślnie ustawione odpowiednio jako data pierwszego lub ostatniego wpisu w bazie danych. Takie podejście pozwala na eksport wszystkich zdarzeń poprzez pozostawienie wartości parametrów \texttt{start} i \texttt{end} pustych.
+\subsubsection{Eksport zdarzeń}
+Wymagania systemu mówią również o możliwości eksportu listy zdarzeń (stanów systemu) do pliku w formacie \texttt{csv}. Wysłanie żądania pobrania pliku jest realizowanie inaczej niż w opisanej wyżej technice AJAX. Zostaje otwarte nowe okno przeglądarki, którego adres URL jest ustawiony jako \texttt{export{\_}events.php?start=<Data początku>{\&}end=<Data końca>}. Użytkownik może wybrać w interfejsie przedział dat, dla których mają być wyeksportowane zdarzenia. Są one umieszczane jako wartości parametrów \texttt{start} i \texttt{end}. Otwarte okno jest puste oraz zamyka się zaraz po otwarciu okna dialogowego do zapisu pliku, o który prosi użytkownik:
+\begin{lstlisting}[language=JavaScript]
+let url = 'export_events.php?start=';
+if (startDate != null) url = url + startDateString;
+url = url + '&end=';
+if (endDate != null) url = url + endDateString;
+window.open(url, '_blank');
+\end{lstlisting}
+
+Otwarcie nowego okna w przeglądarce z adresem URL programu \texttt{export{\_}events.php} powoduje wywołanie jego działania po stronie serwerowej. Program pobiera wartości parametrów URL \texttt{start} i \texttt{end}, a następnie wykonuje zapytanie do bazy danych o pierwszy i ostatni rekord z tabeli \texttt{pomiary}. Jeśli użytkownik nie wybrał daty początku lub końca zakresu, dla którego mają być eksportowane zdarzenia, zostaną one domyślnie ustawione odpowiednio jako data pierwszego lub ostatniego wpisu w bazie danych. Takie podejście pozwala na eksport wszystkich zdarzeń poprzez pozostawienie wartości parametrów \texttt{start} i \texttt{end} pustych.
 
 Następnie wykonywane jest zapytanie do bazy danych o wszystkie wpisy do tabeli \texttt{pomiary} wraz z odpowiadającym im odczytom urządzeń i informacjami o urządzeniach:
 \begin{lstlisting}[language=SQL]
@@ -578,7 +587,7 @@ NATURAL JOIN stany NATURAL JOIN czujniki
 NATURAL JOIN odczyty NATURAL JOIN czujniki_temperatury
 WHERE data BETWEEN :first_date AND :last_date
 \end{lstlisting}
-Dane zwrócone przez zapytanie są zapisywane do pliku w formacie \texttt{csv} o nazwie informującej o wybranym przedziale dat. W pliku wynikowym zapisywane są również nagłówki kolumn, dzięki czemu użytkownik otrzyma informację o tym, co przedstawiają dane. Po zakończeniu zapisu do pliku, jego zawartość jest zwrócona użytkownikowi przy pomocy funkcji \texttt{readfile}. Sam plik jest przechowywane na serwerze w folderze \texttt{log}. Dzięki temu kolejne zapytania o zdarzenie z tego samego zakresu dat nie wymagają przeprowadzenia zapytania do bazy danych. Przed przeprowadzeniem zapytania program sprawdza, czy istnieje już plik o nazwie odpowiadającej żądanemu przedziałowi dat. Jeśli tak, plik zostaje odczytany i zwrócony do klienta.
+Dane zwrócone przez zapytanie są zapisywane do pliku w formacie \texttt{csv} o nazwie informującej o wybranym przedziale dat. W pliku wynikowym zapisywane są również nagłówki kolumn, dzięki czemu użytkownik otrzyma informację o tym, co przedstawiają dane. Po zakończeniu zapisu do pliku, jego zawartość jest zwrócona użytkownikowi przy pomocy funkcji \texttt{readfile}. Plik jest przechowywany na serwerze w folderze \texttt{log}. Dzięki temu kolejne zapytania o zdarzenie z tego samego zakresu dat nie wymagają przeprowadzenia zapytania do bazy danych. Przed przeprowadzeniem zapytania program sprawdza, czy istnieje już plik o nazwie odpowiadającej żądanemu przedziałowi dat. Jeśli tak, plik zostaje odczytany i zwrócony do klienta.
 
 Aby zwrócone dane były potraktowane jako plik do zapisu jako załącznik, konieczne jest właściwe ustawienie nagłówków odpowiedzi:
 \begin{lstlisting}[language=PHP]
@@ -589,7 +598,7 @@ header('Content-Disposition: attachment; filename="'.basename($file).'"');
 Odpowiadają one za przekazanie informacji klientowi, że następuje transfer pliku (\texttt{File Transfer}) typu binarnego (\texttt{application/octet-stream}), który ma zostać zapisany po otwarciu okna dialogowego do zapisu plików (\texttt{Content-Disposition: attachment}).\cite{content-disposition}\cite{mime2}
 
 \subsection{Interfejs użytkownika}
-Interfejs użytkownika stanowi strona WWW typu \textit{single-page application}(SPA), której szkielet jest opisany w pliku \texttt{index.html}. Idea SPA polega na stworzeniu strony WWW, która nie wymaga przeładowywania, żeby prezentować różną zawartość, a wszystkie dane mogą być udostępniane przez jeden plik HTML. Odświeżanie zawartości strony następuje w tle dzięki komunikacji z serwerem WWW. W projektowanym systemie komunikacja ta została wykonana zgodnie z techniką AJAX opisaną powyżej. Do wykonania interfejsu użytkownika posłużyłem się biblioteką \textit{UIKit}, która dostarcza gotowe rozwiązania takich elementów jak np. okna modalne czy elementy nawigacyjne.
+Interfejs użytkownika stanowi strona WWW typu \textit{single-page application} (SPA), której szkielet jest opisany w pliku \texttt{index.html}. Idea SPA polega na stworzeniu strony WWW, która nie wymaga przeładowywania, żeby prezentować różną zawartość, a wszystkie dane mogą być udostępniane przez jeden plik HTML. Odświeżanie zawartości strony następuje w tle dzięki komunikacji z serwerem WWW. W projektowanym systemie komunikacja ta została wykonana zgodnie z techniką AJAX opisaną w poprzednich podrozdziałach. Do wykonania interfejsu użytkownika posłużyłem się biblioteką \textit{UIKit}, która dostarcza gotowe rozwiązania takich elementów jak np. okna modalne czy elementy nawigacyjne.
 
 Na stronie głównej przedstawionej na rysunku \ref{fig: homepage} domyślnie wyświetlane są ostatnie zdjęcia ze wszystkich kamer w systemie. Na karcie kamery znajdują się: nazwa kamery, ostatnie zdjęcie nią wykonane oraz dane z czujnika temperatury i czujnika stykowego przypisanego do kamery. Dane te są odświeżane domyślnie co 8 sekund (częściej niż wykonywane zdjęcia), aby stale prezentować użytkownikowi aktualny stan systemu. 
 \begin{figure}[H]
@@ -599,23 +608,22 @@ Na stronie głównej przedstawionej na rysunku \ref{fig: homepage} domyślnie wy
 \label{fig: homepage}
 \end{center}
 \end{figure}
-Pasek nawigacyjny u góry ekranu pozwala przejść do \textit{Archiwum} prezentującego przeszłe zdjęcia podzielone według kamer, które je wykonały. Zdjęcia są przedstawiane w postaci miniatur umieszczonych na siatce. Po kliknięciu na nie zdjęcie powiększa się, zajmując cały ekran. Wówczas zdjęcia można również przeglądać w trybie galerii zdjęć.
+Pasek nawigacyjny u góry ekranu pozwala przejść do \textit{Archiwum} prezentującego przeszłe zdjęcia podzielone według kamer, które je wykonały. Zdjęcia są przedstawiane w postaci miniatur umieszczonych na siatce. Po kliknięciu na nie zdjęcie powiększa się, zajmując cały ekran. Wówczas zdjęcia można również przeglądać w trybie galerii zdjęć. Galeria zdjęć została zaimplementowana przy użyciu obiektu \textit{Lightbox} z biblioteki \textit{UIkit}.\cite{uikit}
 
-Wybór linku \textit{Zapisz} otwiera okno modalne z dwoma polami do wyboru dat. Na rysunku \ref{fig: eksport} widać stan okna w przypadku wybrania początkowej daty. Wówczas w drugim kalendarzu do wyboru dat dostępny jest wyłącznie zakres dat następujący po wybranej dacie początku. Implementację kalendarza do wyboru dat dostarcza biblioteka \textit{Pikaday}. W momencie tworzenia obiektu można podać nazwę funkcji, która ma być wykonywana w momencie wyboru daty (zdarzenie \texttt{OnSelect}). W przypadku kalendarza do wyboru początkowej daty jest to funkcja \texttt{updateStartDate}, a dla kalendarza do wyboru końcowej daty \texttt{updateEndDate}:
+Wybór linku \textit{Zapisz} otwiera okno modalne z dwoma polami do wyboru dat. Na rysunku \ref{fig: eksport} widać stan okna w przypadku wybrania początkowej daty. Wówczas w drugim kalendarzu do wyboru dat dostępny jest wyłącznie zakres dat następujący po wybranej dacie początku. Implementację kalendarza do wyboru dat dostarcza biblioteka \textit{Pikaday}\cite{pikaday}. W momencie tworzenia obiektu można podać nazwę funkcji, która ma być wykonywana w momencie wyboru daty (zdarzenie \texttt{OnSelect}). W przypadku kalendarza do wyboru początkowej daty jest to funkcja \texttt{updateStartDate}, a dla kalendarza do wyboru końcowej daty \texttt{updateEndDate}:
 \begin{lstlisting}[language=JavaScript]
 function updateStartDate(startDate, startPicker, endPicker) {
     startPicker.setStartRange(startDate);
     endPicker.setStartRange(startDate);
     endPicker.setMinDate(startDate);
 }
-
 function updateEndDate(endDate, startPicker, endPicker) {
     startPicker.setEndRange(endDate);
     startPicker.setMaxDate(endDate);
     endPicker.setEndRange(endDate);
 }
 \end{lstlisting}
-Pierwsza z nich odpowiada za ustawienie wybranej daty początkowej jako najmniejszej możliwej w kalendarzu do wyboru daty końcowej. Druga wykonuje analogiczną operację z wybraną datą końcową i kalendarzem do wyboru daty początkowej. Dzięki temu interfejs nie pozwala na wprowadzenie błędnych zakresów dat np. takich, w których data początku jest większa niż data końca.
+Pierwsza z nich odpowiada za ustawienie wybranej daty początkowej jako najmniejszej możliwej daty w kalendarzu do wyboru daty końcowej. Druga wykonuje analogiczną operację z wybraną datą końcową i kalendarzem do wyboru daty początkowej. Dzięki temu interfejs nie pozwala na wprowadzenie błędnych zakresów dat np. takich, w których data początku jest większa niż data końca.
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=\linewidth]{eksport_zdarzen.png}
@@ -624,7 +632,14 @@ Pierwsza z nich odpowiada za ustawienie wybranej daty początkowej jako najmniej
 \end{center}
 \end{figure}
 
-Otworzenie okna modalnego z panelem administracyjnym jest możliwe po kliknięciu w link \textit{Ustawienia}. Okno ustawień składa się z kilku formularzy umożliwiających ich zmianę. Sekcja \textit{Ogólne} pozwala na włączenie powiadomień e-mail. Po zaznaczeniu pola wyboru (ang. \textit{checkbox}) tego ustawienia pojawia się również pole tekstowe, w którym można wpisać adres e-mail odbiorcy powiadomień. Kolejna sekcja \textit{Zmień nazwę} składa się z pól tekstowych opisanych dotychczasowymi nazwami urządzeń. Nazwa nie jest zmieniana, jeśli pole jest pozostawione puste. Ostatnia sekcja \textit{Preferencje} umożliwia zmianę częstotliwości wykonywania zdjęć i pomiarów. Pola tekstowe opisane nazwa urządzeń są domyślnie wypełnione dotychczasowymi wartościami. Wszystkie zmiany są wprowadzane dopiero po zatwierdzeniu ich przyciskiem \textit{Zapisz}.
+Otworzenie okna modalnego z panelem administracyjnym jest możliwe po kliknięciu w link \textit{Ustawienia}. Okno ustawień składa się z kilku formularzy umożliwiających ich zmianę. Sekcja \textit{Ogólne} pozwala na włączenie powiadomień e-mail. Po zaznaczeniu pola wyboru (ang. \textit{checkbox}) tego ustawienia pojawia się również pole tekstowe, w którym można wpisać adres e-mail odbiorcy powiadomień. Kolejna sekcja \textit{Zmień nazwę} składa się z pól tekstowych opisanych dotychczasowymi nazwami urządzeń. Nazwa nie jest zmieniana, jeśli pole jest pozostawione puste. Ostatnia sekcja \textit{Preferencje} umożliwia zmianę częstotliwości wykonywania zdjęć i pomiarów. Pola tekstowe opisane nazwa urządzeń są domyślnie wypełnione dotychczasowymi wartościami. Wszystkie zmiany są wprowadzane dopiero po zatwierdzeniu ich przyciskiem \textit{Zapisz}. Zamknięcie okna przyciskiem \textit{Anuluj} powoduje usunięcie wpisanych wartości do formularza i przywrócenie go do pierwotnego stanu.
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=\linewidth]{ustawienia_pomniejszone.png}
+\caption{Okno modalne ustawień}
+\label{fig: eksport}
+\end{center}
+\end{figure}
 
 \newpage
 \section{Testy systemu}
@@ -637,103 +652,117 @@ Otworzenie okna modalnego z panelem administracyjnym jest możliwe po kliknięci
 \begin{thebibliography}{9}
 
 \bibitem{apache-auth}
-Apache Software Foundation, Authentication and Authorization, Dokumentacja serwera HTTP Apache
-\url{https://httpd.apache.org/docs/2.4/howto/auth.html}
+Apache Software Foundation, Authentication and Authorization, Dokumentacja serwera HTTP Apache [przeglądany 30 maja 2018].
+Dostępny w: \url{https://httpd.apache.org/docs/2.4/howto/auth.html}
 
 \bibitem{apache-password}
-Apache Software Foundation, htpasswd - Manage user files for basic authentication, Dokumentacja serwera HTTP Apache
-\url{https://httpd.apache.org/docs/2.4/programs/htpasswd.html}
+Apache Software Foundation, htpasswd - Manage user files for basic authentication, Dokumentacja serwera HTTP Apache [przeglądany 30 maja 2018].
+Dostępny w: \url{https://httpd.apache.org/docs/2.4/programs/htpasswd.html}
 
 \bibitem{zachorowania}
 Arundel A. V., Sterling E. M., Biggin J. H. i Sterling T. D., Indirect health effects of relative humidity in indoor environments, \textit{Environmental Health Perspectives} 1986;65:351-361
-\url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1474709/}
+Dostępny w: \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1474709/}
 
 \bibitem{sqlalchemy-session}
-Bayer M., Session Basics, Dokumentacja SQLAlchemy
-\url{http://docs.sqlalchemy.org/en/latest/orm/session_basics.html}
+Bayer M., Session Basics, Dokumentacja SQLAlchemy [przeglądany 30 maja 2018].
+Dostępny w: \url{http://docs.sqlalchemy.org/en/latest/orm/session_basics.html}
 
 \bibitem{sqlalchemy-base}
-Bayer M., Declarative API, Dokumentacja SQLAlchemy
-\url{http://docs.sqlalchemy.org/en/latest/orm/extensions/declarative/api.html}
+Bayer M., Declarative API, Dokumentacja SQLAlchemy [przeglądany 2 czerwca 2018].
+Dostępny w: \url{http://docs.sqlalchemy.org/en/latest/orm/extensions/declarative/api.html}
 
 \bibitem{bb_black}
-BeagleBoard.org Foundation, Specyfikacja BeagleBone Black
-\url{https://elinux.org/Beagleboard:BeagleBoneBlack}
+BeagleBoard: BeagleBoneBlack, \textit{Embedded Linux Wiki} [przeglądany 25 maja 2018].
+Dostępny w: \url{https://elinux.org/Beagleboard:BeagleBoneBlack}
+
+\bibitem{pikaday}
+Bushell D., Rikkert R., Dokumentacja biblioteki Pikaday [przeglądany 2 czerwca 2018].
+Dostępny w: \url{https://github.com/dbushell/Pikaday}
+
+\bibitem{arduino-wlamania}
+Cabaj K., Mazur G., Nosek M., \textit{Compromising an IoT device based on Harvard-architecture microntroller}, XLII Sympozjum Wilga-2018, 3-10 czerwca 2018.
+
+\bibitem{porownanie_wiki}
+Comparison of single-board computers, \textit{Wikipedia} [przeglądany 2 czerwca 2018].
+Dostępny w: \url{https://en.wikipedia.org/w/index.php?title=Comparison_of_single-board_computers&oldid=843993327}
 
 \bibitem{sql-injection}
 Clarke J., SQL Injection Attacks and Defense, wyd. 2, Syngress, 2012, ISBN 978-1-59749-963-7  
 
 \bibitem{komputer_świat}
-Dziedzic K., Kamera IP w sieci. Stwórz prywatny monitoring
-\url{http://www.komputerswiat.pl/poradniki/sprzet/kamery-internetowe/2015/07/kamera-ip-w-sieci.aspx}
+Dziedzic K., Kamera IP w sieci. Stwórz prywatny monitoring [przeglądany 25 maja 2018].
+Dostępny w: \url{http://www.komputerswiat.pl/poradniki/sprzet/kamery-internetowe/2015/07/kamera-ip-w-sieci.aspx}
 
 \bibitem{http}
 Fielding R., Reschke J., Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content, RFC7231, IETF, czerwiec 2014, DOI: 10.17487/RFC7231
-\url{https://tools.ietf.org/html/rfc7231}
+Dostępny w: \url{https://tools.ietf.org/html/rfc7231}
 
 \bibitem{http-auth}
 Fielding R., Reschke J., Hypertext Transfer Protocol (HTTP/1.1): Authentication, RFC 7235, IETF, czerwiec 2014, DOI: 10.17487/RFC7235.
-\url{https://tools.ietf.org/html/rfc7235}
+Dostępny w: \url{https://tools.ietf.org/html/rfc7235}
 
 \bibitem{mime1}
 Freed N., Borenstein N., Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies, RFC 2045, IETF, listopad 1996, DOI: 10.17487/RFC2045.
-\url{https://tools.ietf.org/html/rfc2045}
+Dostępny w: \url{https://tools.ietf.org/html/rfc2045}
 
 \bibitem{mime2}
 Freed N., Borenstein N., Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types, RFC 2046, IETF, listopad 1996, DOI: 10.17487/RFC2046.
-\url{https://tools.ietf.org/html/rfc2046}
+Dostępny w: \url{https://tools.ietf.org/html/rfc2046}
 
 \bibitem{th02}
-Hoperf Electronic, Karta katalogowa czujnika temperatury i wilgotności TH02:
-\url{http://www.hoperf.com/upload/sensor/TH02_V1.1.pdf}
+Hoperf Electronic, Karta katalogowa czujnika temperatury i wilgotności TH02 [przeglądany 2 czerwca 2018].
+Dostępny w: \url{http://www.hoperf.com/upload/sensor/TH02_V1.1.pdf}
 
 \bibitem{i2c_read_device}
-joan2937, Dokumentacja funkcji \texttt{i2c{\_}read{\_}device()}
-\url{http://abyz.me.uk/rpi/pigpio/python.html#i2c_read_device}
+joan2937, Dokumentacja funkcji \texttt{i2c{\_}read{\_}device()} [przeglądany 25 maja 2018].
+Dostępny w: \url{http://abyz.me.uk/rpi/pigpio/python.html#i2c_read_device}
+
+\bibitem{klimat}
+Kostyrko K., Łobzowski A., \textit{Klimat. Pomiary i regulacje}, Agenda wydawnicza PAK, Warszawa, wrzesień 2002.
 
 \bibitem{sht31}
-Mouser Electronics, Karta katalogowa czujnika temperatury i wilgotności SHT31D:
-\url{http://www.mouser.com/ds/2/682/Sensirion_Humidity_Sensors_SHT3x_Datasheet_digital-971521.pdf}
+Mouser Electronics, Karta katalogowa czujnika temperatury i wilgotności SHT31D [przeglądany 25 maja 2018].
+Dostępny w: \url{http://www.mouser.com/ds/2/682/Sensirion_Humidity_Sensors_SHT3x_Datasheet_digital-971521.pdf}
 
 \bibitem{promise}
-Mozilla Developer Network, szopenkrk, Promise.
-\url{https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Promise}
+Mozilla Developer Network, szopenkrk, Promise [przeglądany 30 maja 2018].
+Dostępny w: \url{https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Promise}
 
 \bibitem{async}
-Mozilla Developer Network, Bab64, doubleOrt, freezy, hirokiky, jswisher, spygi i in., async function.
-\url{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function}
-
-\bibitem{porownanie_wiki}
-Porównanie komputerów jednopłytkowych (ang.)
-\url{https://en.wikipedia.org/wiki/Comparison_of_single-board_computers}
+Mozilla Developer Network, Bab64, doubleOrt, freezy, hirokiky, jswisher, spygi i in., async function [przeglądany 30 maja 2018].
+Dostępny w: \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function}
 
 \bibitem{python-mime}
-Python Software Foundation, Dokumentacja modułu Python email.mime
-\url{https://docs.python.org/3/library/email.mime.html}
+Python Software Foundation, Dokumentacja modułu Python email.mime [przeglądany 24 maja 2018].
+Dostępny w: \url{https://docs.python.org/3/library/email.mime.html}
 
 \bibitem{rpi_schematic}
-Raspberry Pi Foundation, Schematy peryferiów Raspberry Pi 3 Model B
-\url{https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3b_1p2_reduced.pdf}
+Raspberry Pi Foundation, Schematy peryferiów Raspberry Pi 3 Model B [przeglądany 24 maja 2018].
+Dostępny w: \url{https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3b_1p2_reduced.pdf}
 
 \bibitem{rpi}
-Raspberry Pi Foundation, Specyfikacja Raspberry Pi 3 Model B
-\url{https://www.raspberrypi.org/products/raspberry-pi-3-model-b/}
+Raspberry Pi Foundation, Specyfikacja Raspberry Pi 3 Model B [przeglądany 24 maja 2018].
+Dostępny w: \url{https://www.raspberrypi.org/products/raspberry-pi-3-model-b/}
 
 \bibitem{content-disposition}
 Reschke J. Use of the Content-Disposition Header Field in the Hypertext Transfer Protocol (HTTP), RFC 6266, IETF, czerwiec 2011, DOI: 10.17487/RFC6266.
-\url{https://tools.ietf.org/html/rfc6266}
+Dostępny w: \url{https://tools.ietf.org/html/rfc6266}
 
 \bibitem{czujnik_temp}
-Silicon Labs, Karta katalogowa czujnika temperatury i wilgotności Si7021:
-\url{https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf}
+Silicon Labs, Karta katalogowa czujnika temperatury i wilgotności Si7021 [przeglądany 24 maja 2018].
+Dostępny w: \url{https://www.silabs.com/documents/public/data-sheets/Si7021-A20.pdf}
 
 \bibitem{multiplekser}
-Texas Instruments Inc., Karta katalogowa multipleksera TCA9548A:
-\url{http://www.ti.com/lit/ds/symlink/tca9548a.pdf}
+Texas Instruments Inc., Karta katalogowa multipleksera TCA9548A [przeglądany 24 maja 2018].
+Dostępny w: \url{http://www.ti.com/lit/ds/symlink/tca9548a.pdf}
 
 \bibitem{smbus}
-Torvalds L., Opis protokołu SMBus
-\url{https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/plain/Documentation/i2c/smbus-protocol}
+Torvalds L., Opis protokołu SMBus [przeglądany 20 maja 2018].
+Dostępny w: \url{https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/plain/Documentation/i2c/smbus-protocol}
+
+\bibitem{uikit}
+YOOTheme Gmbh, Dokumentacja biblioteki UIKit [przeglądany 2 czerwca 2018].
+Dostępny w: \url{https://getuikit.com/docs/introduction}
 
 \end{thebibliography}
 
