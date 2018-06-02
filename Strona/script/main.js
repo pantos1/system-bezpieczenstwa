@@ -111,6 +111,7 @@ async function initSettingsModal(result) {
     const $nameSection = $('#name-section');
     const $prefsSection = $('#prefs-section');
     const $saveFormButton = $('#button-save-form');
+    const $cancelFormButton = $('#button-cancel-form');
     const deviceList = Object.values(result);
     try {
         for (let i = 0; i < deviceList.length; i++) {
@@ -129,25 +130,43 @@ async function initSettingsModal(result) {
         }
         $saveFormButton.on('click', () => {
             const generalFormData = JSON.stringify($generalForm.serializeArray());
-            updateSettings(generalFormData);
+            const promisesList = [];
+            promisesList.push(updateSettings(generalFormData));
             $($nameSection).find('form').each((index, element) => {
-
                 const data = $(element).serializeArray().reduce((a, x) => {
                     a[x.name] = x.value;
                     return a;
                 }, {});
                 data["id_kamery"] = $(element)[0].name;
-                updateNames(JSON.stringify(data));
+                promisesList.push(updateNames(JSON.stringify(data)));
             });
             $($prefsSection).find('form').each((index, element) => {
-
                 const data = $(element).serializeArray().reduce((a, x) => {
                     a[x.name] = x.value;
                     return a;
                 }, {});
                 data["id_kamery"] = $(element)[0].name;
-                updatePrefs(JSON.stringify(data));
+                promisesList.push(updatePrefs(JSON.stringify(data)));
             });
+            Promise.all(promisesList).then(() => {
+                UIkit.notification({
+                    message: 'Ustawienia zaktualizowane',
+                    status: 'success'
+                })
+            }, async () => {
+                UIkit.notification({
+                    message: 'Błąd aktualizacji ustawień',
+                    status: 'danger'
+                });
+                $nameSection.find('form').remove();
+                $prefsSection.find('form').remove();
+                initSettingsModal(await getData());
+            })
+        });
+        $cancelFormButton.on('click', async () => {
+            $nameSection.find('form').remove();
+            $prefsSection.find('form').remove();
+            initSettingsModal(await getData());
         });
     } catch (e) {
         console.log(e.responseText);
