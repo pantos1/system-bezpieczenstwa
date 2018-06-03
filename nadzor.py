@@ -221,6 +221,7 @@ def main():
     finally:
         GPIO.cleanup()
         session.close()
+        smtp_server.quit()
 
 
 if __name__ == "__main__":
