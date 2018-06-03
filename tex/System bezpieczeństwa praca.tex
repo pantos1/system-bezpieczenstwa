@@ -148,6 +148,8 @@ Na podstawie powyższych wymagań opracowana została architektura systemu, któ
 Jednym z najbardziej popularnych komputerów jednopłytkowych jest platforma Raspberry Pi rozwijana przez Raspberry Pi Foundation jako narzędzie edukacyjne do nauczania programowania i elektroniki. Wokół tego projektu zebrała się duża grupa amatorów i entuzjastów dzielących się swoimi projektami. Jednym z konkurentów platformy Raspberry Pi jest komputer jednopłytkowy BeagleBone rozwijany przez firmę Texas Instruments, również zgodnie z filozofią \textit{open-hardware} -- sprzętu o otwartym dostępie do źródła i projektów. Oba komputery oparte są o procesory ARM Cortex w formie \textit{System On Chip} -- układu scalonego zawierającego w jednej obudowie procesor wraz z układami pamięci, peryferiami i przetwornikami analogowo-cyfrowymi i cyfrowo-analogowymi. Oba komputery umożliwiają zainstalowanie na nich dystrybucji systemu Linux. Najnowszymi modelami w momencie rozpoczęcia projektu (w marcu 2017 roku) były Raspberry Pi Model 3B oraz BeagleBone Black. Porównanie obu komputerów przedstawiono w tabeli \ref{porównanieSBC}.
 \begin{table}[h]
 \centering
+\caption{Porównanie specyfikacji technicznej Raspberry Pi 3B i BeagleBone Black} 
+\small
 \begin{tabular}{lll}
 \hline \noalign{\vskip 2mm}
                          & Raspberry Pi 3B & BeagleBone Black \\ \hline \noalign{\vskip 2mm}
@@ -163,7 +165,7 @@ I2C                      & Tak             & Tak              \\
 Liczba wyprowadzeń GPIO  & 40              & 66               \\
 Maksymalny pobór mocy 	 & 3 W             & 2,3 W            \\ \hline
 \end{tabular}
-\caption{Porównanie specyfikacji technicznej Raspberry Pi 3B i BeagleBone Black \cite{rpi} \cite{bb_black} \cite{porownanie_wiki}}
+\caption*{Źródło: \cite{rpi} \cite{bb_black} \cite{porownanie_wiki}}
 \label{porównanieSBC}
 \end{table}
 
@@ -178,6 +180,8 @@ Przykładowymi czujnikami temperatury i wilgotności dostępnymi na rynku są Ad
 
 \begin{table}[h]
 \centering
+\caption{Porównanie specyfikacji technicznej czujników temperatury i wilgotności}
+\small
 \begin{tabular}{lllllll}
 \hline \noalign{\vskip 2mm}
        & \multicolumn{2}{c}{Temperatura} & \multicolumn{2}{c}{Wilgotność} &          \\ \cline{2-5} \noalign{\vskip 2mm}
@@ -187,7 +191,7 @@ Si7021 & $-$10 -- 85 $^\circ$C       & $\pm$ 0,4 $^\circ$C    & 0 -- 80\% RH    
 TH02   & $-$40 -- 85 $^\circ$C         & $\pm$ 0,5 $^\circ$C    & 0 -- 80\% RH       & $\pm$ 4,5 \%RH                  & 54,00 zł \\
 \hline
 \end{tabular}
-\caption{Porównanie specyfikacji czujników temperatury i wilgotności \cite{czujnik_temp} \cite{sht31} \cite{th02} (ceny za sztukę: \url{www.botland.com.pl}).}
+\caption*{Źródło: \cite{czujnik_temp} \cite{sht31} \cite{th02} (ceny za sztukę: \url{www.botland.com.pl}).}
 \label{czujniki_temp}
 \end{table}
 
@@ -280,6 +284,8 @@ Po wywołaniu procesu funkcja oczekuje na jego wykonanie i odbiera informacje ze
 Multiplekser TCA9548A umożliwia przyłączenie do 8 urządzeń korzystających z magistrali I2C. Użyte czujniki temperatury i wilgotności Si 7021 posiadają taki sam adres, więc multiplekser powinien być skonfigurowany do zestawienia komunikacji z każdym z nich osobno. Aktywacja pojedynczego kanału odbywa się poprzez przesłanie do multipleksera 8 bitowego kodu odpowiadającego numerowi kanału. Kod ten tworzony jest przez ustawienie bitu o pozycji równej numerowi kanału jako 1. Pozostałe pola powinny być ustawione jako 0. Operację tą wykonuje pomocnicza funkcja \texttt{kanal}. Zwraca ona 8-bitową komendę odpowiadającą numerowi kanału. Definicja kodu została pokazana w tabeli \ref{command_byte}. Po wysłaniu przez I2C komendy i znaku STOP kanał jest aktywowany. Dalsze komendy I2C można już adresować, używając adresu czujnika temperatury.
 \begin{table}[h]
 \centering
+\caption{Definicja bajtu sterującego}
+\small
 \begin{tabular}{|llllllll|l|}
 \hline
 \multicolumn{8}{|l|}{Bity rejestru sterującego}                                                                                                                                                                                                                                                                                                                                                & \multicolumn{1}{c|}{\multirow{2}{*}{Działanie}}                              \\ \cline{1-8}
@@ -293,7 +299,7 @@ X                                             & X                               
 X                                             & \begin{tabular}[c]{@{}l@{}}0\\ 1\end{tabular} & X                                             & X                                             & X                                             & X                                             & X                                             & X                                             & \begin{tabular}[c]{@{}l@{}}Kanał 6 nieaktywny\\ Kanał 6 aktywny\end{tabular} \\ \hline
 \begin{tabular}[c]{@{}l@{}}0\\ 1\end{tabular} & X                                             & X                                             & X                                             & X                                             & X                                             & X                                             & X                                             & \begin{tabular}[c]{@{}l@{}}Kanał 7 nieaktywny\\ Kanał 7 aktywny\end{tabular} \\ \hline
 \end{tabular}
-\caption{Definicja bajtu sterującego. Źródło: \cite{multiplekser}}
+\caption*{Źródło: \cite{multiplekser}}
 \label{command_byte}
 \end{table}
 
@@ -632,17 +638,92 @@ Pierwsza z nich odpowiada za ustawienie wybranej daty początkowej jako najmniej
 \end{center}
 \end{figure}
 
-Otworzenie okna modalnego z panelem administracyjnym jest możliwe po kliknięciu w link \textit{Ustawienia}. Okno ustawień składa się z kilku formularzy umożliwiających ich zmianę. Sekcja \textit{Ogólne} pozwala na włączenie powiadomień e-mail. Po zaznaczeniu pola wyboru (ang. \textit{checkbox}) tego ustawienia pojawia się również pole tekstowe, w którym można wpisać adres e-mail odbiorcy powiadomień. Kolejna sekcja \textit{Zmień nazwę} składa się z pól tekstowych opisanych dotychczasowymi nazwami urządzeń. Nazwa nie jest zmieniana, jeśli pole jest pozostawione puste. Ostatnia sekcja \textit{Preferencje} umożliwia zmianę częstotliwości wykonywania zdjęć i pomiarów. Pola tekstowe opisane nazwa urządzeń są domyślnie wypełnione dotychczasowymi wartościami. Wszystkie zmiany są wprowadzane dopiero po zatwierdzeniu ich przyciskiem \textit{Zapisz}. Zamknięcie okna przyciskiem \textit{Anuluj} powoduje usunięcie wpisanych wartości do formularza i przywrócenie go do pierwotnego stanu.
+Otworzenie okna modalnego z panelem administracyjnym jest możliwe po kliknięciu w link \textit{Ustawienia}. Na rysunku \ref{fig: ustawienia} widać okno ustawień składające się z kilku formularzy umożliwiających ich zmianę. Sekcja \textit{Ogólne} pozwala na włączenie powiadomień e-mail. Po zaznaczeniu pola wyboru (ang. \textit{checkbox}) tego ustawienia pojawia się również pole tekstowe, w którym można wpisać adres e-mail odbiorcy powiadomień. Kolejna sekcja \textit{Zmień nazwę} składa się z pól tekstowych opisanych dotychczasowymi nazwami urządzeń. Nazwa nie jest zmieniana, jeśli pole jest pozostawione puste. Ostatnia sekcja \textit{Preferencje} umożliwia zmianę częstotliwości wykonywania zdjęć i pomiarów. Pola tekstowe opisane nazwa urządzeń są domyślnie wypełnione dotychczasowymi wartościami. Wszystkie zmiany są wprowadzane dopiero po zatwierdzeniu ich przyciskiem \textit{Zapisz}. Zamknięcie okna przyciskiem \textit{Anuluj} powoduje usunięcie wpisanych wartości do formularza i przywrócenie go do pierwotnego stanu.
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=\linewidth]{ustawienia_pomniejszone.png}
 \caption{Okno modalne ustawień}
-\label{fig: eksport}
+\label{fig: ustawienia}
 \end{center}
 \end{figure}
 
 \newpage
 \section{Testy systemu}
+Przeprowadzone testy polegają na uruchomieniu systemu i przeprowadzeniu kilku scenariuszy testowych sprawdzających spełnienie wymogów systemu. Poprawne działanie poszczególnych części systemu zostanie następnie osobno zweryfikowane. Oznacza to, że sprawdzone zostanie, czy program nadzorujący kamery i czujniki dokonuje właściwych wpisów do bazy danych. Następnie zostanie sprawdzone, czy dane z bazy danych są właściwie przekazywane przez serwer HTTP do strony WWW oraz czy są właściwie zaprezentowane w interfejsie użytkownika. 
+
+Środowiskiem testowym jest:
+\begin{itemize}
+\item komputer Raspberry Pi 3B z zainstalowanym systemem operacyjnym Linux w dystrybucji Raspbian w wersji 8 (jessie) 
+\item interpreter języka Pythona w wersji 3.4
+\item system zarządzania bazą danych MySQL w wersji 5.5.60-0+deb8u1
+\item serwer HTTP Apache w wersji 2.4
+\item język PHP w wersji 5.6.33-0+deb8u1
+\item przeglądarka Google Chrome w wersji 66
+\end{itemize}
+
+\subsection{Test nadzoru}
+Pierwszym scenariuszem testowym jest podstawowy test sprawdzający działanie systemu przy zbliżonych czujnikach testowych, które nie będą wyzwalały wykonywania dodatkowych zdjęć. W tym teście sprawdzone będzie, czy zdjęcia oraz pomiary temperatury i wilgotności są prawidłowo wykonywane, zapisywane w bazie danych, a następnie przekazywane do strony WWW. Program wykonujący pomiary należy wywołać komendą w terminalu \texttt{sudo python3 nadzor.py}.
+
+Program działał przez 10 sekund, aby wykonały się wszystkie zaplanowane zadania -- zarówno zdjęcia jak i pomiary. Zapytanie do bazy o wpisy z tabeli \texttt{zdjecia} zwróciło dla obu kamer nazwy zdjęć składające się z dat wykonania zdjęć, co oznacza prawidłowe ich wykonanie. Również zapytanie do bazy o wpisy z tabeli \texttt{odczyty} zwróciło wpisy zawierające niepuste wartości w kolumnach \texttt{temp} oraz \texttt{rh}, co oznacza prawidłowe wykonanie pomiarów temperatury i wilgotności względnej. Należy również sprawdzić, czy odczyty stanów czujników stykowych są prawidłowe -- oczekiwana wartość to 1, oznaczająca zbliżone czujniki. Zapytanie dotyczy więc ostatnich dwóch wpisów do tablicy \texttt{stany}. Wszystkie zapytania wraz z ich wynikami przedstawiono na rysunku \ref{fig: test1}.
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.8\linewidth]{test1.png}
+\includegraphics[width=0.8\linewidth]{test2.png}
+\includegraphics[width=0.8\linewidth]{test3.png}
+\caption{Wyniki zapytań do bazy danych o ostatnie wykonane zdjęcia (a), odczyty temperatury i wilgotności (b) oraz stany czujników stykowych (c)}
+\label{fig: test1}
+\end{center}
+\end{figure}
+
+Wszystkie wpisy są poprawne i zgodne z oczekiwaniami. Należy teraz sprawdzić, czy dane są przekazywane poprawnie z serwera HTTP do przeglądarki. Po otwarciu strony WWW i uwierzytelnieniu w systemie można otworzyć zakładkę deweloperską  
+( w Google Chrome: \texttt{Ctrl+Shift+I}). W karcie \textit{Network} znajdują się podgląd wszystkich zapytań kierowanych przez stronę do serwera HTTP. Należy wybrać pierwsze z żądań oznaczonych \texttt{get{\_}data.php?q=} i otworzyć zakładkę \textit{Response}. Znajduje się w niej treść odpowiedzi przekazanej z serwera WWW do przeglądarki. Porównanie wybranych fragmentów odpowiedzi w formacie JSON z wynikami zapytań do bazy danych potwierdza, że dane zostały przekazane prawidłowo w odpowiedzi na żądanie:
+
+\begin{minipage}{.5\textwidth}
+\begin{lstlisting}
+   "1": {
+      "id_odczytu": "101",
+      "id_stanu": "2140",
+      "id_zdjecia": "116",
+      "id_pomiaru": "2130",
+      "data": "2018-06-03 12:45:39",
+      "id_kamery": "1",
+      "nazwa": "2018-06-03_12:45:37.jpg",
+      "id_czujnika": "1",
+      "stan": "1",
+      "id_czujnika_temp": "1",
+      "temperatura": "27.55",
+      "rh": "51.7126"
+   },
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.5\textwidth}
+\begin{lstlisting}
+   "2": {
+      "id_odczytu": "102",
+      "id_stanu": "2139",
+      "id_zdjecia": "115",
+      "id_pomiaru": "2129",
+      "data": "2018-06-03 12:45:39",
+      "id_kamery": "2",
+      "nazwa": "2018-06-03_12:45:27.jpg",
+      "id_czujnika": "2",
+      "stan": "1",
+      "id_czujnika_temp": "2",
+      "temperatura": "27.6251",
+      "rh": "52.1169"
+   }
+\end{lstlisting}
+\end{minipage}
+
+Kolejnym etapem weryfikacji poprawności działania systemu jest sprawdzenie, czy na podstawie przekazanych z serwera HTTP do przeglądarki danych, wyświetlane są w interfejsie użytkownika prawidłowe informacje o stanie systemu. Na rysunku \ref{fig: home_test} przedstawione są karty z aktualnym stan systemu. Na obu zdjęciach można zaobserwować, że czujniki są zbliżone. Stan czujników jest opisany przy etykietach z ich nazwą. Jest on zgodny z oczekiwaniami -- czujniki są zbliżone, więc ich stan jest "Zamknięty".
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\linewidth]{home_test.png}
+\caption{Poprawne wyświetlanie danych w interfejsie użytkownika}
+\label{fig: home_test}
+\end{center}
+\end{figure}
 
 \newpage
 \section{Wnioski i podsumowanie}

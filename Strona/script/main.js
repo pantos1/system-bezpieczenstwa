@@ -93,7 +93,7 @@ function displayHomeContent(result) {
                 src: "img/" + data[i].nazwa
             })
             .appendTo(card);
-        const temp = data[i].temperatura ? parseFloat(data[i].temperatura).toFixed(1).toLocaleString() : "-";
+        const temp = data[i].temperatura ? parseFloat(data[i].temperatura).toFixed(1).toLocaleString('pl-PL') : "-";
         const rh = data[i].rh ? parseInt(data[i].rh) : "-";
         const state = data[i].stan == '1' ? "Zamknięty" : "Otwarty";
         $(document.createElement("p"))
@@ -240,7 +240,7 @@ async function refreshData() {
             const img = card.find("img");
             img.attr('src', 'img/' + data[i].nazwa);
             const text = card.find("p");
-            const temp = data[i].temperatura ? parseFloat(data[i].temperatura).toFixed(1).toLocaleString() : "-";
+            const temp = data[i].temperatura ? parseFloat(data[i].temperatura).toFixed(1).toLocaleString('pl-PL') : "-";
             const rh = data[i].rh ? parseInt(data[i].rh) : "-";
             const state = data[i].stan == '1' ? "Zamknięty" : "Otwarty";
             text.html("Temperatura: " + temp + "&degC" + "</br>Wilgotność względna: " + rh + "%" + "</br>" + data[i].nazwa_czujnika + ": " + state);
@@ -310,7 +310,7 @@ async function displayArchive() {
                     })
                     .appendTo(card);
                 const date = data[i].zdjecia[j].data;
-                const temp = data[i].zdjecia[j].temperatura ? parseFloat(data[i].zdjecia[j].temperatura).toFixed(1).toLocaleString() : "-";
+                const temp = data[i].zdjecia[j].temperatura ? parseFloat(data[i].zdjecia[j].temperatura).toFixed(1).toLocaleString('pl-PL') : "-";
                 const rh = data[i].zdjecia[j].rh ? parseInt(data[i].zdjecia[j].rh) : "-";
                 const state = data[i].zdjecia[j].stan === '1' ? "Zamknięty" : "Otwarty";
                 $(document.createElement("p"))
