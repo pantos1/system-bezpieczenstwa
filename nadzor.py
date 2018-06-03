@@ -26,6 +26,7 @@ class Grupa():
     rhKod = 0xF5
     tempKod = 0xE0
     multiplexer = i2c.i2c_open(1, multiplexer_adres)
+    lock = threading.Lock()
 
     def __init__(self, kamera, czujnik_temp, czujnik, ustawienia, session, smtp):
         self.kamera = kamera
@@ -159,7 +160,9 @@ class Grupa():
                 )
             zalacznik['Content-Disposition'] = 'attachment; filename="%s"' % path.basename(zdjecie)
             wiadomosc.attach(zalacznik)
+        Grupa.lock.acquire()
         self.smtp.sendmail(self.nadawca, odbiorca, wiadomosc.as_string())
+        Grupa.lock.release()
 
 
 def init_gpio():

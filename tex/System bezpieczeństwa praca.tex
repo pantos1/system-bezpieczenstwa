@@ -715,7 +715,7 @@ Wszystkie wpisy są poprawne i zgodne z oczekiwaniami. Należy teraz sprawdzić,
 \end{lstlisting}
 \end{minipage}
 
-Kolejnym etapem weryfikacji poprawności działania systemu jest sprawdzenie, czy na podstawie przekazanych z serwera HTTP do przeglądarki danych, wyświetlane są w interfejsie użytkownika prawidłowe informacje o stanie systemu. Na rysunku \ref{fig: home_test} przedstawione są karty z aktualnym stan systemu. Na obu zdjęciach można zaobserwować, że czujniki są zbliżone. Stan czujników jest opisany przy etykietach z ich nazwą. Jest on zgodny z oczekiwaniami -- czujniki są zbliżone, więc ich stan jest "Zamknięty".
+Kolejnym etapem weryfikacji poprawności działania systemu jest sprawdzenie, czy na podstawie przekazanych z serwera HTTP do przeglądarki danych, wyświetlane są w interfejsie użytkownika prawidłowe informacje o stanie systemu. Na rysunku \ref{fig: home_test} przedstawione są karty z aktualnym stan systemu. Na obu zdjęciach można zaobserwować, że czujniki są zbliżone. Stan czujników jest opisany przy etykietach z ich nazwą i zgodny z oczekiwaniami ("Zamknięty").
 
 \begin{figure}
 \begin{center}
@@ -724,6 +724,20 @@ Kolejnym etapem weryfikacji poprawności działania systemu jest sprawdzenie, cz
 \label{fig: home_test}
 \end{center}
 \end{figure}
+
+\subsubsection{Test wyzwalania wykonania zdjęcia}
+Kluczową funkcjonalnością systemu jest wykonywanie zdjęcia wyzwolonego działaniem czujnika stykowego przypisanego do kamery. W teście zostanie sprawdzone, czy oddalenie magnesu od kontaktronu jest wykrywane przez program obsługi kamer i czujników oraz czy wykonywane jest wówczas zdjęcie. Działanie bazy danych oraz serwera WWW w tym przypadku jest identyczne jak w poprzednim teście, więc poprawność działania zostanie zweryfikowana wyłącznie przez interfejs użytkownika. Test należy rozpocząć, wywołując w konsoli program \texttt{nadzor.py}. W czasie działania programu oddalono magnesy obu kontaktronów na odległość ok. 20 cm.
+
+Na rysunku \ref{fig: test_otwarty} przedstawiono prezentowany stan interfejsu w przypadku zadziałania czujników stykowych i wyzwolenia zdjęcia. Stan czujników jest prawidłowy opisany jako "Otwarty", a zdjęcia przedstawiają kontaktrony z oddalonymi czujnikami.
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=\linewidth]{test_otwarty.png}
+\caption{Informacja w interfejsie o otwartych czujnikach}
+\label{fig: test_otwarty}
+\end{center}
+\end{figure}
+
+A
 
 \newpage
 \section{Wnioski i podsumowanie}
