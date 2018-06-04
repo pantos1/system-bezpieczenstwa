@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  3 JUN 2018 15:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  4 JUN 2018 23:52
 entering extended mode
 **"./System bezpieczeÅ„stwa praca.tex"
 ("System bezpieczeÅ„stwa praca.tex"
@@ -1123,7 +1123,7 @@ Package caption Info: End \AtBeginDocument code.
 
 pdfTeX warning: pdflatex (file ./title.pdf): PDF inclusion: found PDF version <
 1.7>, but at most version <1.5> allowed
-<title.pdf, id=119, 597.55246pt x 845.07718pt>
+<title.pdf, id=131, 597.55246pt x 845.07718pt>
 File: title.pdf Graphic file (type pdf)
 <use title.pdf>
 Package pdftex.def Info: title.pdf  used on input line 92.
@@ -1144,7 +1144,7 @@ pdfTeX warning: pdflatex (file ./title.pdf): PDF inclusion: found PDF version <
 
 pdfTeX warning: pdflatex (file ./title.pdf): PDF inclusion: found PDF version <
 1.7>, but at most version <1.5> allowed
-<title.pdf, id=122, page=1, 597.55246pt x 845.07718pt>
+<title.pdf, id=134, page=1, 597.55246pt x 845.07718pt>
 File: title.pdf Graphic file (type pdf)
 <use title.pdf, page 1>
 Package pdftex.def Info: title.pdf , page1 used on input line 92.
@@ -1152,27 +1152,118 @@ Package pdftex.def Info: title.pdf , page1 used on input line 92.
 File: title.pdf Graphic file (type pdf)
 <use title.pdf, page 1>
 Package pdftex.def Info: title.pdf , page1 used on input line 92.
-(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+(pdftex.def)             Requested size: 597.59657pt x 845.13959pt.
 File: title.pdf Graphic file (type pdf)
 <use title.pdf, page 1>
 Package pdftex.def Info: title.pdf , page1 used on input line 92.
-(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+(pdftex.def)             Requested size: 597.59657pt x 845.13959pt.
 File: title.pdf Graphic file (type pdf)
 <use title.pdf, page 1>
 Package pdftex.def Info: title.pdf , page1 used on input line 92.
-(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+(pdftex.def)             Requested size: 597.59657pt x 845.13959pt.
 File: title.pdf Graphic file (type pdf)
 <use title.pdf, page 1>
 Package pdftex.def Info: title.pdf , page1 used on input line 92.
-(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+(pdftex.def)             Requested size: 597.59657pt x 845.13959pt.
 [1
 
- <./title.pdf>]
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 94.
- ("System bezpieczeÅ„stwa praca.toc"
+ <./title.pdf>] [2]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 1.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 104.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.95> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 108.
+ [3{C:/Users/Piotr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [4]
+
+pdfTeX warning: pdflatex (file ./oswiadczenie.pdf): PDF inclusion: found PDF ve
+rsion <1.7>, but at most version <1.5> allowed
+<oswiadczenie.pdf, id=172, 597.55246pt x 845.07718pt>
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf>
+Package pdftex.def Info: oswiadczenie.pdf  used on input line 141.
+(pdftex.def)             Requested size: 597.551pt x 845.07512pt.
+
+
+pdfTeX warning: pdflatex (file ./oswiadczenie.pdf): PDF inclusion: found PDF ve
+rsion <1.7>, but at most version <1.5> allowed
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf>
+Package pdftex.def Info: oswiadczenie.pdf  used on input line 141.
+(pdftex.def)             Requested size: 597.551pt x 845.07512pt.
+
+
+pdfTeX warning: pdflatex (file ./oswiadczenie.pdf): PDF inclusion: found PDF ve
+rsion <1.7>, but at most version <1.5> allowed
+
+
+pdfTeX warning: pdflatex (file ./oswiadczenie.pdf): PDF inclusion: found PDF ve
+rsion <1.7>, but at most version <1.5> allowed
+<oswiadczenie.pdf, id=175, page=1, 597.55246pt x 845.07718pt>
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf, page 1>
+Package pdftex.def Info: oswiadczenie.pdf , page1 used on input line 141.
+(pdftex.def)             Requested size: 597.551pt x 845.07512pt.
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf, page 1>
+Package pdftex.def Info: oswiadczenie.pdf , page1 used on input line 141.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf, page 1>
+Package pdftex.def Info: oswiadczenie.pdf , page1 used on input line 141.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf, page 1>
+Package pdftex.def Info: oswiadczenie.pdf , page1 used on input line 141.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf, page 1>
+Package pdftex.def Info: oswiadczenie.pdf , page1 used on input line 141.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+[5 <./oswiadczenie.pdf>]
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf>
+Package pdftex.def Info: oswiadczenie.pdf  used on input line 142.
+(pdftex.def)             Requested size: 597.551pt x 845.07512pt.
+
+
+pdfTeX warning: pdflatex (file ./oswiadczenie.pdf): PDF inclusion: found PDF ve
+rsion <1.7>, but at most version <1.5> allowed
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf>
+Package pdftex.def Info: oswiadczenie.pdf  used on input line 142.
+(pdftex.def)             Requested size: 597.551pt x 845.07512pt.
+
+
+pdfTeX warning: pdflatex (file ./oswiadczenie.pdf): PDF inclusion: found PDF ve
+rsion <1.7>, but at most version <1.5> allowed
+
+
+pdfTeX warning: pdflatex (file ./oswiadczenie.pdf): PDF inclusion: found PDF ve
+rsion <1.7>, but at most version <1.5> allowed
+<oswiadczenie.pdf, id=226, page=2, 597.55246pt x 845.07718pt>
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf, page 2>
+Package pdftex.def Info: oswiadczenie.pdf , page2 used on input line 142.
+(pdftex.def)             Requested size: 597.551pt x 845.07512pt.
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf, page 2>
+Package pdftex.def Info: oswiadczenie.pdf , page2 used on input line 142.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf, page 2>
+Package pdftex.def Info: oswiadczenie.pdf , page2 used on input line 142.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf, page 2>
+Package pdftex.def Info: oswiadczenie.pdf , page2 used on input line 142.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+File: oswiadczenie.pdf Graphic file (type pdf)
+<use oswiadczenie.pdf, page 2>
+Package pdftex.def Info: oswiadczenie.pdf , page2 used on input line 142.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+[6 <./oswiadczenie.pdf>]
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 144.
+ ("System bezpieczeÅ„stwa praca.toc"
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <10.95> on input line 1.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -1183,315 +1274,402 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \tf@toc=\write4
 \openout4 = `"System bezpieczeÅ„stwa praca.toc"'.
 
- [2{C:/Users/Piotr/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+ [7]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 100.
- [3]
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.95> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 110.
-LaTeX Font Info:    Try loading font information for OMS+phv on input line 120.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 150.
+ [8] [9]
+LaTeX Font Info:    Try loading font information for OMS+phv on input line 187.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsphv.fd"
 File: omsphv.fd 
 )
 LaTeX Font Info:    Font shape `OMS/phv/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 120.
- [4]
-<architektura.png, id=205, 1065.9825pt x 272.01625pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 187.
+ [10]
+<architektura.png, id=306, 1065.9825pt x 272.01625pt>
 File: architektura.png Graphic file (type png)
 <use architektura.png>
-Package pdftex.def Info: architektura.png  used on input line 141.
+Package pdftex.def Info: architektura.png  used on input line 209.
 (pdftex.def)             Requested size: 455.24408pt x 116.16779pt.
 
-Overfull \hbox (1.05507pt too wide) in paragraph at lines 139--145
+Overfull \hbox (1.05507pt too wide) in paragraph at lines 206--214
 []\T1/phv/m/n/10.95 Na pod-sta-wie po-wy»-szych wy-ma-ga« opra-co-wa-na zo-sta-
 ªa ar-chi-tek-tu-ra sys-te-mu, któ-r¡ przed-
  []
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 153.
+(Font)              <7> on input line 222.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 153.
+(Font)              <5> on input line 222.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[5 <./architektura.png>]
-Overfull \hbox (5.20433pt too wide) in paragraph at lines 179--180
+[11 <./architektura.png>]
+Overfull \hbox (5.20433pt too wide) in paragraph at lines 248--249
 []\T1/phv/m/n/10.95 Przykªadowymi czuj-ni-ka-mi tem-pe-ra-tu-ry i wil-got-no-±c
 i do-st¦p-ny-mi na ryn-ku s¡ Ada-fru-it SHT31,
  []
 
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 194.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 263.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1pcr.fd"
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [6] [7]
-<kontaktron.png, id=256, 306.54526pt x 181.27725pt>
+) [12] [13]
+<kontaktron.png, id=356, 306.54526pt x 181.27725pt>
 File: kontaktron.png Graphic file (type png)
 <use kontaktron.png>
-Package pdftex.def Info: kontaktron.png  used on input line 213.
+Package pdftex.def Info: kontaktron.png  used on input line 282.
 (pdftex.def)             Requested size: 227.62204pt x 134.61052pt.
-<kontaktron_zamkniety.png, id=257, 306.54526pt x 190.91325pt>
+<kontaktron_zamkniety.png, id=357, 306.54526pt x 190.91325pt>
 File: kontaktron_zamkniety.png Graphic file (type png)
 <use kontaktron_zamkniety.png>
-Package pdftex.def Info: kontaktron_zamkniety.png  used on input line 214.
+Package pdftex.def Info: kontaktron_zamkniety.png  used on input line 283.
 (pdftex.def)             Requested size: 227.62204pt x 141.7659pt.
 
-Overfull \hbox (2.3214pt too wide) in paragraph at lines 213--215
+Overfull \hbox (2.3214pt too wide) in paragraph at lines 282--284
 [][] [] 
  []
 
-[8 <./kontaktron.png> <./kontaktron_zamkniety.png>]
-LaTeX Font Info:    Try loading font information for U+psy on input line 223.
+[14 <./kontaktron.png> <./kontaktron_zamkniety.png>]
+LaTeX Font Info:    Try loading font information for U+psy on input line 292.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\upsy.fd"
 File: upsy.fd 2001/06/04 font definitions for U/psy.
 )
-<i2c.png, id=271, 392.4261pt x 166.9437pt>
+<i2c.png, id=373, 392.4261pt x 166.9437pt>
 File: i2c.png Graphic file (type png)
 <use i2c.png>
-Package pdftex.def Info: i2c.png  used on input line 232.
+Package pdftex.def Info: i2c.png  used on input line 301.
 (pdftex.def)             Requested size: 455.24408pt x 193.67517pt.
- [9 <./i2c.png>]
-[10] ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
+<prototyp.jpg, id=375, 3011.25pt x 3649.635pt>
+File: prototyp.jpg Graphic file (type jpg)
+<use prototyp.jpg>
+Package pdftex.def Info: prototyp.jpg  used on input line 309.
+(pdftex.def)             Requested size: 409.71689pt x 496.5777pt.
+ [15 <./i2c.png>]
+[16 <./prototyp.jpg>]
+("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
-<Grupa.png, id=292, 417.56pt x 645.41125pt>
+<Grupa.png, id=395, 417.56pt x 645.41125pt>
 File: Grupa.png Graphic file (type png)
 <use Grupa.png>
-Package pdftex.def Info: Grupa.png  used on input line 251.
+Package pdftex.def Info: Grupa.png  used on input line 328.
 (pdftex.def)             Requested size: 227.62204pt x 351.83572pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [11]
-[12 <./Grupa.png>]
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 267.
- [13]
-<Si7021_pomiar.png, id=317, 462.528pt x 475.7775pt>
+(Font)              <9> on input line 344.
+[17] [18 <./Grupa.png>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<Si7021_pomiar.png, id=415, 462.528pt x 475.7775pt>
 File: Si7021_pomiar.png Graphic file (type png)
 <use Si7021_pomiar.png>
-Package pdftex.def Info: Si7021_pomiar.png  used on input line 311.
+Package pdftex.def Info: Si7021_pomiar.png  used on input line 388.
 (pdftex.def)             Requested size: 364.19664pt x 374.6477pt.
- [14]
-Underfull \hbox (badness 10000) in paragraph at lines 317--318
+[19]
+Overfull \vbox (24.66272pt too high) has occurred while \output is active []
+
+
+[20 <./Si7021_pomiar.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 394--395
 \T1/phv/m/n/10.95 funk-cji \T1/pcr/m/n/10.95 i2c_smbus_read_word_data()
  []
 
-[15 <./Si7021_pomiar.png>] [16] [17] [18]
-<er.png, id=373, 831.105pt x 690.58pt>
+[21] [22] [23] [24]
+<er.png, id=476, 831.105pt x 690.58pt>
 File: er.png Graphic file (type png)
 <use er.png>
-Package pdftex.def Info: er.png  used on input line 383.
+Package pdftex.def Info: er.png  used on input line 460.
 (pdftex.def)             Requested size: 455.24408pt x 378.27118pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[19] [20 <./er.png>]
+[25] [26 <./er.png>]
 ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
-) [21]
+) [27]
 LaTeX Font Info:    Font shape `OMS/phv/m/n' in size <9> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 435.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 512.
 
-Underfull \hbox (badness 10000) in paragraph at lines 438--439
+Underfull \hbox (badness 10000) in paragraph at lines 515--516
 \T1/phv/m/n/10.95 wa-ne s¡ one w pro-gra-mie \T1/pcr/m/n/10.95 nadzor.py \T1/ph
 v/m/n/10.95 od-po-wied-nio w funk-cjach:
  []
 
-[22]
-Overfull \hbox (21.7995pt too wide) in paragraph at lines 448--449
-\T1/pcr/m/n/10.95 datetime.now() \T1/phv/m/n/10.95 za-pi-sa-na w for-ma-cie \T1
-/phv/m/sl/10.95 dzie«-miesi¡c-rok godzina-minuta-sekunda.mikrosekunda\T1/phv/m/
-n/10.95 . 
+[28]
+Overfull \hbox (27.88748pt too wide) in paragraph at lines 525--526
+\T1/pcr/m/n/10.95 datetime.now()\T1/phv/m/n/10.95 , za-pi-sa-na w for-ma-cie: \
+T1/phv/m/sl/10.95 dzie«-miesi¡c-rok godzina-minuta-sekunda.mikrosekunda\T1/phv/
+m/n/10.95 .
  []
 
-[23] [24] ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
+[29] [30] ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang2.sty"
 File: lstlang2.sty 2015/06/04 1.6 listings language file
 )
-Underfull \hbox (badness 10000) in paragraph at lines 500--501
+Underfull \hbox (badness 10000) in paragraph at lines 577--578
 \T1/phv/m/n/10.95 za¢ in-for-ma-cj¦ o ty-pie MI-ME prze-ka-zy-wa-nych danych[[]
 ] -- \T1/pcr/m/n/10.95 Content-Type:
  []
 
-[25] [26]
-Underfull \hbox (badness 10000) in paragraph at lines 538--539
-\T1/phv/m/n/10.95 wszyst-kich ele-men-tów HTML ty-pu \T1/pcr/m/n/10.95 form\T1/
-phv/m/n/10.95 . Wy-ko-rzy-sty-wa-na jest przy tym funk-cja
+[31] [32]
+Underfull \hbox (badness 10000) in paragraph at lines 615--616
+\T1/phv/m/n/10.95 kich ele-men-tów HTML ty-pu \T1/pcr/m/n/10.95 form\T1/phv/m/n
+/10.95 . Wy-ko-rzy-sty-wa-na jest przy tym funk-cja
  []
 
 
-Overfull \hbox (42.44165pt too wide) in paragraph at lines 538--539
+Overfull \hbox (42.44165pt too wide) in paragraph at lines 615--616
 \T1/phv/m/n/10.95 obiek-ty te zo-sta-n¡ prze-ksztaª-co-ne do po-sta-ci: \T1/pcr
 /m/n/10.95 {<Nazwa ustawienia>: <Warto±¢ ustawienia>}\T1/phv/m/n/10.95 .
  []
 
 
-Overfull \hbox (5.36188pt too wide) in paragraph at lines 547--548
-\T1/phv/m/n/10.95 pu POST do ser-we-ra. Jest to typ »¡-da-nia HTTP u»y-wa-ny do
- prze-sy-ªa-nia da-nych z formularzy.[[]]
+Overfull \hbox (2.74608pt too wide) in paragraph at lines 628--629
+\T1/phv/m/n/10.95 Nast¦pnie dla ka»-de-go usta-wie-nia (pa-ry: klu-cz/war-to±¢)
+ wy-ko-ny-wa-ne jest za-py-ta-nie ty-pu UPDA-
  []
 
-[27] [28]
-Overfull \hbox (22.9929pt too wide) in paragraph at lines 604--605
+[33]
+Overfull \hbox (54.66159pt too wide) in paragraph at lines 653--654
+\T1/phv/m/n/10.95 któ-re-go ad-res URL jest usta-wio-ny ja-ko: \T1/pcr/m/n/10.9
+5 export_events.php?start=<Data pocz¡tku>&end=<Data
+ []
+
+[34]
+Overfull \hbox (22.9929pt too wide) in paragraph at lines 681--682
 \T1/phv/m/n/10.95 Odpowiadaj¡ one za prze-ka-za-nie in-for-ma-cji klien-to-wi, 
 »e na-st¦-pu-je trans-fer pli-ku (\T1/pcr/m/n/10.95 File Transfer\T1/phv/m/n/10
 .95 )
  []
 
-[29]
-<ekran_glowny.png, id=552, 1434.10782pt x 733.99219pt>
+[35]
+<ekran_glowny.png, id=655, 1434.10782pt x 733.99219pt>
 File: ekran_glowny.png Graphic file (type png)
 <use ekran_glowny.png>
-Package pdftex.def Info: ekran_glowny.png  used on input line 612.
+Package pdftex.def Info: ekran_glowny.png  used on input line 689.
 (pdftex.def)             Requested size: 455.24408pt x 232.98953pt.
- [30 <./ekran_glowny.png>]
-<eksport_zdarzen.png, id=572, 1443.89438pt x 605.26125pt>
+ [36 <./ekran_glowny.png>]
+<eksport_zdarzen.png, id=667, 1443.89438pt x 605.26125pt>
 File: eksport_zdarzen.png Graphic file (type png)
 <use eksport_zdarzen.png>
-Package pdftex.def Info: eksport_zdarzen.png  used on input line 635.
+Package pdftex.def Info: eksport_zdarzen.png  used on input line 712.
 (pdftex.def)             Requested size: 455.24408pt x 190.83377pt.
-<ustawienia_pomniejszone.png, id=574, 1428.08531pt x 782.17218pt>
+<ustawienia_pomniejszone.png, id=669, 718.93594pt x 734.745pt>
 File: ustawienia_pomniejszone.png Graphic file (type png)
 <use ustawienia_pomniejszone.png>
-Package pdftex.def Info: ustawienia_pomniejszone.png  used on input line 644.
-(pdftex.def)             Requested size: 455.24408pt x 249.33348pt.
+Package pdftex.def Info: ustawienia_pomniejszone.png  used on input line 721.
+(pdftex.def)             Requested size: 455.24408pt x 465.26859pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [31 <./eksport_zdarzen.png>] [32 <./ustawienia_pomniejszone.png>]
-Overfull \hbox (19.12859pt too wide) in paragraph at lines 665--666
-\T1/phv/m/n/10.95 Pro-gram wy-ko-nu-j¡-cy po-mia-ry na-le-»y wy-wo-ªa¢ ko-men-d
-¡ w ter-mi-na-lu \T1/pcr/m/n/10.95 sudo python3 nadzor.py\T1/phv/m/n/10.95 . 
+ [37 <./eksport_zdarzen.png>] [38 <./ustawienia_pomniejszone.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 742--743
+\T1/phv/m/n/10.95 WWW. Pro-gram wy-ko-nu-j¡-cy po-mia-ry na-le-»y wy-wo-ªa¢ ko-
+men-d¡ w ter-mi-na-lu:
  []
 
-<test1.png, id=589, 465.99094pt x 82.05656pt>
+<test1.png, id=692, 465.99094pt x 82.05656pt>
 File: test1.png Graphic file (type png)
 <use test1.png>
-Package pdftex.def Info: test1.png  used on input line 670.
+Package pdftex.def Info: test1.png  used on input line 747.
 (pdftex.def)             Requested size: 364.19664pt x 64.13406pt.
-<test2.png, id=590, 453.94594pt x 83.5622pt>
+<test2.png, id=693, 453.94594pt x 83.5622pt>
 File: test2.png Graphic file (type png)
 <use test2.png>
-Package pdftex.def Info: test2.png  used on input line 671.
+Package pdftex.def Info: test2.png  used on input line 748.
 (pdftex.def)             Requested size: 364.19664pt x 67.04109pt.
-<test3.png, id=591, 490.08093pt x 98.61844pt>
+<test3.png, id=694, 490.08093pt x 98.61844pt>
 File: test3.png Graphic file (type png)
 <use test3.png>
-Package pdftex.def Info: test3.png  used on input line 672.
+Package pdftex.def Info: test3.png  used on input line 749.
 (pdftex.def)             Requested size: 364.19664pt x 73.28798pt.
 
-Overfull \hbox (16.38043pt too wide) in paragraph at lines 678--680
-\T1/phv/m/n/10.95 przez stro-n¦ do ser-we-ra HTTP. Na-le-»y wy-bra¢ pierw-sze z
- »¡-da« ozna-czo-nych \T1/pcr/m/n/10.95 get_data.php?q=
+Overfull \hbox (34.97235pt too wide) in paragraph at lines 755--757
+\T1/phv/m/n/10.95 rzy-tel-nie-niu w sys-te-mie mo»-na otwo-rzy¢ za-kªad-k¦ de-w
+e-lo-per-sk¡ (w Go-ogle Chro-me: \T1/pcr/m/n/10.95 Ctrl+Shift+I\T1/phv/m/n/10.9
+5 ).
  []
 
-
-Overfull \hbox (17.0pt too wide) in paragraph at lines 681--717
+[39]
+Overfull \hbox (17.0pt too wide) in paragraph at lines 758--794
 []$[]$ $[]$ 
  []
 
-[33]
-<home_test.png, id=598, 1192.455pt x 583.42969pt>
+<home_test.png, id=701, 1192.455pt x 583.42969pt>
 File: home_test.png Graphic file (type png)
 <use home_test.png>
-Package pdftex.def Info: home_test.png  used on input line 722.
+Package pdftex.def Info: home_test.png  used on input line 799.
 (pdftex.def)             Requested size: 455.24408pt x 222.73825pt.
- [34 <./test1.png> <./test2.png> <./test3.png>]
-<test_otwarty.png, id=637, 1193.20781pt x 580.41844pt>
+[40 <./test1.png> <./test2.png> <./test3.png>]
+<test_otwarty.png, id=740, 1193.20781pt x 580.41844pt>
 File: test_otwarty.png Graphic file (type png)
 <use test_otwarty.png>
-Package pdftex.def Info: test_otwarty.png  used on input line 734.
+Package pdftex.def Info: test_otwarty.png  used on input line 811.
 (pdftex.def)             Requested size: 455.24408pt x 221.44695pt.
- [35 <./home_test.png> <./test_otwarty.png>] [36]
-Underfull \hbox (badness 4765) in paragraph at lines 766--768
-[]\T1/phv/m/n/10.95 Bayer M., Dec-la-ra-ti-ve API, Do-ku-men-ta-cja SQLAl-che-m
+<test_email.png, id=742, 352.31625pt x 228.10219pt>
+File: test_email.png Graphic file (type png)
+<use test_email.png>
+Package pdftex.def Info: test_email.png  used on input line 820.
+(pdftex.def)             Requested size: 455.24408pt x 294.7403pt.
+ [41 <./home_test.png> <./test_otwarty.png>]
+<test_bledy.png, id=749, 843.15pt x 451.6875pt>
+File: test_bledy.png Graphic file (type png)
+<use test_bledy.png>
+Package pdftex.def Info: test_bledy.png  used on input line 831.
+(pdftex.def)             Requested size: 455.24408pt x 243.88693pt.
+ [42 <./test_email.png>] [43 <./test_bledy.png>]
+Overfull \hbox (5.61053pt too wide) in paragraph at lines 842--843
+[]\T1/phv/m/n/10.95 Obsªug¦ ka-mer i czuj-ni-ków spra-wu-je pro-gram \T1/pcr/m/
+n/10.95 nadzor.py \T1/phv/m/n/10.95 na-pi-sa-ny w j¦-zy-ku Py-thon. Spraw-
+ []
+
+[44] [45] [46]
+Underfull \hbox (badness 2913) in paragraph at lines 883--885
+[]\T1/phv/m/n/10.95 BAYER M., Dec-la-ra-ti-ve API, Do-ku-men-ta-cja SQLAl-che-m
 y [prze-gl¡-da-ny 2 czerw-ca
  []
 
 
-Underfull \hbox (badness 2828) in paragraph at lines 781--783
+Underfull \hbox (badness 2828) in paragraph at lines 898--900
 []\T1/phv/m/n/10.95 Comparison of single-board com-pu-ters, \T1/phv/m/sl/10.95 
 Wi-ki-pe-dia \T1/phv/m/n/10.95 [prze-gl¡-da-ny 2 czerw-ca 2018].
  []
 
 
-Underfull \hbox (badness 3919) in paragraph at lines 788--790
-[]\T1/phv/m/n/10.95 Dziedzic K., Ka-me-ra IP w sie-ci. Stwórz pry-wat-ny mo-ni-
+Underfull \hbox (badness 2426) in paragraph at lines 909--911
+[]\T1/phv/m/n/10.95 DZIEDZIC K., Ka-me-ra IP w sie-ci. Stwórz pry-wat-ny mo-ni-
 to-ring [prze-gl¡-da-ny 25
  []
 
 
-Underfull \hbox (badness 1661) in paragraph at lines 788--790
+Underfull \hbox (badness 1661) in paragraph at lines 909--911
 \T1/phv/m/n/10.95 ma-ja 2018]. Do-st¦p-ny w: []$\T1/pcr/m/n/10.95 http : / / ww
 w . komputerswiat . pl / poradniki / sprzet /
  []
 
-[37]
-Underfull \hbox (badness 1565) in paragraph at lines 819--821
-[]\T1/phv/m/n/10.95 Mouser Elec-tro-nics, Kar-ta ka-ta-lo-go-wa czuj-ni-ka tem-
-pe-ra-tu-ry i wil-got-no-±ci SHT31D
+[47]
+Underfull \hbox (badness 1231) in paragraph at lines 921--923
+[]\T1/phv/m/n/10.95 FREED N., BO-REN-STE-IN N., Mul-ti-pur-po-se In-ter-net Ma-
+il Exten-sions (MI-ME) Part
  []
 
 
-Underfull \hbox (badness 2057) in paragraph at lines 819--821
-\T1/phv/m/n/10.95 [prze-gl¡-da-ny 25 ma-ja 2018]. Do-st¦p-ny w: []$\T1/pcr/m/n/
-10.95 http : / / www . mouser . com / ds / 2 / 682 /
+Underfull \hbox (badness 2165) in paragraph at lines 921--923
+\T1/phv/m/n/10.95 One: For-mat of In-ter-net Mes-sa-ge Bo-dies, RFC 2045, IETF,
+ li-sto-pad 1996, DOI:
  []
 
 
-Underfull \hbox (badness 6625) in paragraph at lines 839--841
-[]\T1/phv/m/n/10.95 Raspberry Pi Fo-un-da-tion, Spe-cy-fi-ka-cja Ra-sp-ber-ry P
-i 3 Mo-del B [prze-gl¡-da-
+Underfull \hbox (badness 1817) in paragraph at lines 940--942
+[]\T1/phv/m/n/10.95 SENSIRION, Kar-ta ka-ta-lo-go-wa czuj-ni-ka tem-pe-ra-tu-ry
+ i wil-got-no-±ci SHT31D [prze-
  []
 
 
-Underfull \hbox (badness 5490) in paragraph at lines 839--841
-\T1/phv/m/n/10.95 ny 24 ma-ja 2018]. Do-st¦p-ny w: []$\T1/pcr/m/n/10.95 https :
- / / www . raspberrypi . org / products /
+Underfull \hbox (badness 10000) in paragraph at lines 940--942
+\T1/pcr/m/n/10.95 user _ upload / customers / sensirion / Dokumente / 0 _ Datas
+heets / Humidity /
  []
 
 
-Underfull \hbox (badness 3557) in paragraph at lines 855--857
-[]\T1/phv/m/n/10.95 Torvalds L., Opis pro-to-ko-ªu SMBus [prze-gl¡-da-ny 20 ma-
+Underfull \hbox (badness 10000) in paragraph at lines 944--946
+\T1/phv/m/n/10.95 Do-st¦p-ny w: []$\T1/pcr/m/n/10.95 https : / / developer . mo
+zilla . org / pl / docs / Web / JavaScript /
+ []
+
+
+Underfull \hbox (badness 3492) in paragraph at lines 948--950
+[]\T1/phv/m/n/10.95 MOZILLA DE-VE-LO-PER NE-TWORK, BAB64, DO-UBLE-ORT, FRE-EZY,
+ HI-RO-KI-KY,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 948--950
+[]$\T1/pcr/m/n/10.95 https : / / developer . mozilla . org / en-[]US / docs / W
+eb / JavaScript / Reference /
+ []
+
+
+Underfull \hbox (badness 3128) in paragraph at lines 955--957
+\T1/phv/m/n/10.95 gl¡-da-ny 24 ma-ja 2018]. Do-st¦p-ny w: []$\T1/pcr/m/n/10.95 
+https : / / docs . python . org / 3 / library /
+ []
+
+
+Underfull \hbox (badness 2134) in paragraph at lines 963--965
+[]\T1/phv/m/n/10.95 RASPBERRY PI FO-UN-DA-TION, Spe-cy-fi-ka-cja Ra-sp-ber-ry P
+i 3 Mo-del B [prze-gl¡-
+ []
+
+
+Underfull \hbox (badness 1931) in paragraph at lines 963--965
+\T1/phv/m/n/10.95 da-ny 24 ma-ja 2018]. Do-st¦p-ny w: []$\T1/pcr/m/n/10.95 http
+s : / / www . raspberrypi . org / products /
+ []
+
+[48]
+Underfull \hbox (badness 4899) in paragraph at lines 975--977
+[]\T1/phv/m/n/10.95 SUMIŠA M., KA-SPRZYK Z., \T1/phv/m/sl/10.95 Kon-cep-cja wy-
+ko-rzy-sta-nia in-te-li-gent-nych ka-mer IP
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 975--977
+\T1/phv/m/sl/10.95 do wspo-ma-ga-nia nad-zo-ru wi-zyj-ne-go ITS. \T1/phv/m/n/10
+.95 Lo-gi-sty-ka, kwie-cie« 2012. Do-st¦p-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 975--977
+\T1/phv/m/n/10.95 ny w: []$\T1/pcr/m/n/10.95 https : / / www . czasopismologist
+yka . pl / artykuly-[]naukowe / send /
+ []
+
+
+Underfull \hbox (badness 1354) in paragraph at lines 983--985
+[]\T1/phv/m/n/10.95 TORVALDS L., Opis pro-to-ko-ªu SMBus [prze-gl¡-da-ny 20 ma-
 ja 2018]. Do-st¦p-ny w:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 855--857
+Underfull \hbox (badness 10000) in paragraph at lines 983--985
 []$\T1/pcr/m/n/10.95 https : / / git . kernel . org / pub / scm / linux / kerne
 l / git / torvalds / linux .
  []
 
-[38] [39]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 868.
- [40]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 868.
+[49]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 995.
+ [50]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 995.
  ("System bezpieczeÅ„stwa praca.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 868.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 868.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 995.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 995.
 Package rerunfilecheck Info: File `"System bezpieczeÅ„stwa praca".out' has not 
 changed.
-(rerunfilecheck)             Checksum: 10FFE69B88E80D1F0939D8C532D0D26C;2073.
+(rerunfilecheck)             Checksum: EF0B697D33B68EE15FB84BA40967BCF0;2293.
 
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 868.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 995.
  ) 
 Here is how much of TeX's memory you used:
- 13625 strings out of 493305
- 205110 string characters out of 3138874
- 605036 words of memory out of 3000000
- 16696 multiletter control sequences out of 15000+200000
- 35096 words of font info for 55 fonts, out of 3000000 for 9000
+ 13682 strings out of 493305
+ 206056 string characters out of 3138874
+ 601652 words of memory out of 3000000
+ 16728 multiletter control sequences out of 15000+200000
+ 37986 words of font info for 57 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,18n,43p,1720b,2940s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,18n,43p,1745b,2940s stack positions out of 5000i,500n,10000p,200000b,50000s
 pdfTeX warning (dest): name{cite.komputer_\261wiat} has been referenced but d
 oes not exist, replaced by a fixed one
 
@@ -1509,10 +1687,10 @@ nts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/h
 elvetic/uhvb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a
 .pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Prog
 ram Files/MiKTeX 2.9/fonts/type1/urw/symbol/usyr.pfb>
-Output written on "System bezpieczeÅ„stwa praca.pdf" (40 pages, 5535359 bytes).
+Output written on "System bezpieczeÅ„stwa praca.pdf" (50 pages, 9854470 bytes).
 
 PDF statistics:
- 825 PDF objects out of 1000 (max. 8388607)
- 290 named destinations out of 1000 (max. 500000)
- 328 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 956 PDF objects out of 1000 (max. 8388607)
+ 308 named destinations out of 1000 (max. 500000)
+ 402 words of extra memory for PDF output out of 10000 (max. 10000000)
 
