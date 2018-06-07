@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  7 JUN 2018 14:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.19)  7 JUN 2018 20:36
 entering extended mode
 **"./System bezpieczeństwa praca.tex"
 ("System bezpieczeństwa praca.tex"
@@ -1574,7 +1574,7 @@ File: test_bledy.png Graphic file (type png)
 Package pdftex.def Info: test_bledy.png  used on input line 840.
 (pdftex.def)             Requested size: 455.24408pt x 243.88693pt.
  [45 <./test_email.png>] [46 <./test_bledy.png>]
-<Wykres.png, id=795, 821.469pt x 558.4062pt>
+<Wykres.png, id=794, 821.469pt x 558.4062pt>
 File: Wykres.png Graphic file (type png)
 <use Wykres.png>
 Package pdftex.def Info: Wykres.png  used on input line 875.
@@ -1753,10 +1753,10 @@ nts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/h
 elvetic/uhvb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a
 .pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Prog
 ram Files/MiKTeX 2.9/fonts/type1/urw/symbol/usyr.pfb>
-Output written on "System bezpieczeństwa praca.pdf" (59 pages, 9930332 bytes).
+Output written on "System bezpieczeństwa praca.pdf" (59 pages, 9930367 bytes).
 
 PDF statistics:
- 1034 PDF objects out of 1200 (max. 8388607)
+ 1033 PDF objects out of 1200 (max. 8388607)
  338 named destinations out of 1000 (max. 500000)
  415 words of extra memory for PDF output out of 10000 (max. 10000000)
 
