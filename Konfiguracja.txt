@@ -1,0 +1,36 @@
+1. Zainstaluj interpreter jêzyka Python3.
+2. Zainstaluj pakiety wymagane przez programy w jêzyku Python. Mo¿esz tego dokonaæ przez komendê:
+	pip install -r requirements.txt
+3. Zainstaluj bibliotekê pigpio:
+	sudo apt-get install pigpio python-pigpio python3-pigpio
+4. Zainstaluj serwer Apache2:
+	sudo apt-get install apache2 -y
+5. Zainstaluj PHP:
+	sudo apt-get install php libapache2-mod-php -y
+6. Zainstaluj MySQL wraz z odpowiednimi pakietami. Jako has³o u¿ytkownika root wprowadŸ: raspberry
+	sudo apt-get install mysql-server
+	sudo apt-get install mysql-client php5-mysql
+7. Uruchom klienta MySQL jako u¿ytkownik root, podaj¹c has³o wprowadzone w czasie instalacji:
+	 mysql -u root -p
+8. Po zalogowaniu stwórz bazê danych i zamknij klienta MySQL:
+	CREATE DATABASE nadzor;
+	exit;
+9. Stwórz tabele w bazie danych, uruchamiaj¹c program baza.py:
+	python baza.py
+10. Otwórz plik nadzor.py, dokonaj odpowiednich zmian w s³ownikach tworzonych wpisów do bazy danych.
+WprowadŸ dane odpowiadaj¹ce ich numerom wyprowadzeñ w komputerze Raspberry Pi. Stwórz nowe wiersze w bazie danych:
+	python insert.py
+11. Umieœæ zawartoœæ folderu "Strona" w folderze: var/www/html
+12. Uruchom program htpasswd aby ustanowiæ has³o dla u¿ytkownika:
+	htpasswd /etc/apache2/htpasswd <nazwa u¿ytkownika>
+13. Umieœæ plik htaccess w folderze var/www/html/:
+	AuthType Basic
+	AuthName "Restricted Files"
+	AuthBasicProvider file
+	AuthUserFile "/etc/apache2/htpasswd"
+	Require user <nazwa u¿ytkownika>
+14. Zrestartuj system
+15. Uruchom program pigpio
+	sudo pigpiod
+16. Uruchom program nadzor.py
+	sudo python nadzor.py
