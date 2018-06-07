@@ -17,7 +17,7 @@ try {
                 SELECT * FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN odczyty NATURAL JOIN stany
                 WHERE id_pomiaru = (
                     SELECT id_pomiaru FROM 
-                    pomiary JOIN zdjecia ON pomiary.id_zdjecia = (
+                    pomiary  WHERE id_zdjecia = (
                         SELECT id_zdjecia FROM zdjecia WHERE id_kamery = $id_kamery ORDER BY id_zdjecia DESC LIMIT 1
                     )
                     ORDER BY pomiary.id_pomiaru DESC LIMIT 1
