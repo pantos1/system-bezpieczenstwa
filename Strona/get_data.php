@@ -13,9 +13,14 @@ try {
     while ($kamera = $kamery_query->fetch(PDO::FETCH_ASSOC)) {
         $id_kamery = $kamera["id_kamery"];
         if (empty($q)) {
-            $stmt = $conn->query("SELECT *
-					FROM pomiary NATURAL JOIN zdjecia NATURAL JOIN stany NATURAL JOIN odczyty
-					WHERE zdjecia.id_kamery = $id_kamery GROUP BY pomiary.id_pomiaru ORDER BY pomiary.id_pomiaru DESC LIMIT 1");
+            $stmt = $conn->query("
+                SELECT * FROM 
+                pomiary JOIN zdjecia ON pomiary.id_zdjecia = (
+                    SELECT id_zdjecia FROM zdjecia WHERE id_kamery = 2 ORDER BY id_zdjecia DESC LIMIT 1
+                )
+                NATURAL JOIN stany NATURAL JOIN odczyty
+                ORDER BY pomiary.id_pomiaru DESC LIMIT 1
+                ");
             while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $rows[$id_kamery] = $result;
                 $rows[$id_kamery]["nazwa_kamery"] = $kamera["nazwa_kamery"];
